@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import BladeShapeModal from "../src/components/BladeShapeModal"; // Adjust the import path based on your file structure
+import BladeShapeModal from "../src/components/artifact/points/point_attributes/BladeShapeModal.jsx"; // Adjust the import path based on your file structure
 import http from "../http";
 
 // Mock logger to prevent actual logging during tests

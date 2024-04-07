@@ -10,7 +10,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import BaseShapeModal from "../src/components/BaseShapeModal";
+import BaseShapeModal from "../src/components/artifact/points/point_attributes/BaseShapeModal.jsx";
 import http from "../http";
 
 // Mock logger to avoid actual logging during tests

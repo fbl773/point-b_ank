@@ -5,7 +5,7 @@ import "@testing-library/jest-dom";
 import http from "../http";
 
 import { render, fireEvent } from "@testing-library/react";
-import MaterialModal from "../src/components/MaterialModal";
+import MaterialModal from "../src/components/artifact/MaterialModal.jsx";
 
 describe("MaterialModal", () => {
 	it("renders correctly", () => {

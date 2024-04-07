@@ -1,8 +1,8 @@
 /* eslint-disable indent */
 /* eslint-disable react/jsx-key */
 import { useState, useEffect, useContext } from "react";
-import { UserContext } from "../context/userContext.jsx";
-import http from "../../http.js";
+import { UserContext } from "../../context/userContext.jsx";
+import http from "../../../http.js";
 import {
 	Box,
 	Button,
@@ -17,11 +17,11 @@ import {
 import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import log from "../logger.js";
+import log from "../../logger.js";
 
-import AddCultureDialog from "./AddCultureDialog";
-import Sidebar from "./Sidebar";
-import RelationsCultureDialog from "./RelationsCultureDialog.jsx";
+import AddCultureDialog from "../artifact/AddCultureDialog.jsx";
+import Sidebar from "../Sidebar.jsx";
+import RelationsCultureDialog from "../artifact/RelationsCultureDialog.jsx";
 
 const apiUrlCultures = "/cultures"; // API endpoint for fetching and deleting cultures
 

@@ -2,8 +2,8 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { UserContext } from "../src/context/userContext";
 
-import ManagementPeriods from "../src/components/ManagementPeriods";
-import AddPeriodDialog from "../src/components/AddPeriodDialog";
+import ManagementPeriods from "../src/components/management/ManagementPeriods.jsx";
+import AddPeriodDialog from "../src/components/artifact/AddPeriodDialog.jsx";
 
 vi.mock("../http", () => ({
 	__esModule: true,

@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
-import http from "../../http.js";
+import http from "../../../../http.js";
 // import FileUpload from "./UploadPicture"; // for future uploading photo files implementation
 import { useLocation } from "react-router-dom";
-import log from "../logger.js";
+import log from "../../../logger.js";
 import {
 	Button,
 	Dialog,
@@ -27,13 +27,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 // Dropdown menu modal components
-import PeriodModal from "./PeriodModal.jsx";
-import CultureModal from "./CultureModal.jsx";
-import MaterialModal from "./MaterialModal.jsx";
-import BaseShapeModal from "./BaseShapeModal.jsx";
-import CrossSectionModal from "./CrossSectionModal.jsx";
-import BladeShapeModal from "./BladeShapeModal.jsx";
-import HaftingShapeModal from "./HaftingShapeModal.jsx";
+import PeriodModal from "../PeriodModal.jsx";
+import CultureModal from "../CultureModal.jsx";
+import MaterialModal from "../MaterialModal.jsx";
+import BaseShapeModal from "./point_attributes/BaseShapeModal.jsx";
+import CrossSectionModal from "./point_attributes/CrossSectionModal.jsx";
+import BladeShapeModal from "./point_attributes/BladeShapeModal.jsx";
+import HaftingShapeModal from "./point_attributes/HaftingShapeModal.jsx";
 
 /**
  * Modal for adding a new projectile point to a site

@@ -1,8 +1,8 @@
 import { expect, test } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import AddProjectile from "../src/components/ProjectileModal.jsx";
-import PeriodModal from "../src/components/PeriodModal.jsx";
+import AddProjectile from "../src/components/artifact/points/ProjectileModal.jsx";
+import PeriodModal from "../src/components/artifact/PeriodModal.jsx";
 // eslint-disable-next-line no-unused-vars
 import http from "../http";
 

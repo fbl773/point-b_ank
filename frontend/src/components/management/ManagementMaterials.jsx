@@ -1,8 +1,8 @@
 /* eslint-disable indent */
 /* eslint-disable react/jsx-key */
 import { useState, useEffect, useContext } from "react";
-import { UserContext } from "../context/userContext.jsx";
-import http from "../../http.js";
+import { UserContext } from "../../context/userContext.jsx";
+import http from "../../../http.js";
 import {
 	Box,
 	Button,
@@ -17,11 +17,11 @@ import {
 import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import log from "../logger.js";
+import log from "../../logger.js";
 
-import AddMaterialDialog from "./AddMaterialDialog";
-import Sidebar from "./Sidebar";
-import RelationsMaterialsDialog from "./RelationsMaterialsDialog.jsx";
+import AddMaterialDialog from "../artifact/AddMaterialDialog.jsx";
+import Sidebar from "../Sidebar.jsx";
+import RelationsMaterialsDialog from "../artifact/RelationsMaterialsDialog.jsx";
 
 // URL to fetch materials
 const apiUrlMaterials = "/materials";

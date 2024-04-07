@@ -1,7 +1,7 @@
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import http from "../http";
-import CrossSectionModal from "../src/components/CrossSectionModal";
+import CrossSectionModal from "../src/components/artifact/points/point_attributes/CrossSectionModal.jsx";
 
 describe("CrossSectionModal", () => {
 	it("renders correctly", () => {

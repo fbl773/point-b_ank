@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import CrossSectionModal from "../src/components/CrossSectionModal";
+import CrossSectionModal from "../src/components/artifact/points/point_attributes/CrossSectionModal.jsx";
 import http from "../http";
 
 // Mock logger to prevent actual logging during tests

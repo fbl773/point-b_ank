@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
-import http from "../../http.js";
-import log from "../logger.js";
+import http from "../../../http.js";
+import log from "../../logger.js";
 import {
 	Button,
 	Dialog,
@@ -21,7 +21,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import RegionModal from "./RegionModal";
+import RegionModal from "../artifact/RegionModal.jsx";
 
 /**
  * SiteModal functional component for creating and editing site information.

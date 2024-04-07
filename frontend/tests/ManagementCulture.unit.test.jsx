@@ -2,8 +2,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import http from "../http";
-import ManagementCultures from "../src/components/ManagementCultures";
-import AddCultureDialog from "../src/components/AddCultureDialog";
+import ManagementCultures from "../src/components/management/ManagementCultures.jsx";
+import AddCultureDialog from "../src/components/artifact/AddCultureDialog.jsx";
 
 // Mock Sidebar component to avoid router or http dependencies
 vi.mock("../src/components/Sidebar", () => {

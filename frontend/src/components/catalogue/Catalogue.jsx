@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useEffect, useState, useContext } from "react";
-import SiteList from "./SiteList";
-import CatalogueModal from "./CatalogueModal";
-import BaseLayout from "./BaseLayout";
-import http from "../../http";
+import SiteList from "../sites/SiteList.jsx";
+import CatalogueModal from "./CatalogueModal.jsx";
+import BaseLayout from "../BaseLayout.jsx";
+import http from "../../../http.js";
 import SearchIcon from "@mui/icons-material/Search";
-import log from "../logger";
+import log from "../../logger.js";
 import {
 	Button,
 	TextField,
@@ -16,7 +16,7 @@ import {
 	MenuItem,
 } from "@mui/material";
 
-import { UserContext } from "../context/userContext.jsx";
+import { UserContext } from "../../context/userContext.jsx";
 
 /**
  * Default catalogue main page for viewing and adding sites

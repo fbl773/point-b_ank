@@ -1,6 +1,6 @@
 import { vi } from "vitest";
 import { render, fireEvent } from "@testing-library/react";
-import PeriodModal from "../src/components/PeriodModal";
+import PeriodModal from "../src/components/artifact/PeriodModal.jsx";
 
 describe("PeriodModal", () => {
 	it("renders correctly", () => {

@@ -10,7 +10,7 @@ import {
 	Typography,
 	MenuItem,
 } from "@mui/material";
-import http from "../../http.js";
+import http from "../../../http.js";
 
 /**
  * The AddCultureDialog component allows users to add a new culture.

@@ -1,5 +1,5 @@
 import { render, fireEvent } from "@testing-library/react";
-import CultureModal from "../src/components/CultureModal";
+import CultureModal from "../src/components/artifact/CultureModal.jsx";
 import { vi } from "vitest";
 
 describe("CultureModal", () => {

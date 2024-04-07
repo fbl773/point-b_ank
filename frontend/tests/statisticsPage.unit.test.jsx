@@ -1,6 +1,6 @@
 import { screen, render, fireEvent } from "@testing-library/react";
 import { test, expect } from "vitest";
-import StatisticsPage from "../src/components/StatisticsPage.jsx";
+import StatisticsPage from "../src/components/statistics/StatisticsPage.jsx";
 import { MemoryRouter } from "react-router-dom";
 
 test("Render statistics page correctly", async () => {

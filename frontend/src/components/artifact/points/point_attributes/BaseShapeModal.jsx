@@ -9,8 +9,8 @@ import {
 	DialogActions,
 } from "@mui/material";
 import { useState } from "react";
-import http from "../../http";
-import log from "../logger";
+import http from "../../../../../http.js";
+import log from "../../../../logger.js";
 
 /**
  * Component for editing or adding a new base shape.

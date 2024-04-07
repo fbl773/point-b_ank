@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import http from "../../http.js";
-import ProjectileModal from "./ProjectileModal";
-import Projectile from "./Projectile";
-import log from "../logger.js";
+import http from "../../../../http.js";
+import ProjectileModal from "./ProjectileModal.jsx";
+import Projectile from "./Projectile.jsx";
+import log from "../../../logger.js";
 import {
 	styled,
 	Grid,
@@ -15,9 +15,9 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useContext } from "react";
-import { UserContext } from "../context/userContext";
+import { UserContext } from "../../../context/userContext.jsx";
 
-import { sortData } from "../sortUtils.js";
+import { sortData } from "../../../sortUtils.js";
 /**
  * Create styled Item component, based on Paper MUI component
  */

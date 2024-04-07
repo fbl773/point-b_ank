@@ -9,8 +9,8 @@ import {
 	DialogActions,
 } from "@mui/material";
 import { useState } from "react";
-import http from "../../http";
-import log from "../logger";
+import http from "../../../../../http.js";
+import log from "../../../../logger.js";
 
 /**
  * Modal component for adding or editing cross sections.

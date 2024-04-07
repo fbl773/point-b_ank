@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { UserContext } from "../src/context/userContext";
-import AddMaterialDialog from "../src/components/AddMaterialDialog";
-import ManagementMaterials from "../src/components/ManagementMaterials";
+import AddMaterialDialog from "../src/components/artifact/AddMaterialDialog.jsx";
+import ManagementMaterials from "../src/components/management/ManagementMaterials.jsx";
 
 vi.mock("../http", () => {
 	return {

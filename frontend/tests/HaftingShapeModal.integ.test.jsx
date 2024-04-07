@@ -1,6 +1,6 @@
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import http from "../http";
-import HaftingShapeModal from "../src/components/HaftingShapeModal";
+import HaftingShapeModal from "../src/components/artifact/points/point_attributes/HaftingShapeModal.jsx";
 import { describe, it, expect, vi } from "vitest";
 
 vi.mock("../http");

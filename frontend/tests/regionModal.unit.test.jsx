@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import http from "../http";
-import RegionModal from "../src/components/RegionModal";
+import RegionModal from "../src/components/artifact/RegionModal.jsx";
 
 vi.mock("../http");
 vi.mock("../logger", () => ({

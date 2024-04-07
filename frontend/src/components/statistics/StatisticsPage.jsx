@@ -1,9 +1,9 @@
 import { useState, useEffect, useContext } from "react";
-import log from "../logger.js";
-import http from "../../http.js";
-import Sidebar from "./Sidebar.jsx";
+import log from "../../logger.js";
+import http from "../../../http.js";
+import Sidebar from "../Sidebar.jsx";
 import StatisticsModal from "./StatisticsModal.jsx";
-import { UserContext } from "../context/userContext.jsx";
+import { UserContext } from "../../context/userContext.jsx";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Box } from "@mui/material";
 import Grid from "@mui/material/Grid";

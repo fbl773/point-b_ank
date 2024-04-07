@@ -1,8 +1,8 @@
 /* eslint-disable quotes */
 /* eslint-disable react/prop-types */
 import { useEffect, useState, useContext } from "react";
-import http from "../../http.js";
-import log from "../logger.js";
+import http from "../../../../http.js";
+import log from "../../../logger.js";
 import {
 	Button,
 	Dialog,
@@ -13,7 +13,7 @@ import {
 	Grid,
 	Typography,
 } from "@mui/material";
-import { UserContext } from "../context/userContext.jsx";
+import { UserContext } from "../../../context/userContext.jsx";
 /**
  * Modal for viewing projectile point details
  * @param {function} setOpenView function to toggle view projectile point modal visibility

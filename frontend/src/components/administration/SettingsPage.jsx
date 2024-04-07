@@ -1,11 +1,11 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
-import http from "../../http.js";
+import http from "../../../http.js";
 // import Grid from "@mui/material/Grid";
 import ChangeUsernameModal from "./ChangeUsernameModal.jsx";
 import ChangePasswordModal from "./ChangePasswordModal.jsx";
-import log from "../logger.js";
-import BaseLayout from "./BaseLayout.jsx";
+import log from "../../logger.js";
+import BaseLayout from "../BaseLayout.jsx";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 import {

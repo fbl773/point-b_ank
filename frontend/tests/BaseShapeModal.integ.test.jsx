@@ -1,6 +1,6 @@
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import http from "../http";
-import BaseShapeModal from "../src/components/BaseShapeModal";
+import BaseShapeModal from "../src/components/artifact/points/point_attributes/BaseShapeModal.jsx";
 import { describe, it, expect, vi } from "vitest";
 
 vi.mock("../http");

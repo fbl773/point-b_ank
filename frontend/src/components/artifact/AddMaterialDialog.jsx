@@ -10,8 +10,8 @@ import {
 	Typography,
 	MenuItem,
 } from "@mui/material";
-import http from "../../http.js";
-import log from "../logger.js";
+import http from "../../../http.js";
+import log from "../../logger.js";
 
 /**
  * This component renders a dialog for adding a new material. It allows users to enter a material name, description, and select an associated artifact type.

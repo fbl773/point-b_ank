@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
-import SiteModal from "./SiteModal";
+import SiteModal from "./SiteModal.jsx";
 import { Link } from "react-router-dom";
 import {
 	styled,
@@ -14,11 +14,11 @@ import {
 	Paper,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { baseURL } from "../../http";
+import { baseURL } from "../../../http.js";
 
 import { useContext } from "react";
-import { UserContext } from "../context/userContext";
-import { sortData } from "../sortUtils";
+import { UserContext } from "../../context/userContext.jsx";
+import { sortData } from "../../sortUtils.js";
 
 /**
  * Item component styled from the Paper MUI component.

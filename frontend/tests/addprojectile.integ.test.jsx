@@ -1,8 +1,8 @@
 import { test } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import AddProjectile from "../src/components/ProjectileModal.jsx";
-import ProjectileList from "../src/components/ProjectileList";
+import AddProjectile from "../src/components/artifact/points/ProjectileModal.jsx";
+import ProjectileList from "../src/components/artifact/points/ProjectileList.jsx";
 import http from "../http";
 
 test("ProjectilePoint renders correctly and test the error message for width, length and height", async () => {

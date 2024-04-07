@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import HaftingShapeModal from "../src/components/HaftingShapeModal";
+import HaftingShapeModal from "../src/components/artifact/points/point_attributes/HaftingShapeModal.jsx";
 import http from "../http";
 
 // Mock logger to avoid actual logging during tests

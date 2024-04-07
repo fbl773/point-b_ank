@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useEffect, useState, useContext } from "react";
-import ProjectileList from "./ProjectileList";
-import SiteModal from "./SiteModal";
-import BaseLayout from "./BaseLayout";
-import http from "../../http.js";
+import ProjectileList from "../artifact/points/ProjectileList.jsx";
+import SiteModal from "./SiteModal.jsx";
+import BaseLayout from "../BaseLayout.jsx";
+import http from "../../../http.js";
 import SearchIcon from "@mui/icons-material/Search";
-import log from "../logger.js";
+import log from "../../logger.js";
 import {
 	Button,
 	Dialog,
@@ -21,7 +21,7 @@ import {
 	MenuItem,
 } from "@mui/material";
 
-import { UserContext } from "../context/userContext.jsx";
+import { UserContext } from "../../context/userContext.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
 
 /**

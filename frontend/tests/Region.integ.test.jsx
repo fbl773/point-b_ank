@@ -1,6 +1,6 @@
 import { expect, test, vi } from "vitest";
 import { screen, render, fireEvent, waitFor } from "@testing-library/react";
-import RegionModal from "../src/components/RegionModal";
+import RegionModal from "../src/components/artifact/RegionModal.jsx";
 import http from "../http";
 
 test("RegionModal renders correctly with every field empty", () => {

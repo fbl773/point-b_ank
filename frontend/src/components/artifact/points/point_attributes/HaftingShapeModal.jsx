@@ -9,8 +9,8 @@ import {
 	DialogActions,
 } from "@mui/material";
 import { useState } from "react";
-import http from "../../http";
-import log from "../logger";
+import http from "../../../../../http.js";
+import log from "../../../../logger.js";
 
 export default function HaftingShapeModal({
 	setEditHaftingShape,

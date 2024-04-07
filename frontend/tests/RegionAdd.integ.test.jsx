@@ -1,6 +1,6 @@
 import { test, vi } from "vitest";
 import { render, fireEvent } from "@testing-library/react";
-import SiteModal from "../src/components/SiteModal";
+import SiteModal from "../src/components/sites/SiteModal.jsx";
 import http from "../http";
 
 test("should add a region on button click", async () => {

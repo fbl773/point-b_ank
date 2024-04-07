@@ -1,6 +1,6 @@
 import { useState } from "react";
-import log from "../logger.js";
-import http from "../../http.js";
+import log from "../../logger.js";
+import http from "../../../http.js";
 
 // MUI
 import Button from "@mui/material/Button";

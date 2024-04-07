@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import Catalogue from "../src/components/Catalogue.jsx";
+import Catalogue from "../src/components/catalogue/Catalogue.jsx";
 import { MemoryRouter } from "react-router-dom";
 
 describe("Site", () => {

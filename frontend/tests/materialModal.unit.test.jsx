@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import MaterialModal from "../src/components/MaterialModal";
+import MaterialModal from "../src/components/artifact/MaterialModal.jsx";
 import http from "../http";
 
 vi.mock("../logger", () => ({

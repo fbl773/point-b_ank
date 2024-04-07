@@ -1,18 +1,18 @@
 /* eslint-disable indent */
 /* eslint-disable react/jsx-key */
 import { useState, useEffect, useContext } from "react";
-import { UserContext } from "../context/userContext.jsx";
-import http from "../../http.js";
+import { UserContext } from "../../context/userContext.jsx";
+import http from "../../../http.js";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { Alert } from "@mui/material";
 import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
-import log from "../logger.js";
-import Sidebar from "./Sidebar";
-import AddPeriodDialog from "./AddPeriodDialog";
-import RelationsPeriodsDialog from "./RelationsPeriodsDialog.jsx";
+import log from "../../logger.js";
+import Sidebar from "../Sidebar.jsx";
+import AddPeriodDialog from "../artifact/AddPeriodDialog.jsx";
+import RelationsPeriodsDialog from "../artifact/RelationsPeriodsDialog.jsx";
 import {
 	Typography,
 	Dialog,

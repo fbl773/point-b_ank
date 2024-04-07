@@ -1,6 +1,6 @@
-import log from "../logger.js";
+import log from "../../logger.js";
 import { useState, useEffect } from "react";
-import http from "../../http.js";
+import http from "../../../http.js";
 
 import { PieChart } from "@mui/x-charts/PieChart";
 import Typography from "@mui/material/Typography";

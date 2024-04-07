@@ -11,7 +11,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import http from "../http";
-import PeriodModal from "../src/components/PeriodModal.jsx";
+import PeriodModal from "../src/components/artifact/PeriodModal.jsx";
 
 // Mock the http library for HTTP requests
 vi.mock("../http", () => ({

@@ -8,8 +8,8 @@ import {
 	DialogActions,
 } from "@mui/material";
 import { useState } from "react";
-import http from "../../http";
-import logger from "../logger";
+import http from "../../../http.js";
+import logger from "../../logger.js";
 
 /**
  * Represents a modal dialog for adding or editing a period.

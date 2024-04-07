@@ -1,8 +1,8 @@
 import { expect, test } from "vitest";
 import { screen, render, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import SiteModal from "../src/components/SiteModal";
-import RegionModal from "../src/components/RegionModal";
+import SiteModal from "../src/components/sites/SiteModal.jsx";
+import RegionModal from "../src/components/artifact/RegionModal.jsx";
 import http from "../http";
 
 test("SiteModal renders correctly with every field empty", async () => {

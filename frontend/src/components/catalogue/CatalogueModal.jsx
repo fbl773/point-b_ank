@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
-import http from "../../http.js";
-import log from "../logger.js";
+import http from "../../../http.js";
+import log from "../../logger.js";
 import {
 	Button,
 	Dialog,

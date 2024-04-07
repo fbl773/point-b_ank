@@ -1,12 +1,12 @@
 import { UserContextProvider } from "../context/userContext";
 import { Route, Routes } from "react-router-dom";
-import Catalogue from "./Catalogue";
-import Site from "./Site";
-import StatisticsPage from "./StatisticsPage";
-import SettingsPage from "./SettingsPage";
-import ManagePeriods from "./ManagementPeriods";
-import ManageCultures from "./ManagementCultures";
-import ManageMaterials from "./ManagementMaterials";
+import Catalogue from "./catalogue/Catalogue.jsx";
+import Site from "./sites/Site.jsx";
+import StatisticsPage from "./statistics/StatisticsPage.jsx";
+import SettingsPage from "./administration/SettingsPage.jsx";
+import ManagePeriods from "./management/ManagementPeriods.jsx";
+import ManageCultures from "./management/ManagementCultures.jsx";
+import ManageMaterials from "./management/ManagementMaterials.jsx";
 
 /**
  * Main App component which contains the routing paths

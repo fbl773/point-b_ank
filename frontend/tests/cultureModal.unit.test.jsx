@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import http from "../http";
-import CultureModal from "../src/components/CultureModal";
+import CultureModal from "../src/components/artifact/CultureModal.jsx";
 
 // Mock logger to avoid logging during tests
 vi.mock("../logger", () => ({

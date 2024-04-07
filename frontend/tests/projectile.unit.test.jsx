@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import ViewProjectile from "../src/components/Projectile.jsx";
+import ViewProjectile from "../src/components/artifact/points/Projectile.jsx";
 
 describe("Projectile", () => {
 	it("renders view projectile point modal correctly", () => {
