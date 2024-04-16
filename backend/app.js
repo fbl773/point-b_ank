@@ -68,30 +68,31 @@ app.use(
 	}),
 );
 
-app.use("/", healthRouter);
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
+const api_root = "/api"; //the root path for API requs to hopefully fix our nginx issues :)
+app.use(`${api_root}/`, healthRouter);
+app.use(`${api_root}/`, indexRouter);
+app.use(`${api_root}/users`, usersRouter);
 
-app.use("/catalogues", catalogueRouter);
-app.use("/regions", regionRouter);
-app.use("/sites", siteRouter);
-app.use("/periods", periodRouter);
+app.use(`${api_root}/catalogues`, catalogueRouter);
+app.use(`${api_root}/regions`, regionRouter);
+app.use(`${api_root}/sites`, siteRouter);
+app.use(`${api_root}/periods`, periodRouter);
 
-app.use("/bladeshapes", bladeShapeRouter);
-app.use("/baseshapes", baseShapeRouter);
-app.use("/haftingshapes", haftingShapeRouter);
-app.use("/crosssections", crossSectionRouter);
-app.use("/cultures", cultureRouter);
+app.use(`${api_root}/bladeshapes`, bladeShapeRouter);
+app.use(`${api_root}/baseshapes`, baseShapeRouter);
+app.use(`${api_root}/haftingshapes`, haftingShapeRouter);
+app.use(`${api_root}/crosssections`, crossSectionRouter);
+app.use(`${api_root}/cultures`, cultureRouter);
 
-app.use("/artifacttypes", artifactTypeRouter);
-app.use("/artifacts", artifactRouter);
-app.use("/materials", materialRouter);
+app.use(`${api_root}/artifacttypes`, artifactTypeRouter);
+app.use(`${api_root}/artifacts`, artifactRouter);
+app.use(`${api_root}/materials`, materialRouter);
 
-app.use("/projectilepoints", projectilePointsRouter);
+app.use(`${api_root}/projectilepoints`, projectilePointsRouter);
 
-app.use("/aggregateStatisticsGenerators", aggregateStatisticsGeneratorRouter);
+app.use(`${api_root}/aggregateStatisticsGenerators`, aggregateStatisticsGeneratorRouter);
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(`${api_root}/uploads`, express.static(path.join(__dirname, "uploads")));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

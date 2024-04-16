@@ -5,10 +5,10 @@ import axios from "axios";
 
 // To be able to import var
 //export const baseURL = import.meta.env.VITE_API_URL || "http://127.0.0.1:3000";
-export const baseURL = "http://orgoch:3000"; //import.meta.env.VITE_API_URL || "http://127.0.0.1:3000";
+export const baseURL = "http://orgoch:3000/api"; //import.meta.env.VITE_API_URL || "http://127.0.0.1:3000";
 
 function get_token(){
-	return localStorage.getItem('token') || "NONE";
+	return localStorage.getItem("token") || "NONE";
 }
 
 const http = axios.create({
