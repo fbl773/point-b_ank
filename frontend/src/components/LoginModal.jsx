@@ -37,6 +37,10 @@ function LoginModal({ modalVisible, closeModal }) {
 				password,
 			});
 
+			console.log(JSON.stringify(response));
+			localStorage.setItem("token",response.data.token);
+			console.log(`token is: ${response.data.token}`);
+
 			/***
 			 * These loggers are for testing to make sure that the information is properly passed
 			 * MAKE SURE THESE ARE REMOVED BEFORE RELEASE, VERY IMPORTANT
@@ -48,7 +52,7 @@ function LoginModal({ modalVisible, closeModal }) {
 				// Login successful
 				alert("Login successful");
 				closeModal(); // Close the modal after successful login
-				window.location.reload();
+				//window.location.reload();
 			}
 		} catch (error) {
 			if (error.response) {

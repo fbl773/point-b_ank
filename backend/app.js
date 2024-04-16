@@ -61,7 +61,8 @@ app.use(bodyParser.json());
 // Use CORS middleware
 app.use(
 	cors({
-		origin: "http://localhost:8080", // Replace with your frontend's URL
+		//origin: "http://localhost:8080", // Replace with your frontend's URL
+		origin: "http://orgoch:8080", // Replace with your frontend's URL
 		methods: ["POST", "GET", "DELETE", "PATCH", "PUT"],
 		credentials: true, // Enable credentials (cookies, authorization headers)
 	}),
