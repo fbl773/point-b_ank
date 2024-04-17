@@ -62,7 +62,7 @@ app.use(bodyParser.json());
 app.use(
 	cors({
 		//origin: "http://localhost:8080", // Replace with your frontend's URL
-		origin: "http://orgoch:8080", // Replace with your frontend's URL
+		origin: "pblank.blewi.xyz", // Replace with your frontend's URL
 		methods: ["POST", "GET", "DELETE", "PATCH", "PUT"],
 		credentials: true, // Enable credentials (cookies, authorization headers)
 	}),
