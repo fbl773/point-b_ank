@@ -58,7 +58,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 const host_url = dotenv.HOST_URL || "http://127.0.0.1:8080";
-const api_root = "/api"; //the root path for API requs to hopefully fix our nginx issues :)
+const api_root = "/api";
 
 // Middleware
 app.use(bodyParser.json());
