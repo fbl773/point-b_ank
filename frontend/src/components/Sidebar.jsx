@@ -135,6 +135,7 @@ function Sidebar() {
 	const handleLogout = async () => {
 		try {
 			await http.post("/users/logout");
+			localStorage.removeItem("token");
 			setIsLoggedIn(false);
 			navigate("/");
 			window.location.reload();

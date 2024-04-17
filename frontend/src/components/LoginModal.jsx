@@ -37,22 +37,15 @@ function LoginModal({ modalVisible, closeModal }) {
 				password,
 			});
 
-			console.log(JSON.stringify(response));
+	
+			//set the token
 			localStorage.setItem("token",response.data.token);
-			console.log(`token is: ${response.data.token}`);
-
-			/***
-			 * These loggers are for testing to make sure that the information is properly passed
-			 * MAKE SURE THESE ARE REMOVED BEFORE RELEASE, VERY IMPORTANT
-			 */
-			log.info("Username entered: " + userName);
-			log.info("Password entered: " + password);
 
 			if (response.status === 200) {
 				// Login successful
 				alert("Login successful");
 				closeModal(); // Close the modal after successful login
-				//window.location.reload();
+				window.location.reload();
 			}
 		} catch (error) {
 			if (error.response) {
