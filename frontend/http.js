@@ -4,16 +4,14 @@
 import axios from "axios";
 
 // To be able to import var
-//export const baseURL = import.meta.env.VITE_API_URL || "http://127.0.0.1:3000";
-export const baseURL = "https://pblank.blewi.xyz/api"; //import.meta.env.VITE_API_URL || "http://127.0.0.1:3000";
+export const baseURL = import.meta.env.VITE_API_URL || "http://127.0.0.1:3000";
 
-function get_token(){
-	return localStorage.getItem("token") || "NONE";
-}
-
+/*
+Wraps our requests such that they have the appropriate headers and base_url
+*/
 const http = axios.create({
 	headers:{
-		Authorization: `Bearer ${get_token()}`,
+		Authorization: `Bearer ${localStorage.getItem("token") || "NONE"}`,
 	},
 	baseURL: baseURL,
 	withCredentials: true,

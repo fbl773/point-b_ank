@@ -4,6 +4,7 @@ const express = require("express");
 const path = require("path");
 const { morganIntegration } = require("./config/logger");
 const cors = require("cors");
+const dotenv = require('dotenv').config();
 
 // const { synchModels } = require("./models");
 // const dataSource = require("./config/db");
@@ -55,20 +56,22 @@ app.use(express.static(path.join(__dirname, "public")));
 //     console.error("Database synchronization failed:", error);
 //   });
 
+
+const host_url = dotenv.HOST_URL || "http://127.0.0.1:8080";
+const api_root = "/api"; //the root path for API requs to hopefully fix our nginx issues :)
+
 // Middleware
 app.use(bodyParser.json());
 
 // Use CORS middleware
 app.use(
 	cors({
-		//origin: "http://localhost:8080", // Replace with your frontend's URL
-		origin: "pblank.blewi.xyz", // Replace with your frontend's URL
+		origin: host_url, // Replace with your frontend's URL
 		methods: ["POST", "GET", "DELETE", "PATCH", "PUT"],
 		credentials: true, // Enable credentials (cookies, authorization headers)
 	}),
 );
 
-const api_root = "/api"; //the root path for API requs to hopefully fix our nginx issues :)
 app.use(`${api_root}/`, healthRouter);
 app.use(`${api_root}/`, indexRouter);
 app.use(`${api_root}/users`, usersRouter);
