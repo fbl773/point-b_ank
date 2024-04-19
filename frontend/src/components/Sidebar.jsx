@@ -170,7 +170,7 @@ function Sidebar() {
 						component="div"
 						sx={{ marginTop: "20px", fontWeight: "medium" }}
 					>
-						PCubed
+						Point B_ank
 					</Typography>
 				</Toolbar>
 				<SidebarList>
