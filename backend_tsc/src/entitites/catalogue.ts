@@ -1,13 +1,16 @@
-import {Schema} from "mongoose"
+import {Schema,model,Model} from "mongoose"
 
-interface ICatalogue{
+export interface ICatalogue{
    name: string,
    description: string
 }
 
-const catalogueSchema = new Schema<ICatalogue>({
+type CatalogueModel = Model<ICatalogue>;
+const catalogueSchema = new Schema<ICatalogue,CatalogueModel>({
     name:{type:String, required:true},
     description:{type:String, required:false},
 });
 
-export default catalogueSchema;
+const Catalogue:CatalogueModel = model<ICatalogue,CatalogueModel>('Catalogue',catalogueSchema);
+
+export default Catalogue;

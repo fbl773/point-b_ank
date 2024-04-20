@@ -1,4 +1,4 @@
-import {Schema,Types} from "mongoose"
+import {Schema,Types,Model,model} from "mongoose"
 
 interface ISite{
     name: string,
@@ -6,11 +6,14 @@ interface ISite{
     catalogue_id: Types.ObjectId
 }
 
-const siteSchema = new Schema<ISite>({
+type SiteModal = Model<ISite>;
+const siteSchema = new Schema<ISite,SiteModal>({
     name:{type:String, required:true},
     description:{type:String, required:false},
     catalogue_id:{type: Schema.Types.ObjectId, ref:"Catalogue"}
 
 });
 
-export default siteSchema;
+const Site:SiteModal = model<ISite,SiteModal>('Site',siteSchema);
+
+export default Site;
