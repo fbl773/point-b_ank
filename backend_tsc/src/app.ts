@@ -9,7 +9,7 @@ import catalogue_router from "./routes/catalogue";
 dotenv.config()
 
 const port = process.env.PORT || 3000;
-const connection_url = process.env.DB_CONN_STRING || "mongodb://localhost:27017/pblank";
+const connection_url = process.env.DB_CONN_STRING || "PLEASE SET DB_CONN_STRING IN .env TO MONGO CONNECTION URL";
 
 //App config
 const app: Express = express();
@@ -34,5 +34,6 @@ app.post('/catalogue', async (req: Request, res: Response) => {
  */
 
 app.listen(port, () => {
-    console.log("We got one!")
+    console.log(`listening on port: ${port},
+mongo_url: ${connection_url}`);
 })

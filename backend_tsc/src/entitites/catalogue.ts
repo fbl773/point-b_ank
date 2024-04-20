@@ -10,7 +10,10 @@ type CatalogueModel = Model<ICatalogue>;
 const catalogueSchema = new Schema<ICatalogue,CatalogueModel>({
     name:{type:String, required:true},
     description:{type:String, required:false},
-},{collection:"catalogue"});
+},{
+    timestamps:true,
+    collection:"catalogue"
+});
 
 const Catalogue:CatalogueModel = model<ICatalogue,CatalogueModel>('Catalogue',catalogueSchema);
 
