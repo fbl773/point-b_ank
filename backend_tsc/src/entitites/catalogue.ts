@@ -1,6 +1,7 @@
-import {Schema,model,Model} from "mongoose"
+import {Schema,model,Model,Types} from "mongoose"
 
 export interface ICatalogue{
+   _id:Types.ObjectId,
    name: string,
    description: string
 }
