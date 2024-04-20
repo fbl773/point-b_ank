@@ -3,6 +3,15 @@
 version: "3.9"
 
 services:
+
+  mongodb:
+    image: mongo:latest
+    container_name: point_mongo
+    volumes:
+      - /Users/FrankyB/fgrams/Projects/databases/pblank:/data/db
+    ports:
+      - "27017:27017"
+
   # set up db
   postgres:
     image: postgres:latest
