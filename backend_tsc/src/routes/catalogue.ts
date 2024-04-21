@@ -31,8 +31,16 @@ async function get_catalogues(){
  * @param id:string - the object ID of the catalogue we want to find
  */
 async function get_catalogue(id:string){
-    console.log(`Looking for catalogue: ${id}`)
     return Catalogue.findById(id)
+}
+
+/**
+ * Updates the document with the given ID
+ * @param id:string - The ID of the point to update
+ * @param new_cat:ICatalogue - the body to update the document with
+ */
+async function update_catalogue(id:string,new_cat:ICatalogue){
+    return Catalogue.findOneAndUpdate({_id:id},new_cat,{new:true})
 }
 
 /** Routes */
@@ -79,7 +87,21 @@ catalogue_router.put("/:id",
     authenticate,
     (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
     (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE"); _next()},
-    (req:Request,res:Response) => res.status(501).send({message:"wat"})
+    (req:Request,res:Response) => {
+        update_catalogue(req.params.id, req.body)
+            .then((updated) => res.status(200).send({
+                message:`Successfully updated ${req.params.id}`,
+                updated
+            }))
+            .catch((err) => res.status(406).send({message:`failed to update Catalogue ${req.params.id}`,err}))
+    }
+);
+
+catalogue_router.delete("/:id",
+    authenticate,
+    (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
+    (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE"); _next()},
+    (req:Request,res:Response) => {res.status(501).send({message:"Nearly there..."}) }
 );
 
 export default catalogue_router
