@@ -27,6 +27,15 @@ catalogue_router.post("/",
         .catch((_err) => res.status(500))
 );
 
+catalogue_router.get("/",
+    //authenticate,
+    (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
+    (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE"); _next()},
+    (req:Request,res:Response) => {res.status(501).send({message:"Working on it"})}
+);
+
+
+
 export default catalogue_router
 
 
