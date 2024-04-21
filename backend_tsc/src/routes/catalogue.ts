@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response, Router} from "express";
 import {Db_conn} from "../db_conn";
 import Catalogue, {ICatalogue} from "../entitites/catalogue";
-import authenticate, {get_payload} from "../utilities/jwt_utils";
+import authenticate, {get_payload, TokenData} from "../utilities/jwt_utils";
 
 const _db_conn = Db_conn.init("mongodb://localhost:27017/pblank","Catalogue_Router")
 
@@ -18,6 +18,10 @@ async function new_catalogue(req:Request){
         return await Catalogue.create(new_cat)
 }
 
+async function get_catalogues(req:Request){
+    return Catalogue.find({})
+}
+
 catalogue_router.post("/",
     authenticate,
     (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
@@ -28,10 +32,12 @@ catalogue_router.post("/",
 );
 
 catalogue_router.get("/",
-    //authenticate,
+    authenticate,
     (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
     (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE"); _next()},
-    (req:Request,res:Response) => {res.status(501).send({message:"Working on it"})}
+    (req:Request,res:Response) => get_catalogues(req).then((catalogues) =>{
+        res.status(200).send(catalogues)
+    })
 );
 
 
