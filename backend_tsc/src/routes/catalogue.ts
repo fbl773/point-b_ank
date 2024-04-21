@@ -2,7 +2,7 @@ import express, {Express, NextFunction, Request, Response, Router} from "express
 import {Db_conn} from "../db_conn";
 import Catalogue, {ICatalogue} from "../entitites/catalogue";
 
-const _db_conn = Db_conn.init("mongodb://localhost:27017/pblank")
+const _db_conn = Db_conn.init("mongodb://localhost:27017/pblank","Catalogue_Router")
 
 const catalogue_router = Router();
 

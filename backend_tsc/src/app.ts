@@ -1,7 +1,5 @@
 import express, {Express, Request, Response} from "express";
 import dotenv from "dotenv";
-import {Db_conn} from "./db_conn";
-import Catalogue, {ICatalogue} from './entitites/catalogue';
 import catalogue_router from "./routes/catalogue";
 
 
@@ -14,11 +12,12 @@ const connection_url = process.env.DB_CONN_STRING || "PLEASE SET DB_CONN_STRING 
 //App config
 const app: Express = express();
 app.use(express.json());
+
+/** ROUTES */
 app.use("/catalogue",catalogue_router);
 
-const db_conn = Db_conn.init(connection_url);
 
-
+/** BASE*/
 app.get('/', (req:Request,res:Response) => {
     res.send("Hello, this is api")
 })
