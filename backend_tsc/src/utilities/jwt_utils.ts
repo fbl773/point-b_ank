@@ -66,6 +66,7 @@ async function do_authenticate(req:AuthorizedRequest, res:Response){
 
 /**
  * Wraps the authentication call in a request type that permits a token field
+ * TODO: uncomment and remove next(); when ready
  * @param req - the request to authenticate
  * @param res - response to build
  * @param next - whatever we do after...

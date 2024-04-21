@@ -14,13 +14,28 @@ const catalogue_router = Router();
  * @param req.body.description:string - the description of the new catalogue
  */
 async function new_catalogue(req:Request){
-         let new_cat:ICatalogue = req.body;
-        return await Catalogue.create(new_cat)
+    let new_cat:ICatalogue = req.body;
+    return await Catalogue.create(new_cat)
 }
 
-async function get_catalogues(req:Request){
+/**
+ * Gets all catalogues in the database
+ * @override makes a query to the db to get all catalogues
+ */
+async function get_catalogues(){
     return Catalogue.find({})
 }
+
+/**
+ * Fetches the catalogue with the given ID from the database
+ * @param id:string - the object ID of the catalogue we want to find
+ */
+async function get_catalogue(id:string){
+    console.log(`Looking for catalogue: ${id}`)
+    return Catalogue.findById(id)
+}
+
+/** Routes */
 
 catalogue_router.post("/",
     authenticate,
@@ -35,12 +50,37 @@ catalogue_router.get("/",
     authenticate,
     (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
     (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE"); _next()},
-    (req:Request,res:Response) => get_catalogues(req).then((catalogues) =>{
-        res.status(200).send(catalogues)
-    })
+    (req:Request,res:Response) => get_catalogues()
+        .then((catalogues) =>{
+            res.status(200).send(catalogues)
+        })
+        .catch((err) => {
+            res.status(404).send({message:`Failed to find catalogues`,err})
+        })
+);
+
+catalogue_router.get("/:id",
+    authenticate,
+    (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
+    (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE"); _next()},
+    (req:Request,res:Response) => {
+        get_catalogue(req.params.id)
+            .then((cat) => {
+                res.status(200).send(cat)
+            })
+            .catch((err) => {
+                res.status(404).send({message:`Failed to find catalogue ${req.params.id}`,err})
+            })
+    }
 );
 
 
+catalogue_router.put("/:id",
+    authenticate,
+    (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
+    (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE"); _next()},
+    (req:Request,res:Response) => res.status(501).send({message:"wat"})
+);
 
 export default catalogue_router
 
