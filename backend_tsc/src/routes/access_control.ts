@@ -1,20 +1,27 @@
-import e, { NextFunction, Request, Response, Router} from "express";
+import { NextFunction, Request, Response, Router} from "express";
 import {Db_conn} from "../db_conn";
 import User, {IUser} from "../entitites/user";
 import dotenv from "dotenv";
-import jwt, {Secret,JwtPayload} from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import user from "../entitites/user";
+import {sign_token} from "../utilities/jwt_utils";
 
 dotenv.config()
+
+/* CONSTANTS */
 const _db_conn = Db_conn.init("mongodb://localhost:27017/pblank","Access_Control_Router")
-const JWT_SECRET = process.env.JWT_SECRET || "NO SECRET";
 const salt_rounds = 10;
 const login_router = Router();
 
-async function init_login(req:Request,res:Response){
 
-    console.log(`init login with: ${JSON.stringify(req.body)}`)
+/* HELPERS */
+/**
+ * Handles the case when no admin user exists - the intial login
+ * @overview When the server is first started, there are no known users in the database.
+ * To handle this case, the admin user is created and logged in
+ * @param req:{body:{username:string,password:string}} - the request containing the credentials
+ * @param res:Response - a handle to the response object
+ */
+async function init_login(req:Request,res:Response){
 
     //Check for default password
     let default_password = process.env.DEFAULT_PASSWORD || null;
@@ -32,8 +39,6 @@ async function init_login(req:Request,res:Response){
         password:password_hashed,
     };
 
-    console.log(`CREATING USER: ${JSON.stringify(default_admin)}`);
-
     //If we don't have one, create the default admin user
     let admin_user:IUser = default_admin;
     await User.create(admin_user)
@@ -46,20 +51,32 @@ async function init_login(req:Request,res:Response){
     return await login(req,res);
 }
 
-
+/**
+ * Handles the standard login case
+ * @param req:{body:{username:string,password:string}} - the request containing the credentials
+ * @param res:Response - response handle
+ */
 async function login(req:Request,res:Response){
-    console.log(`in login with: ${JSON.stringify(req.body)}`);
+
+    // capture the json payload
     let {username,password} = req.body;
+
+    //Check if user exists
     return await User.findOne({username:username})
         .then(async (existing_user) => {
-            //Check password
+            //if so, grab the password
             let existing_password = existing_user?.password || "NOT POSSIBLE";
+
+            //Compare its hash
             await bcrypt.compare(password,existing_password)
                 .then((match)=>{
+
+                    //If the password is incorrect, send a 401
                     if(!match)
                         return res.status(401).json({message: "check username and password"});
 
-                    let token = jwt.sign({username: username, role: existing_user?.role}, JWT_SECRET, {})
+                    //Otherwise generate them a token, send it back with a 202
+                    let token = sign_token(username,existing_user?.role || "NO ROLE")
                     return res.status(202).json({
                         token,
                         message: "User Successfully logged in",
@@ -68,17 +85,17 @@ async function login(req:Request,res:Response){
                 });
         })
         .catch((err:any) => {
+            //If there was no user found, that's a 401.
             console.error(`Failed to login user: ${username}: ${err}`);
             return res.status(401).json({message:"Unauthorized"});
         })
 }
 
+/*ROUTES*/
 login_router.post("/",
-    (_req:Request,_res:Response,_next:NextFunction) => {console.log("TODO: Authenticate Admin"); _next()},
     (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
     (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE"); _next()},
     async (req: Request, res: Response) => {
-        console.log(`received: ${JSON.stringify(req.body)}`);
         let has_admin = await User.findOne({role: 'admin'});
         if(!has_admin)
             return init_login(req,res);

@@ -12,7 +12,6 @@ const catalogueSchema = new Schema<ICatalogue,CatalogueModel>({
     description:{type:String, required:false},
 },{
     timestamps:true,
-    collection:"catalogue"
 });
 
 const Catalogue:CatalogueModel = model<ICatalogue,CatalogueModel>('Catalogue',catalogueSchema);
