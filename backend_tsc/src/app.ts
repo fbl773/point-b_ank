@@ -24,16 +24,6 @@ app.get('/', (req:Request,res:Response) => {
     res.send("Hello, this is api")
 })
 
-/*
-app.post('/catalogue', async (req: Request, res: Response) => {
-    let cat: ICatalogue = req.body;
-    let new_cat = await Catalogue.create(cat)
-    let recvd: string = JSON.stringify(new_cat);
-    console.log(new_cat);
-    res.status(200).send({message: "Received Catalogue", did_rec: cat})
-})
- */
-
 app.listen(port, () => {
     console.log(`listening on port: ${port},
 mongo_url: ${connection_url}`);

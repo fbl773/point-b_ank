@@ -13,7 +13,29 @@ type AuthorizedRequest = Request & {
     token: string | JwtPayload | undefined;
 }
 
+/**
+ * THe data stored in a jwt token, as an accessible type for checking the role
+ * @field _id:string - mongo user objectid
+ * @field username:string - username stored in the token
+ * @field role:string - the role stored in the token
+ */
+export type TokenData = {
+    _id:string,
+    username:string,
+    role:string
+}
+
 const JWT_SECRET:Secret = process.env.JWT_SECRET || "NO SECRET";
+
+export function get_payload(req:Request):TokenData{
+    let as_auth = req as AuthorizedRequest;
+    if (as_auth.token == undefined)
+        throw Error("NO TOKEN IN REQUEST")
+    else if (as_auth.token instanceof String)
+        throw Error("MALFORMED TOKEN")
+    else
+        return (req as AuthorizedRequest).token as TokenData;
+}
 
 /**
  * Performs the actual authentication
@@ -38,6 +60,7 @@ async function do_authenticate(req:AuthorizedRequest, res:Response){
 
         //If it did not fail, assign token and cary on
         req.token = payload;
+        console.log("payload is : " + JSON.stringify(payload));
     });
 }
 
@@ -55,12 +78,14 @@ async function authenticate(req:Request,res:Response,next:NextFunction){
 
 /**
  * Handles the signing of jwt tokens
+ * @overview Decides what payload will be stored inside of a JWT token.
+ * @param id - the object id of the user
  * @param uname - username to sign
  * @param role - role to sign
- * @return the signed token
+ * @return the signed token containing the passed payload
  */
-export function sign_token(uname:string,role:string):string{
-    return jwt.sign({username: uname, role: role}, JWT_SECRET, {})
+export function sign_token(id: string, uname: string, role: string):string{
+    return jwt.sign({_id: id,username: uname, role: role,}, JWT_SECRET, {})
 }
 
 export default authenticate;

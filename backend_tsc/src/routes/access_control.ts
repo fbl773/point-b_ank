@@ -39,7 +39,7 @@ async function init_login(req:Request,res:Response){
         password:password_hashed,
     };
 
-    //If we don't have one, create the default admin user
+    //Since we don't have one, create the default admin user
     let admin_user:IUser = default_admin;
     await User.create(admin_user)
         .catch((err) => res.status(500).json({
@@ -76,7 +76,13 @@ async function login(req:Request,res:Response){
                         return res.status(401).json({message: "check username and password"});
 
                     //Otherwise generate them a token, send it back with a 202
-                    let token = sign_token(username,existing_user?.role || "NO ROLE")
+                    let token = sign_token(
+                        existing_user?._id.toString() || "NO ID",
+                        username,
+                        existing_user?.role || "NO ROLE"
+                    );
+
+
                     return res.status(202).json({
                         token,
                         message: "User Successfully logged in",

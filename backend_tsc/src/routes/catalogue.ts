@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response, Router} from "express";
 import {Db_conn} from "../db_conn";
 import Catalogue, {ICatalogue} from "../entitites/catalogue";
-import authenticate from "../utilities/jwt_utils";
+import authenticate, {get_payload} from "../utilities/jwt_utils";
 
 const _db_conn = Db_conn.init("mongodb://localhost:27017/pblank","Catalogue_Router")
 
