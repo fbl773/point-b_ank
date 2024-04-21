@@ -108,7 +108,4 @@ catalogue_router.delete("/:id",
     }
 );
 
-export default catalogue_router
-
-
-
+export default catalogue_router;
