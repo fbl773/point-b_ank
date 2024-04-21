@@ -2,6 +2,7 @@ import express, {Express, Request, Response} from "express";
 import dotenv from "dotenv";
 import catalogue_router from "./routes/catalogue";
 import login_router from "./routes/access_control";
+import sanitize from "express-mongo-sanitize"
 
 
 
@@ -13,6 +14,7 @@ const connection_url = process.env.DB_CONN_STRING || "PLEASE SET DB_CONN_STRING 
 //App config
 const app: Express = express();
 app.use(express.json());
+app.use(sanitize());
 
 /** ROUTES */
 app.use("/catalogue",catalogue_router);
