@@ -60,24 +60,19 @@ async function do_authenticate(req:AuthorizedRequest, res:Response){
 
         //If it did not fail, assign token and cary on
         req.token = payload;
-        console.log("payload is : " + JSON.stringify(payload));
     });
 }
 
 /**
  * Wraps the authentication call in a request type that permits a token field
- * TODO: uncomment and remove next(); when ready
  * @param req - the request to authenticate
  * @param res - response to build
  * @param next - whatever we do after...
  */
 async function authenticate(req:Request,res:Response,next:NextFunction){
-    next();
-    /*
     return do_authenticate(req as AuthorizedRequest,res)
         .then(next)
         .catch(err => res.status(401).json({message:"Authentication failed",err}));
-     */
 }
 
 /**
