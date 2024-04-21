@@ -1,6 +1,7 @@
 import express, {Express, Request, Response} from "express";
 import dotenv from "dotenv";
 import catalogue_router from "./routes/catalogue";
+import login_router from "./routes/access_control";
 
 
 
@@ -15,6 +16,7 @@ app.use(express.json());
 
 /** ROUTES */
 app.use("/catalogue",catalogue_router);
+app.use("/login",login_router);
 
 
 /** BASE*/

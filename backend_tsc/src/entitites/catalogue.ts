@@ -8,7 +8,7 @@ export interface ICatalogue{
 
 type CatalogueModel = Model<ICatalogue>;
 const catalogueSchema = new Schema<ICatalogue,CatalogueModel>({
-    name:{type:String, required:true},
+    name:{type:String, required:true,trim:true},
     description:{type:String, required:false},
 },{
     timestamps:true,
