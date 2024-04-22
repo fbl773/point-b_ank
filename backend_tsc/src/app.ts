@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import catalogue_router from "./routes/catalogue";
 import login_router from "./routes/access_control";
 import sanitize from "express-mongo-sanitize"
+import site_router from "./routes/site";
 
 
 
@@ -17,8 +18,9 @@ app.use(express.json());
 app.use(sanitize());
 
 /** ROUTES */
-app.use("/catalogue",catalogue_router);
 app.use("/login",login_router);
+app.use("/catalogue",catalogue_router);
+app.use("/site",site_router);
 
 
 /** BASE*/

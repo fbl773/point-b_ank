@@ -1,6 +1,7 @@
 import {Schema,Types,Model,model} from "mongoose"
 
-interface ISite{
+export interface ISite{
+    _id:Types.ObjectId,
     name: string,
     description: string,
     catalogue_id: Types.ObjectId
