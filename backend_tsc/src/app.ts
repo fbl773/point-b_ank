@@ -4,6 +4,7 @@ import catalogue_router from "./routes/catalogue";
 import login_router from "./routes/access_control";
 import sanitize from "express-mongo-sanitize"
 import site_router from "./routes/site";
+import period_router from "./routes/period";
 
 
 
@@ -21,6 +22,7 @@ app.use(sanitize());
 app.use("/login",login_router);
 app.use("/catalogue",catalogue_router);
 app.use("/site",site_router);
+app.use("/period",period_router);
 
 
 /** BASE*/

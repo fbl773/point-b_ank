@@ -50,7 +50,8 @@ function read_one<T>(model:Model<T>,
         (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE"); _next()},
         (req: Request, res: Response) => {
             model.findById(req.params.id ?? "NO ID")
-                .then(cat => res.status(200).send(cat))
+                .then(cat => cat ? res.status(200).send(cat) :
+                    res.status(404).send({message:`${entity_name} ${req.params.id} not found`}))
                 .catch(err => res.status(404).send({message:`Failed to find ${entity_name} ${req.params.id}`,err}))
         }
     );
@@ -68,11 +69,10 @@ function update_one<T>(model:Model<T>,
         (req: Request, res: Response) => {
             let new_ent = req.body;
             model.findOneAndUpdate({_id:req.params.id},new_ent,{new:true})
-                .then((updated) => res.status(200).send(
-                    {
-                        message:`Successfully updated ${req.params.id}`,
-                        updated
-                    }))
+                .then((updated) => updated ?
+                    res.status(200).send( { message:`Successfully updated ${req.params.id}`, updated}):
+                    res.status(404).send({message:`Update Failed: ${entity_name} ${req.params.id} not found`})
+                )
                 .catch((err) => res.status(406).send({message:`failed to update ${entity_name} ${req.params.id}`,err}))
         }
     );

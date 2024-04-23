@@ -13,7 +13,7 @@ const siteSchema = new Schema<ISite,SiteModal>({
     description:{type:String, required:false},
     catalogue_id:{type: Schema.Types.ObjectId, ref:"Catalogue"}
 
-});
+},{timestamps:true});
 
 const Site:SiteModal = model<ISite,SiteModal>('Site',siteSchema);
 
