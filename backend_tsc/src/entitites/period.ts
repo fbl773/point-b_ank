@@ -15,6 +15,15 @@ const periodSchema = new Schema<IPeriod,PeriodModel>({
 
 });
 
+/**
+ * Cascade delete related cultures
+ */
+// periodSchema.pre("findOneAndDelete", async function(next){
+//     let self = await this.model.findOne(this.getFilter());
+//     await Culture.deleteMany({period_id:self._id});
+//     next();
+// })
+
 const Period:PeriodModel = model<IPeriod,PeriodModel>('Period',periodSchema);
 
 export default Period;

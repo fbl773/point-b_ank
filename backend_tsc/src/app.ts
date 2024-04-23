@@ -6,10 +6,13 @@ import sanitize from "express-mongo-sanitize"
 import site_router from "./routes/site";
 import period_router from "./routes/period";
 import region_router from "./routes/region";
+import {Db_conn} from "./db_conn";
 
 
 
 dotenv.config()
+Db_conn.init("mongodb://localhost:27017/pblank","PBlank")
+    .catch((err) => console.error("FAILED TO CONNECT TO DB",err));
 
 const port = process.env.PORT || 3000;
 const connection_url = process.env.DB_CONN_STRING || "PLEASE SET DB_CONN_STRING IN .env TO MONGO CONNECTION URL";

@@ -8,7 +8,6 @@ import {sign_token} from "../utilities/jwt_utils";
 dotenv.config()
 
 /* CONSTANTS */
-const _db_conn = Db_conn.init("mongodb://localhost:27017/pblank","Access_Control_Router")
 const salt_rounds = 10;
 const login_router = Router();
 

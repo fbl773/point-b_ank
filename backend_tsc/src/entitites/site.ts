@@ -17,6 +17,15 @@ const siteSchema = new Schema<ISite,SiteModal>({
 
 },{timestamps:true});
 
+/**
+ * Cascade delete related artifacts
+ */
+// siteSchema.pre("findOneAndDelete", async function(next){
+//     let self = await this.model.findOne(this.getFilter());
+//     await Artifact.deleteMany({site_id:self._id});
+//     next();
+// })
+
 const Site:SiteModal = model<ISite,SiteModal>('Site',siteSchema);
 
 export default Site;

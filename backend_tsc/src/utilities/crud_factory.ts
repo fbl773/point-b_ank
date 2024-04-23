@@ -2,11 +2,18 @@ import {Model} from "mongoose"
 import {NextFunction, Request, Response, Router} from "express";
 import {IMongo_Entity} from "../entitites/mongo_entity";
 
+/**
+ * Handles the C in CRUD via POST
+ * @overview: Builds the handling for a POST request to create a new DB Entity into the passed router
+ * @param model:IMongo_Entity - the DB Entity we will be creating
+ * @param router:Router - the router we will add the edpoint to
+ * @param authenticate:Function - the Authentication method we will be using
+ * @param entity_name:string - OPTIONAL parameter to specify entity calling. Handy for error message context.
+ */
 function create<T extends IMongo_Entity>(model:Model<T>,
                          router:Router,
                          authenticate:(req:Request,res:Response,next:NextFunction)=>Promise<any>,
                          entity_name?:string){
-    //Give the router the create request for the entity
     router.post("/",
         authenticate,
         (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
@@ -24,11 +31,18 @@ function create<T extends IMongo_Entity>(model:Model<T>,
     );
 }
 
+/**
+ * Handles the R in CRUD via GET
+ * @overview: Builds the handling for a GET request to the base URL, traditionally interpreted as "Get All"
+ * @param model:IMongo_Entity - the Mongo Collection we will be accessing
+ * @param router:Router - the router we will add the endpoint to
+ * @param authenticate:Function - the Authentication method we will be using
+ * @param entity_name:string - OPTIONAL parameter to specify entity calling. Handy for error message context.
+ */
 function read_all<T>(model:Model<T>,
                            router:Router,
                            authenticate:(req:Request,res:Response,next:NextFunction)=>Promise<any>,
                            entity_name?:string){
-    //Give the router the create request for the entity
     router.get("/",
         authenticate,
         (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
@@ -40,11 +54,19 @@ function read_all<T>(model:Model<T>,
         }
     );
 }
+
+/**
+ * Handles the R in CRUD for a single DB Object
+ * @overview: Builds the handling for a GET request on a single DB entity by ID
+ * @param model:IMongo_Entity - the Mongo Collection we will be accessing
+ * @param router:Router - the router we will add the endpoint to
+ * @param authenticate:Function - the Authentication method we will be using
+ * @param entity_name:string - OPTIONAL parameter to specify entity calling. Handy for error message context.
+ */
 function read_one<T>(model:Model<T>,
                            router:Router,
                            authenticate:(req:Request,res:Response,next:NextFunction)=>Promise<any>,
                            entity_name:string = "Unspecified Entity"){
-    //Give the router the create request for the entity
     router.get("/:id",
         authenticate,
         (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
@@ -58,6 +80,15 @@ function read_one<T>(model:Model<T>,
     );
 }
 
+
+/**
+ * Handles the U in CRUD for a single DB Object
+ * @overview: Builds the handling for a PUT request on a single DB entity by ID to update it
+ * @param model:IMongo_Entity - the Mongo Collection we will be accessing
+ * @param router:Router - the router we will add the endpoint to
+ * @param authenticate:Function - the Authentication method we will be using
+ * @param entity_name:string - OPTIONAL parameter to specify entity calling. Handy for error message context.
+ */
 function update_one<T>(model:Model<T>,
                              router:Router,
                              authenticate:(req:Request,res:Response,next:NextFunction)=>Promise<any>,
@@ -78,6 +109,15 @@ function update_one<T>(model:Model<T>,
         }
     );
 }
+
+/**
+ * Handles the D in CRUD for a single DB Object
+ * @overview: Builds the handling for a DELETE request on a single DB entity by ID to delete it
+ * @param model:IMongo_Entity - the Mongo Collection we will be accessing
+ * @param router:Router - the router we will add the endpoint to
+ * @param authenticate:Function - the Authentication method we will be using
+ * @param entity_name:string - OPTIONAL parameter to specify entity calling. Handy for error message context.
+ */
 function delete_one<T>(model:Model<T>,
                              router:Router,
                              authenticate:(req:Request,res:Response,next:NextFunction)=>Promise<any>,
