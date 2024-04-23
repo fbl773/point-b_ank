@@ -1,4 +1,4 @@
-import {Schema,model,Model,Types} from "mongoose"
+import {Schema,model,Model} from "mongoose"
 import {IMongo_Entity} from "./mongo_entity";
 
 export interface IUser extends IMongo_Entity{

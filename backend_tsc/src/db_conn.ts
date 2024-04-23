@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-import dotenv from "dotenv";
 
 export class Db_conn{
     public static async init(conn_string:string,caller?:string){

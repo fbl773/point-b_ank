@@ -1,6 +1,5 @@
-import {Schema,model,Model,Types} from "mongoose"
+import {Schema,model,Model} from "mongoose"
 import {IMongo_Entity} from "./mongo_entity";
-import catalogue_router from "../routes/catalogue";
 import Site from "./site";
 
 export interface ICatalogue extends IMongo_Entity{

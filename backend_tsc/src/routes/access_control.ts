@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response, Router} from "express";
-import {Db_conn} from "../db_conn";
 import User, {IUser} from "../entitites/user";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
