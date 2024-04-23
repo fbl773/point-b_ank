@@ -1,7 +1,8 @@
 import {Model} from "mongoose"
 import {NextFunction, Request, Response, Router} from "express";
+import {IMongo_Entity} from "../entitites/mongo_entity";
 
-function create<T>(model:Model<T>,
+function create<T extends IMongo_Entity>(model:Model<T>,
                          router:Router,
                          authenticate:(req:Request,res:Response,next:NextFunction)=>Promise<any>,
                          entity_name?:string){
@@ -13,10 +14,10 @@ function create<T>(model:Model<T>,
         (req: Request, res: Response) => {
             let new_entity: T = req.body;
             model.create(new_entity)
-                .then((nc) => res.status(201).send(
+                .then((nent:T) => res.status(201).send(
                     {
                         message:`Created new ${entity_name}`,
-                        id:nc._id
+                        id:nent._id
                     }))
                 .catch(err => res.status(404).send({message:`Failed to create ${entity_name}`,err}))
         }

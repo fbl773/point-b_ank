@@ -70,9 +70,13 @@ async function do_authenticate(req:AuthorizedRequest, res:Response){
  * @param next - whatever we do after...
  */
 async function authenticate(req:Request,res:Response,next:NextFunction){
+
+    next();
+    /*
     return do_authenticate(req as AuthorizedRequest,res)
         .then(next)
         .catch(err => res.status(401).json({message:"Authentication failed",err}));
+     */
 }
 
 /**

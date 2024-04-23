@@ -1,7 +1,7 @@
-import {Schema,Types,Model,model} from "mongoose"
+import {Schema,Model,model} from "mongoose"
+import {IMongo_Entity} from "./mongo_entity";
 
-export interface IPeriod {
-    _id:Types.ObjectId,
+export interface IPeriod extends IMongo_Entity{
     name: string,
     start: number,
     end: number

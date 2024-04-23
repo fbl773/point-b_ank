@@ -1,7 +1,7 @@
 import {Schema,model,Model,Types} from "mongoose"
+import {IMongo_Entity} from "./mongo_entity";
 
-export interface ICatalogue{
-   _id:Types.ObjectId,
+export interface ICatalogue extends IMongo_Entity{
    name: string,
    description: string
 }

@@ -1,7 +1,7 @@
 import {Schema,model,Model,Types} from "mongoose"
+import {IMongo_Entity} from "./mongo_entity";
 
-export interface IUser{
-    _id:Types.ObjectId,
+export interface IUser extends IMongo_Entity{
     username:string,
     password:string,
     active:boolean
