@@ -102,7 +102,7 @@ function update_one<T>(model:Model<T>,
             let new_ent = req.body;
             model.findOneAndUpdate({_id:req.params.id},new_ent,{new:true})
                 .then((updated) => updated ?
-                    res.status(200).send( { message:`Successfully updated ${req.params.id}`, updated}):
+                    res.status(200).send( { message:`Successfully updated ${entity_name} ${req.params.id}`, updated}):
                     res.status(404).send({message:`Update Failed: ${entity_name} ${req.params.id} not found`})
                 )
                 .catch((err) => res.status(406).send({message:`failed to update ${entity_name} ${req.params.id}`,err}))
