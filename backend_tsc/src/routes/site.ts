@@ -27,4 +27,7 @@ site_router.get(":id/points",
     }
 );
 
+// OR crud_factory.find_where<IProjectilePoint>(":id/points",ProjectilePoint,site_router,"site_id",authenticate,"site");
+
+
 export default site_router;
