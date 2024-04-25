@@ -141,4 +141,32 @@ function delete_one<T>(model:Model<T>,
     );
 }
 
-export default {create,read_all,read_one,update_one,delete_one}
+/**
+ * @overview will search the passed model type filtered by instances where the specified field matches the query param
+ * @param endpoint:string - the endpoint to tie the request to
+ * @param model:Model - the model to search for the valuek
+ * @param router:Router - the router to add the request to
+ * @param field:string - the name of the field to match against the query parameter
+ * @param authenticate:Function - authentication function
+ * @param entity_name:string - OPTIONAL - the name of the host entity
+ */
+function find_where<T>(endpoint:string,model:Model<T>,
+                    router:Router,
+                    field:string,
+                    authenticate:(req:Request,res:Response,next:NextFunction)=>Promise<any>,
+                    entity_name?:string){
+
+    router.get(endpoint,
+        authenticate,
+        (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
+        (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE"); _next()},
+        (req: Request, res: Response) => {
+            let filter :any= {}; //An empty object to build our query from
+            filter[field] = req.params.id; // assign the filter @ the passed field, the value of the query param
+            model.find(filter)
+                .then((entities) => res.status(201).send(entities))
+                .catch(err => res.status(404).send({message:`Failed to find${field}s for ${entity_name}`,err}))
+        }
+    );}
+
+export default {create,read_all,read_one,update_one,delete_one,find_where}

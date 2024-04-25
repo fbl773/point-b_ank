@@ -8,6 +8,7 @@ import period_router from "./routes/period";
 import region_router from "./routes/region";
 import {Db_conn} from "./db_conn";
 import material_router from "./routes/material";
+import culture_router from "./routes/culture";
 
 
 
@@ -28,6 +29,7 @@ app.use("/login",login_router);
 app.use("/catalogue",catalogue_router);
 app.use("/site",site_router);
 app.use("/period",period_router);
+app.use("/culture",culture_router);
 app.use("/region",region_router);
 app.use("/material",material_router);
 

@@ -1,5 +1,7 @@
 import {Schema,Types,Model,model} from "mongoose"
 import {IMongo_Entity} from "./mongo_entity";
+import Catalogue from "./catalogue";
+import Region from "./region";
 
 export interface ISite extends IMongo_Entity{
     name: string,
@@ -12,8 +14,8 @@ type SiteModal = Model<ISite>;
 const siteSchema = new Schema<ISite,SiteModal>({
     name:{type:String, required:true},
     description:{type:String, required:false},
-    catalogue_id:{type: Schema.Types.ObjectId, ref:"Catalogue"},
-    region_id:{type: Schema.Types.ObjectId, ref:"Region"}
+    catalogue_id:{type: Schema.Types.ObjectId, ref:Catalogue},
+    region_id:{type: Schema.Types.ObjectId, ref:Region}
 
 },{timestamps:true});
 
