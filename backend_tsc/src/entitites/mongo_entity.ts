@@ -7,9 +7,10 @@ export interface IHas_Image extends IMongo_Entity{
     image:string
 }
 
-// export interface IArtifact extends IHas_Image{
-//     site_id:Types.ObjectId,
-//     material:Types.ObjectId
-//     image_path:string,
-//     dimensions:[],
-// }
+export interface IArtifact extends IHas_Image{
+    site_id:Types.ObjectId,
+    material:Types.ObjectId,
+    culture:Types.ObjectId,
+    image_path:string,
+    dimensions:[],
+}
