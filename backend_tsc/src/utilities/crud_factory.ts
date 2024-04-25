@@ -165,7 +165,7 @@ function find_where<T>(endpoint:string,model:Model<T>,
             filter[field] = req.params.id; // assign the filter @ the passed field, the value of the query param
             model.find(filter)
                 .then((entities) => res.status(201).send(entities))
-                .catch(err => res.status(404).send({message:`Failed to find${field}s for ${entity_name}`,err}))
+                .catch(err => res.status(404).send({message:`Failed to find ${endpoint} for ${entity_name}`,err}))
         }
     );}
 

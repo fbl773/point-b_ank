@@ -2,7 +2,7 @@ import {NextFunction, Request, Response, Router} from "express";
 import Catalogue, {ICatalogue} from "../entitites/catalogue";
 import authenticate from "../utilities/jwt_utils";
 import crud_factory from "../utilities/crud_factory";
-import Site from "../entitites/site";
+import Site, {ISite} from "../entitites/site";
 
 const catalogue_router = Router();
 
@@ -14,6 +14,7 @@ crud_factory.update_one<ICatalogue>(Catalogue,catalogue_router,authenticate,"cat
 crud_factory.delete_one<ICatalogue>(Catalogue,catalogue_router,authenticate,"catalogue") // handles DELETE /catalogue/:id
 
 //Specialty endpoints
+// ALT crud_factory.find_where<ISite>(":id/sites",Site,catalogue_router,"catalogue_id",authenticate,"catalogue");
 catalogue_router.get(":id/sites",
     authenticate,
     (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
