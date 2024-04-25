@@ -1,7 +1,10 @@
-import {Router} from "express";
+import {NextFunction, Request, Response, Router} from "express";
 import ProjectilePoint, {IProjectilePoint} from "../entitites/projectile_point";
 import authenticate from "../utilities/jwt_utils";
 import crud_factory from "../utilities/crud_factory";
+import {Model} from "mongoose";
+import site_router from "./site";
+import Projectile_point from "../entitites/projectile_point";
 
 const projectile_point_router= Router();
 

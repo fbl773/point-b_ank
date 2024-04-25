@@ -42,7 +42,8 @@ function create<T extends IMongo_Entity>(model:Model<T>,
 function read_all<T>(model:Model<T>,
                            router:Router,
                            authenticate:(req:Request,res:Response,next:NextFunction)=>Promise<any>,
-                           entity_name?:string){
+                           entity_name?:string,
+                     ){
     router.get("/",
         authenticate,
         (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
@@ -139,6 +140,5 @@ function delete_one<T>(model:Model<T>,
         }
     );
 }
-
 
 export default {create,read_all,read_one,update_one,delete_one}

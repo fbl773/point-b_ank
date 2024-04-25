@@ -11,11 +11,11 @@ export interface IProjectilePoint extends IArtifact{
 }
 
 type ProjectilePointModal = Model<IProjectilePoint>;
-const projectile_pointSchema = new Schema<IProjectilePoint,ProjectilePointModal>({
+const projectilePointSchema = new Schema<IProjectilePoint,ProjectilePointModal>({
     name:{type:String, required:true},
     image:{type:String, required:false},
     description:{type:String, required:false},
-    culture:{type:Types.ObjectId,required:false},
+    culture:{type:Types.ObjectId,ref:"Culture", required:false},
     material:{type:Types.ObjectId,ref:"Material",required:false},
     site_id:{type:Types.ObjectId,ref:"Site",required:true},
     //These could be set by "culture" templates OR hard-coded... maybe a good use of sub document here?
@@ -35,6 +35,6 @@ const projectile_pointSchema = new Schema<IProjectilePoint,ProjectilePointModal>
 //     next();
 // })
 
-const ProjectilePoint:ProjectilePointModal = model<IProjectilePoint,ProjectilePointModal>('ProjectilePoint',projectile_pointSchema);
+const ProjectilePoint:ProjectilePointModal = model<IProjectilePoint,ProjectilePointModal>('ProjectilePoint',projectilePointSchema);
 
 export default ProjectilePoint;
