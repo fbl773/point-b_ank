@@ -14,7 +14,7 @@ export interface ICulture extends IMongo_Entity{
 type CultureModel = Model<ICulture>;
 const cultureSchema = new Schema<ICulture,CultureModel>({
     name:{type:String, required:true},
-    period_id:{type:Schema.Types.ObjectId,ref:Period,required:true},
+    period_id:{type:Schema.Types.ObjectId,ref:"Period",required:true},
     start:{type:Number,required:true,min:0},
     end:{type:Number,required:true,min:0},
     //templates:{type:[Types.ObjectId],required:false}

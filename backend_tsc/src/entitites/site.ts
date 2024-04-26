@@ -1,5 +1,7 @@
 import {Schema,Types,Model,model} from "mongoose"
 import {IMongo_Entity} from "./mongo_entity";
+import Catalogue from "./catalogue";
+import Region from "./region";
 
 export interface ISite extends IMongo_Entity{
     name: string,
