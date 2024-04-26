@@ -1,8 +1,8 @@
 import {NextFunction, Request, Response, Router} from "express";
 import Period, {IPeriod} from "../entitites/period";
+import Culture, {ICulture} from "../entitites/culture";
 import authenticate from "../utilities/jwt_utils";
 import crud_factory from "../utilities/crud_factory";
-import Site from "../entitites/site";
 import catalogue_router from "./catalogue";
 
 const period_router= Router();

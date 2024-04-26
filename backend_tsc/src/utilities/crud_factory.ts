@@ -150,11 +150,11 @@ function delete_one<T>(model:Model<T>,
  * @param authenticate:Function - authentication function
  * @param entity_name:string - OPTIONAL - the name of the host entity
  */
-function find_where<T>(endpoint:string,model:Model<T>,
-                    router:Router,
-                    field:string,
-                    authenticate:(req:Request,res:Response,next:NextFunction)=>Promise<any>,
-                    entity_name?:string){
+function find_related<T>(endpoint:string, model:Model<T>,
+                         router:Router,
+                         field:string,
+                         authenticate:(req:Request,res:Response,next:NextFunction)=>Promise<any>,
+                         entity_name?:string){
 
     router.get(endpoint,
         authenticate,
@@ -169,4 +169,4 @@ function find_where<T>(endpoint:string,model:Model<T>,
         }
     );}
 
-export default {create,read_all,read_one,update_one,delete_one,find_where}
+export default {create,read_all,read_one,update_one,delete_one,find_where: find_related}
