@@ -1,4 +1,4 @@
-import {Schema,Types,Model,model} from "mongoose"
+import {Schema,Model,model} from "mongoose"
 import {IArtifact} from "./mongo_entity";
 import Culture from "./culture";
 import Material from "./material";

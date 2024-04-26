@@ -1,4 +1,4 @@
-import {Schema,Types,Model,model} from "mongoose"
+import {Schema,Model,model} from "mongoose"
 import {IMongo_Entity} from "./mongo_entity";
 
 export interface IRegion extends IMongo_Entity{
