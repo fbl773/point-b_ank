@@ -169,4 +169,4 @@ function find_related<T>(endpoint:string, model:Model<T>,
         }
     );}
 
-export default {create,read_all,read_one,update_one,delete_one,find_where: find_related}
+export default {create,read_all,read_one,update_one,delete_one,find_related}
