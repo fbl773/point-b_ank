@@ -12,7 +12,7 @@ const materialSchema = new Schema<IMaterial,MaterialModal>({
     name:{type:String, required:true},
     image:{type:String, required:false},
     description:{type:String, required:false},
-    artifact_type:{type:String,required:true,enum:["Lithic","Faunal","Ceramic","Other"]}
+    artifact_type:{type:String,required:true,enum:["lithic","faunal","ceramic","other"]}
 
 },{timestamps:true});
 

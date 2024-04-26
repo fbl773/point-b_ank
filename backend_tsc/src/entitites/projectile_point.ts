@@ -22,10 +22,10 @@ const projectile_pointSchema = new Schema<IProjectilePoint,ProjectilePointModal>
     material:{type:Schema.Types.ObjectId,ref:"Material",required:false},
     site_id:{type:Schema.Types.ObjectId,ref:"Site",required:true},
     //These could be set by "culture" templates OR hard-coded... maybe a good use of sub document here?
-    blade_shape:{type:String,required:false,enum:["TODO","TODO1"]},
-    base_shape:{type:String,required:false,enum:["TODO","TODO1"]},//TODO: Design decision about indeterminate handling. Backend or front?
-    hafting_shape:{type:String,required:false,enum:["TODO","TODO1"]},
-    cross_section:{type:String,required:false,enum:["TODO","TODO1"]}
+    blade_shape:{type:String,required:false,enum:["triangular","excurvate","incurvate","ovate"]},
+    base_shape:{type:String,required:false,enum:["straight","concave","convex"]},//TODO: Design decision about indeterminate handling. Backend or front? Tables?
+    hafting_shape:{type:String,required:false,enum:["lanceolate","stemmed","basally concave","expanding","contracting","corner-notched","side-notched","basal-notched","triangular un-notched"]},
+    cross_section:{type:String,required:false,enum:["rhomboid","lenticular","plano-convex","fluted","median-ridged","flat"]}
 
 },{timestamps:true});
 
