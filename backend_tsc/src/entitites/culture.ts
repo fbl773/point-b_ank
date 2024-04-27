@@ -1,7 +1,8 @@
 import {Schema, Model, model, Types} from "mongoose"
 import {IMongo_Entity} from "./mongo_entity";
 import Period from "./period";
-import ProjectilePoint from "./projectile_point";
+import ProjectilePoint, {IProjectilePoint} from "./projectile_point";
+import {update_related} from "../utilities/trigger_factory";
 
 export interface ICulture extends IMongo_Entity{
     name: string,
@@ -29,9 +30,10 @@ const cultureSchema = new Schema<ICulture,CultureModel>({
  * On delete, update points to reflect unknown culture
  * TODO: Or should we delete?
  */
+/* Cascade update points of this material*/
 cultureSchema.pre("findOneAndDelete", async function(next){
-    let self = await this.model.findOne(this.getFilter());
-    await ProjectilePoint.updateMany({culture_id:self._id},{culture_id:""});
+    await update_related<ICulture, IProjectilePoint>(this.model, this.getFilter(),
+        ProjectilePoint, "culture_id",{culture_id:""});
     next();
 })
 

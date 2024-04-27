@@ -2,7 +2,11 @@ import {Schema,Types,Model,model} from "mongoose"
 import {IMongo_Entity} from "./mongo_entity";
 import Catalogue from "./catalogue";
 import Region from "./region";
+import ProjectilePoint, {IProjectilePoint} from "./projectile_point";
+import {cascade_related} from "../utilities/trigger_factory";
 
+
+//Schema
 export interface ISite extends IMongo_Entity{
     name: string,
     description: string,
@@ -19,15 +23,14 @@ const siteSchema = new Schema<ISite,SiteModal>({
 
 },{timestamps:true});
 
-/**
- * Cascade delete related artifacts
- */
-// siteSchema.pre("findOneAndDelete", async function(next){
-//     let self = await this.model.findOne(this.getFilter());
-//     await Artifact.deleteMany({site_id:self._id});
-//     next();
-// })
-
 const Site:SiteModal = model<ISite,SiteModal>('Site',siteSchema);
+
+//Triggers
+/*  Cascade delete related artifacts */
+siteSchema.pre("findOneAndDelete", async function(next) {
+    await cascade_related<ISite, IProjectilePoint>(this.model, this.getFilter(), ProjectilePoint, "site_id");
+    next();
+});
+
 
 export default Site;

@@ -3,6 +3,8 @@ import {IMongo_Entity} from "./mongo_entity";
 import Site, {ISite} from "./site";
 import {cascade_related} from "../utilities/trigger_factory";
 
+
+//Schema
 export interface ICatalogue extends IMongo_Entity{
    name: string,
    description: string
@@ -16,24 +18,12 @@ const catalogueSchema = new Schema<ICatalogue,CatalogueModel>({
     timestamps:true,
 });
 
-/**
- * Cascade delete related sites
- */
+const Catalogue:CatalogueModel = model<ICatalogue,CatalogueModel>('Catalogue',catalogueSchema);
+
+// Triggers
 catalogueSchema.pre("findOneAndDelete", async function(next){
     await cascade_related<ICatalogue,ISite>(this.model,this.getFilter(),Site,"catalogue_id");
     next();
 });
-
-catalogueSchema.pre("deleteOne", async function(next){
-    await cascade_related<ICatalogue,ISite>(this.model,this.getFilter(),Site,"catalogue_id");
-    next();
-});
-
-// Idea calling
-//cascade_delete<CascadeMe>("triggeringMethod",schema)
-//cascade_update<CascadeMe>("triggeringMethod",update)
-
-
-const Catalogue:CatalogueModel = model<ICatalogue,CatalogueModel>('Catalogue',catalogueSchema);
 
 export default Catalogue;

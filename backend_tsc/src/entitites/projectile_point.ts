@@ -29,15 +29,6 @@ const projectile_pointSchema = new Schema<IProjectilePoint,ProjectilePointModal>
 
 },{timestamps:true});
 
-/**
- * Cascade delete related artifacts
- */
-// projectile_pointSchema.pre("findOneAndDelete", async function(next){
-//     let self = await this.model.findOne(this.getFilter());
-//     await Artifact.deleteMany({projectile_point_id:self._id});
-//     next();
-// })
-
 const ProjectilePoint:ProjectilePointModal = model<IProjectilePoint,ProjectilePointModal>('ProjectilePoint',projectile_pointSchema);
 
 export default ProjectilePoint;

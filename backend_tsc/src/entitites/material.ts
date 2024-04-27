@@ -1,5 +1,7 @@
 import {Schema,Model,model} from "mongoose"
 import {IHas_Image} from "./mongo_entity";
+import ProjectilePoint, {IProjectilePoint} from "./projectile_point";
+import {update_related} from "../utilities/trigger_factory";
 
 export interface IMaterial extends IHas_Image{
     name: string,
@@ -16,14 +18,12 @@ const materialSchema = new Schema<IMaterial,MaterialModal>({
 
 },{timestamps:true});
 
-/**
- * Cascade delete related artifacts
- */
-// materialSchema.pre("findOneAndDelete", async function(next){
-//     let self = await this.model.findOne(this.getFilter());
-//     await Artifact.deleteMany({material_id:self._id});
-//     next();
-// })
+/* Cascade update points of this material*/
+ materialSchema.pre("findOneAndDelete", async function(next){
+     await update_related<IMaterial, IProjectilePoint>(this.model, this.getFilter(),
+         ProjectilePoint, "material_id",{material_id:""});
+     next();
+ })
 
 const Material:MaterialModal = model<IMaterial,MaterialModal>('Material',materialSchema);
 

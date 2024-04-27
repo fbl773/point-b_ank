@@ -1,7 +1,9 @@
 import {Schema,Model,model} from "mongoose"
 import {IMongo_Entity} from "./mongo_entity";
-import Culture from "./culture";
+import Culture, {ICulture} from "./culture";
+import {cascade_related} from "../utilities/trigger_factory";
 
+//Schema
 export interface IPeriod extends IMongo_Entity{
     name: string,
     start: number,
@@ -15,16 +17,17 @@ const periodSchema = new Schema<IPeriod,PeriodModel>({
     end:{type:Number,required:true,min:0}
 
 });
+const Period:PeriodModel = model<IPeriod,PeriodModel>('Period',periodSchema);
 
-/**
- * Cascade delete related cultures
- */
+
+//Triggers
+
+/* Cascade delete related cultures */
 periodSchema.pre("findOneAndDelete", async function(next){
-    let self = await this.model.findOne(this.getFilter());
-    await Culture.deleteMany({period_id:self._id});
+    await cascade_related<IPeriod,ICulture>(this.model,this.getFilter(),Culture,"period_id");
     next();
 })
 
-const Period:PeriodModel = model<IPeriod,PeriodModel>('Period',periodSchema);
+
 
 export default Period;
