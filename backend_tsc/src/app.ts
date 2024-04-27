@@ -9,6 +9,7 @@ import region_router from "./routes/region";
 import {Db_conn} from "./db_conn";
 import material_router from "./routes/material";
 import culture_router from "./routes/culture";
+import projectile_point_router from "./routes/projectile_point";
 
 
 
@@ -32,6 +33,7 @@ app.use("/period",period_router);
 app.use("/culture",culture_router);
 app.use("/region",region_router);
 app.use("/material",material_router);
+app.use("/projectile_points",projectile_point_router);
 
 
 /** BASE*/
