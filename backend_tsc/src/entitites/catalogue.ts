@@ -25,7 +25,6 @@ catalogueSchema.pre("findOneAndDelete", async function(next){
 });
 
 catalogueSchema.pre("deleteOne", async function(next){
-    let self = await this.model.findOne(this.getFilter());
     await cascade_related<ICatalogue,ISite>(this.model,this.getFilter(),Site,"catalogue_id");
     next();
 });

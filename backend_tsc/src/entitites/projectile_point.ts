@@ -18,8 +18,8 @@ const projectile_pointSchema = new Schema<IProjectilePoint,ProjectilePointModal>
     name:{type:String, required:true},
     image:{type:String, required:false},
     description:{type:String, required:false},
-    culture:{type:Schema.Types.ObjectId,ref:"Culture",required:false},
-    material:{type:Schema.Types.ObjectId,ref:"Material",required:false},
+    culture_id:{type:Schema.Types.ObjectId,ref:"Culture",required:false},
+    material_id:{type:Schema.Types.ObjectId,ref:"Material",required:false},
     site_id:{type:Schema.Types.ObjectId,ref:"Site",required:true},
     //These could be set by "culture" templates OR hard-coded... maybe a good use of sub document here?
     blade_shape:{type:String,required:false,enum:["triangular","excurvate","incurvate","ovate"]},
