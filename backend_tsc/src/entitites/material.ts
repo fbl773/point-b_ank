@@ -18,7 +18,7 @@ const materialSchema = new Schema<IMaterial,MaterialModal>({
 
 },{timestamps:true});
 
-/* Cascade update points of this material*/
+/* Cascade update points of this material */
  materialSchema.pre("findOneAndDelete", async function(next){
      await update_related<IMaterial, IProjectilePoint>(this.model, this.getFilter(),
          ProjectilePoint, "material_id",{material_id:""});

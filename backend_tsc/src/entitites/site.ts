@@ -18,7 +18,7 @@ type SiteModal = Model<ISite>;
 const siteSchema = new Schema<ISite,SiteModal>({
     name:{type:String, required:true},
     description:{type:String, required:false},
-    catalogue_id:{type: Schema.Types.ObjectId, ref:"Catalogue",required:true},//TODO using actual models should not break...
+    catalogue_id:{type: Schema.Types.ObjectId, ref:"Catalogue",required:true},
     region_id:{type: Schema.Types.ObjectId, ref:"Region",required:true}
 
 },{timestamps:true});

@@ -18,8 +18,6 @@ const cultureSchema = new Schema<ICulture,CultureModel>({
     period_id:{type:Schema.Types.ObjectId,ref:"Period",required:true},
     start:{type:Number,required:true,min:0},
     end:{type:Number,required:true,min:0},
-    //templates:{type:[Types.ObjectId],required:false}
-
 });
 
 /**
@@ -28,9 +26,7 @@ const cultureSchema = new Schema<ICulture,CultureModel>({
 
 /**
  * On delete, update points to reflect unknown culture
- * TODO: Or should we delete?
  */
-/* Cascade update points of this material*/
 cultureSchema.pre("findOneAndDelete", async function(next){
     await update_related<ICulture, IProjectilePoint>(this.model, this.getFilter(),
         ProjectilePoint, "culture_id",{culture_id:""});

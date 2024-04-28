@@ -6,7 +6,7 @@ import sanitize from "express-mongo-sanitize"
 import site_router from "./routes/site";
 import period_router from "./routes/period";
 import region_router from "./routes/region";
-import {Db_conn} from "./db_conn";
+import {Db_conn} from "./utilities/db_conn";
 import material_router from "./routes/material";
 import culture_router from "./routes/culture";
 import projectile_point_router from "./routes/projectile_point";
@@ -34,6 +34,22 @@ app.use("/culture",culture_router);
 app.use("/region",region_router);
 app.use("/material",material_router);
 app.use("/projectile_points",projectile_point_router);
+
+
+//Event Listeners
+const on_shutdown:EventListener = () => {
+     Db_conn.db_close()
+        .then(() => console.info(`Closed connection to ${connection_url}...`))
+        .catch(err => console.warn("Failed to close DB connection! Attempting to force...",err))
+        .then(() => Db_conn.db_close(true))
+        .catch(err => console.error("Failed to force close DB Connection!",err));
+}
+
+//Graceful exit catchers
+process.on("exit",on_shutdown);
+process.on("SIGINT",on_shutdown);
+process.on("SIGKILL",on_shutdown);
+process.on("SIGTERM",on_shutdown);
 
 
 /** BASE*/
