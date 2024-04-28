@@ -106,7 +106,7 @@ function update_one<T>(model:Model<T>,
                     res.status(200).send( { message:`Successfully updated ${entity_name} ${req.params.id}`, updated}):
                     res.status(404).send({message:`Update Failed: ${entity_name} ${req.params.id} not found`})
                 )
-                .catch((err) => res.status(406).send({message:`failed to update ${entity_name} ${req.params.id}`,err}))
+                .catch((err) => res.status(406).send({message:`failed to update ${entity_name} ${req.params.id}`,err:err.message}))
         }
     );
 }
