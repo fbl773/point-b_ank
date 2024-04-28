@@ -14,7 +14,7 @@ const userSchema= new Schema<IUser,UserModel>({
     username:{type:String, required:true,trim:true},
     password:{type:String, required:true,trim:true},
     active:{type:Boolean, required:true, default:true},
-    role:{type:String,required:true,enum:["admin","tester"]}//wtf is tester?
+    role:{type:String,required:true,enum:["admin"]}
 },{
     timestamps:true,
 });
