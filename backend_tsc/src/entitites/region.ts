@@ -19,7 +19,7 @@ const Region:RegionModal = model<IRegion,RegionModal>('Region',regionSchema);
 //Triggers
 regionSchema.pre("findOneAndDelete", async function(next) {
     await update_related<IRegion, ISite>(this.model, this.getFilter(),
-        Site, "region_id",{region_id:""});
+        Site, "region_id",{$unset:{region_id:1}});
     next();
 })
 

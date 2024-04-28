@@ -27,13 +27,13 @@ app.use(sanitize());
 
 /** ROUTES */
 app.use("/login",login_router);
-app.use("/catalogue",catalogue_router);
-app.use("/site",site_router);
-app.use("/period",period_router);
-app.use("/culture",culture_router);
-app.use("/region",region_router);
-app.use("/material",material_router);
-app.use("/projectile_points",projectile_point_router);
+app.use("/catalogues",catalogue_router);
+app.use("/sites",site_router);
+app.use("/materials",material_router);
+app.use("/periods",period_router);
+app.use("/cultures",culture_router);
+app.use("/regions",region_router);
+app.use("/points",projectile_point_router);
 
 /** BASE*/
 app.get('/', (req:Request,res:Response) => {

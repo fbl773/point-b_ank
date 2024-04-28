@@ -29,7 +29,7 @@ const cultureSchema = new Schema<ICulture,CultureModel>({
  */
 cultureSchema.pre("findOneAndDelete", async function(next){
     await update_related<ICulture, IProjectilePoint>(this.model, this.getFilter(),
-        ProjectilePoint, "culture_id",{culture_id:""});
+        ProjectilePoint, "culture_id",{$unset:{culture_id: 1}});
     next();
 })
 

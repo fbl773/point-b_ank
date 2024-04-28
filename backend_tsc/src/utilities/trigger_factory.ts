@@ -8,7 +8,7 @@ import {IMongo_Entity} from "../entitites/mongo_entity";
  */
 function build_filter(field_name:string,field_value:any):any{
     let filter:any = {};
-    filter[field_name] = field_name;
+    filter[field_name] = field_value;
     return filter;
 }
 
