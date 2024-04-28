@@ -101,7 +101,7 @@ function update_one<T>(model:Model<T>,
         (_req:Request,_res:Response,_next:Function) => {console.log(`TODO: VALIDATE ${entity_name}`); _next()},
         (req: Request, res: Response) => {
             let new_ent = req.body;
-            model.findOneAndUpdate({_id:req.params.id},new_ent,{new:true})
+            model.findOneAndUpdate({_id:req.params.id},new_ent,{new:true,runValidators:true})
                 .then((updated) => updated ?
                     res.status(200).send( { message:`Successfully updated ${entity_name} ${req.params.id}`, updated}):
                     res.status(404).send({message:`Update Failed: ${entity_name} ${req.params.id} not found`})
