@@ -9,7 +9,7 @@ dotenv.config()
  * @overview a special request type that allows for tokens to be recognized as a field
  * @field token:string | JwtPayload | undefined - holds whatever the "verify" call produces when verifying a jwt
  */
-type AuthorizedRequest = Request & {
+export type AuthorizedRequest = Request & {
     token: string | JwtPayload | undefined;
 }
 
@@ -43,20 +43,20 @@ export function get_payload(req:Request):TokenData{
  * @param req:AutorizedRequest - a requestthat has an authorization header field
  * @param res:Response - the response to forward
  */
-async function do_authenticate(req:AuthorizedRequest, res:Response){
+async function do_authenticate(req:AuthorizedRequest, res:Response):Promise<void>{
     //Grab the token
     let token = req.headers.authorization || "NO TOKEN";
     token = token.split(' ')[1];
 
     //if the token is bad, send them home
     if(token == null)
-        return res.status(401).json({message:"Access denied. Invalid token"});
+        throw Error("Invalid Token");
 
     //otherwise carry on
     jwt.verify(token,JWT_SECRET,{},(err,payload) => {
         //If it failed,  fail
         if(err)
-            return res.status(401).json({message: "failed to authenticate",error:err});
+            throw Error("Failed to verify token");
 
         //If it did not fail, assign token and cary on
         req.token = payload;
@@ -71,13 +71,11 @@ async function do_authenticate(req:AuthorizedRequest, res:Response){
  */
 async function authenticate(req:Request,res:Response,next:NextFunction){
 
-    next();
-    /*
+    //next();
     return do_authenticate(req as AuthorizedRequest,res)
         .then(next)
-        .catch(err => res.status(401).json({message:"Authentication failed",err}));
+        .catch( (err:Error) => res.status(401).json({message:"Authentication failed",error:err.message}));
 
-     */
 }
 
 /**

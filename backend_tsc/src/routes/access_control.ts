@@ -2,13 +2,13 @@ import { NextFunction, Request, Response, Router} from "express";
 import User, {IUser} from "../entitites/user";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
-import {sign_token} from "../utilities/jwt_utils";
-
+import authenticate, {get_payload, sign_token} from "../utilities/jwt_utils";
 dotenv.config()
 
 /* CONSTANTS */
 const salt_rounds = 10;
-const login_router = Router();
+export const login_router = Router();
+export const access_control_router = Router();
 
 
 /* HELPERS */
@@ -20,6 +20,7 @@ const login_router = Router();
  * @param res:Response - a handle to the response object
  */
 async function init_login(req:Request,res:Response){
+    console.log("ENTERING INIT LOGIN");
 
     //Check for default password
     let default_password = process.env.DEFAULT_PASSWORD || null;
@@ -55,6 +56,7 @@ async function init_login(req:Request,res:Response){
  * @param res:Response - response handle
  */
 async function login(req:Request,res:Response){
+    console.log("ENTERED LOGIN");
 
     // capture the json payload
     let {username,password} = req.body;
@@ -81,7 +83,9 @@ async function login(req:Request,res:Response){
                     );
 
 
-                    return res.status(202).json({
+                    return res
+                        .cookie("token",token,{secure:true,sameSite:true})
+                        .status(202).json({
                         token,
                         message: "User Successfully logged in",
                         role: existing_user?.role
@@ -108,7 +112,27 @@ login_router.post("/",
     }
 );
 
-export default login_router
+
+access_control_router.get("/",
+     authenticate,
+    (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE verify"); _next()},
+    async (req: Request, res: Response) => {
+        let payload = undefined;
+        try {
+            payload = get_payload(req)
+        } catch(error:any){
+            console.error(error.message)
+
+        }
+
+        if(payload){
+            res.send(payload)
+        } else {
+            console.warn("No token provided or token is invalid");
+            res.status(401).send({ message: "Unauthorized access" });
+        }
+    }
+    )
 
 
-
+export default {login_router,access_control_router}

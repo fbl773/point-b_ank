@@ -17,7 +17,7 @@ function create<T extends IMongo_Entity>(model:Model<T>,
     router.post("/",
         authenticate,
         (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
-        (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE"); _next()},
+        (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE",entity_name); _next()},
         (req: Request, res: Response) => {
             let new_entity: T = req.body;
             model.create(new_entity)
@@ -47,7 +47,7 @@ function read_all<T>(model:Model<T>,
     router.get("/",
         authenticate,
         (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
-        (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE"); _next()},
+        (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE",entity_name); _next()},
         (req: Request, res: Response) => {
             model.find({})
                 .then((entities) => res.status(201).send(entities))
@@ -71,7 +71,7 @@ function read_one<T>(model:Model<T>,
     router.get("/:id",
         authenticate,
         (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
-        (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE"); _next()},
+        (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE",entity_name); _next()},
         (req: Request, res: Response) => {
             model.findById(req.params.id ?? "NO ID")
                 .then(cat => cat ? res.status(200).send(cat) :
@@ -98,7 +98,7 @@ function update_one<T>(model:Model<T>,
     router.put("/:id",
         authenticate,
         (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
-        (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE"); _next()},
+        (_req:Request,_res:Response,_next:Function) => {console.log(`TODO: VALIDATE ${entity_name}`); _next()},
         (req: Request, res: Response) => {
             let new_ent = req.body;
             model.findOneAndUpdate({_id:req.params.id},new_ent,{new:true})
@@ -127,7 +127,7 @@ function delete_one<T>(model:Model<T>,
     router.delete("/:id",
         authenticate,
         (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
-        (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE"); _next()},
+        (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE",entity_name); _next()},
         (req: Request, res: Response) => {
             model.findOneAndDelete({_id:req.params.id},{})
                 .then((dc) => {
@@ -159,7 +159,7 @@ function find_related<T>(endpoint:string, model:Model<T>,
     router.get(endpoint,
         authenticate,
         (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
-        (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE"); _next()},
+        (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE",entity_name); _next()},
         (req: Request, res: Response) => {
             let filter :any= {}; //An empty object to build our query from
             filter[field] = req.params.id; // assign the filter @ the passed field, the value of the query param

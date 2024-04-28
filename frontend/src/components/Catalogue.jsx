@@ -42,7 +42,7 @@ const Catalogue = () => {
 	useEffect(() => {
 		async function fetchCatalogue() {
 			try {
-				const response = await http.get("/catalogues/1");
+				const response = await http.get("/catalogues/662555a5a62b3496b4cce10f");
 				log.info("Default catalogue: ", response.data);
 				setCatalogueName(response.data.name);
 				setCatalogueDescription(response.data.description);
