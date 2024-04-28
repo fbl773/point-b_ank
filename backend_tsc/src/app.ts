@@ -35,29 +35,26 @@ app.use("/region",region_router);
 app.use("/material",material_router);
 app.use("/projectile_points",projectile_point_router);
 
-
-//Event Listeners
-const on_shutdown:EventListener = () => {
-     Db_conn.db_close()
-        .then(() => console.info(`Closed connection to ${connection_url}...`))
-        .catch(err => console.warn("Failed to close DB connection! Attempting to force...",err))
-        .then(() => Db_conn.db_close(true))
-        .catch(err => console.error("Failed to force close DB Connection!",err));
-}
-
-//Graceful exit catchers
-process.on("exit",on_shutdown);
-process.on("SIGINT",on_shutdown);
-process.on("SIGKILL",on_shutdown);
-process.on("SIGTERM",on_shutdown);
-
-
 /** BASE*/
 app.get('/', (req:Request,res:Response) => {
     res.send("Hello, this is api")
 })
 
-app.listen(port, () => {
+const pblank_api = app.listen(port, () => {
     console.log(`listening on port: ${port},
 mongo_url: ${connection_url}`);
 })
+
+//Cleanup actions
+const on_shutdown:EventListener = () => {
+    pblank_api.close(() => {
+        console.warn("Server going down!")
+        Db_conn.db_close()
+            .then(() => console.info(`Closed connection to ${connection_url}...`))
+            .catch(err => console.warn("Failed to close DB connection! Attempting to force...",err))
+    })
+}
+
+//Exit event listeners
+process.on("exit",on_shutdown);
+process.on("SIGINT",on_shutdown);

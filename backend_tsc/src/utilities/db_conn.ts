@@ -20,7 +20,6 @@ export class Db_conn{
      * @param force:boolean - do we force close the database? default false.
      */
     public static async db_close(force:boolean = false){
-        console.log("CALLED")
-        return mongoose.connection.close(force);//did not force... but I could have I guess
+        return mongoose.disconnect();
     }
 }
