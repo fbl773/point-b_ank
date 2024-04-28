@@ -9,7 +9,7 @@ dotenv.config()
  * @overview a special request type that allows for tokens to be recognized as a field
  * @field token:string | JwtPayload | undefined - holds whatever the "verify" call produces when verifying a jwt
  */
-export type AuthorizedRequest = Request & {
+type AuthorizedRequest = Request & {
     token: string | JwtPayload | undefined;
 }
 

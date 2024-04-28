@@ -75,7 +75,7 @@ function Sidebar() {
 		 */
 		const checkLoginStatus = async () => {
 			try {
-				const response = await http.get("/verify");
+				const response = await http.get("/users");
 				setIsLoggedIn(!!response.data);
 			} catch (error) {
 				console.error("Error checking login status:", error);

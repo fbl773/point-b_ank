@@ -10,7 +10,7 @@ export function UserContextProvider({ children }) {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const getData = useCallback(async () => {
 		http
-			.get("/verify", { withCredentials: true })
+			.get("/users", { withCredentials: true })
 			.then(({ data }) => {
 				setUser(data);
 			})
