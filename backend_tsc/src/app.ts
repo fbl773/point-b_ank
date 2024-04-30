@@ -65,8 +65,8 @@ const on_shutdown:EventListener = () => {
         console.warn("Server going down!")
         Db_conn.db_close()
             .then(() => console.info(`Closed connection to ${connection_url}...`))
-            .catch(err => console.warn("Failed to close DB connection! Attempting to force...",err))
-    })
+            .catch(err => console.warn("Failed to close DB connection!",err))
+    });
 }
 
 //Exit event listeners

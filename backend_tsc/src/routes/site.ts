@@ -7,11 +7,11 @@ import ProjectilePoint, {IProjectilePoint} from "../entitites/projectile_point";
 const site_router= Router();
 
 /* Give them the CRUD treatment*/
-crud_factory.create<ISite>(Site,site_router,authenticate,"site") //Handles POST /sites
-crud_factory.read_all<ISite>(Site,site_router,authenticate,"site") // handles GET /sites
-crud_factory.read_one<ISite>(Site,site_router,authenticate,"site") // handles GET /site/:id
-crud_factory.update_one<ISite>(Site,site_router,authenticate,"site") // handles PUT /site/:id
-crud_factory.delete_one<ISite>(Site,site_router,authenticate,"site") // handles DELETE /site/:id
+crud_factory.create<ISite>(Site,site_router,authenticate,"site");
+crud_factory.read_all<ISite>(Site,site_router,authenticate,"site");
+crud_factory.read_one<ISite>(Site,site_router,authenticate,"site") ;
+crud_factory.update_one<ISite>(Site,site_router,authenticate,"site");
+crud_factory.delete_one<ISite>(Site,site_router,authenticate,"site");
 
 
 //Specialty endpoints
