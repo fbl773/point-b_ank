@@ -7,11 +7,11 @@ import Site, {ISite} from "../entitites/site";
 const catalogue_router = Router();
 
 /* Give them the CRUD treatment*/
-crud_factory.create<ICatalogue>(Catalogue,catalogue_router,authenticate,"catalogue")
-crud_factory.read_all<ICatalogue>(Catalogue,catalogue_router,authenticate,"catalogue")
-crud_factory.read_one<ICatalogue>(Catalogue,catalogue_router,authenticate,"catalogue")
-crud_factory.update_one<ICatalogue>(Catalogue,catalogue_router,authenticate,"catalogue")
-crud_factory.delete_one<ICatalogue>(Catalogue,catalogue_router,authenticate,"catalogue")
+crud_factory.create<ICatalogue>(Catalogue,catalogue_router,authenticate,"catalogue");
+crud_factory.read_all<ICatalogue>(Catalogue,catalogue_router,authenticate,"catalogue");
+crud_factory.read_one<ICatalogue>(Catalogue,catalogue_router,authenticate,"catalogue");
+crud_factory.update_one<ICatalogue>(Catalogue,catalogue_router,authenticate,"catalogue");
+crud_factory.delete_one<ICatalogue>(Catalogue,catalogue_router,authenticate,"catalogue");
 
 //Specialty endpoints
 crud_factory.find_related<ISite>("/:id/sites",Site,catalogue_router,
