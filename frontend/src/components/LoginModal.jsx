@@ -43,7 +43,6 @@ function LoginModal({ modalVisible, closeModal }) {
 			 */
 			log.info("Username entered: " + userName);
 			log.info("Password entered: " + password);
-			log.warn(response);
 			localStorage.setItem("token",response.data.token);
 
 			if (response.status === 200) {
