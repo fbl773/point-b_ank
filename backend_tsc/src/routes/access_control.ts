@@ -20,7 +20,6 @@ export const access_control_router = Router();
  * @param res:Response - a handle to the response object
  */
 async function init_login(req:Request,res:Response){
-    console.log("ENTERING INIT LOGIN");
 
     //Check for default password
     let default_password = process.env.DEFAULT_PASSWORD || null;
@@ -56,7 +55,6 @@ async function init_login(req:Request,res:Response){
  * @param res:Response - response handle
  */
 async function login(req:Request,res:Response){
-    console.log("ENTERED LOGIN");
 
     // capture the json payload
     let {username,password} = req.body;
