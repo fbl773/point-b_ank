@@ -95,7 +95,7 @@ app.use(`${api_root}/projectilepoints`, projectilePointsRouter);
 
 app.use(`${api_root}/aggregateStatisticsGenerators`, aggregateStatisticsGeneratorRouter);
 
-app.use(`${api_root}/uploads`, express.static(path.join(__dirname, "uploads")));
+app.use(`/uploads`, express.static(path.join(__dirname, "uploads")));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

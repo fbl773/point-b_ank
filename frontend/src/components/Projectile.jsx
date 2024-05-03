@@ -165,12 +165,12 @@ const ViewProjectile = ({
 							<div>
 								{photoFilePath && (
 									<a
-										href={`http://localhost:3000/${photoFilePath}`}
+										href={`https://pblank.blewi.xyz/${photoFilePath}`}
 										target="_blank"
 										rel="noopener noreferrer"
 									>
 										<img
-											src={`http://localhost:3000/${photoFilePath}`}
+											src={`https://pblank.blewi.xyz/${photoFilePath}`}
 											alt="Projectile Point"
 											style={{
 												width: "100%",
