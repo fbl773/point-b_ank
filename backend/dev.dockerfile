@@ -5,14 +5,12 @@ EXPOSE 3000
 
 # create necessary work directory
 RUN mkdir -p /backend/bin 
-WORKDIR /backend 
+WORKDIR /backend
 
-RUN ls
 # copy local files to container
 COPY package.json /backend/package.json
 COPY tsconfig.json /backend/tsconfig.json
 COPY src /backend/src
-
 
 # install packages
 RUN yarn

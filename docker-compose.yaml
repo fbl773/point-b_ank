@@ -18,7 +18,7 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: dockerfile
+      dockerfile: dev.dockerfile
     volumes:
       - /Users/FrankyB/fgrams/Projects/databases/pblank_uploads:/backend/uploads
     ports:
