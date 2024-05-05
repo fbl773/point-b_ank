@@ -20,8 +20,7 @@ services:
       context: ./backend
       dockerfile: dockerfile
     volumes:
-      - /backend/node_modules
-      - ./backend:/backend
+      - /Users/FrankyB/fgrams/Projects/databases/pblank_uploads:/backend/uploads
     ports:
       - "3000:3000"
     env_file:

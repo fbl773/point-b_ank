@@ -13,15 +13,17 @@ import projectile_point_router from "./routes/projectile_point";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
+import path from "path";
 
 
 
 dotenv.config()
-Db_conn.init("mongodb://localhost:27017/pblank","PBlank")
-    .catch((err) => console.error("FAILED TO CONNECT TO DB",err));
 
 const port = process.env.PORT || 3000;
 const connection_url = process.env.DB_CONN_STRING || "PLEASE SET DB_CONN_STRING IN .env TO MONGO CONNECTION URL";
+
+Db_conn.init(connection_url,"PBlank")
+    .catch((err) => console.error("FAILED TO CONNECT TO DB",err));
 
 /* App config*/
 const app: Express = express();
@@ -47,6 +49,7 @@ app.use("/periods",period_router);
 app.use("/cultures",culture_router);
 app.use("/regions",region_router);
 app.use("/points",projectile_point_router);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 /** BASE*/
