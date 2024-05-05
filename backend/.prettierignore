@@ -1,6 +1,0 @@
-node_modules
-dist
-logs
-
-bin/www
-test-report
