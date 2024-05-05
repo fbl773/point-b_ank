@@ -12,7 +12,7 @@ services:
     ports:
       - "27017:27017"
     env_file:
-      - ./backend/.env
+      - ./backend/.docker.env
 
   # set up backend
   backend:
@@ -24,7 +24,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - ./backend/.env
+      - ./backend/.docker.env
     depends_on:
       - mongodb
 
