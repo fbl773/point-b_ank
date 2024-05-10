@@ -52,12 +52,6 @@ async function do_authenticate(req:AuthorizedRequest,admin_required:boolean = fa
     if(token == null)
         throw Error("Invalid Token");
 
-    if (admin_required){
-       let payload = get_payload(req);
-       if(payload.role != "admin")
-           throw Error("Operation requires Administrator access.")
-    }
-
     //otherwise carry on
     jwt.verify(token,JWT_SECRET,{},(err,payload) => {
         //If it failed,  fail
@@ -66,6 +60,13 @@ async function do_authenticate(req:AuthorizedRequest,admin_required:boolean = fa
 
         //If it did not fail, assign token and cary on
         req.token = payload;
+
+        //And if it requires admin, throw a fit if it tries to authenticate without
+        if (admin_required){
+            let payload = get_payload(req);
+            if(payload.role != "admin")
+                throw Error("Operation requires Administrator access.")
+        }
     });
 }
 

@@ -9,7 +9,7 @@ const user_router= Router();
 /* Give them the CRUD treatment*/
 crud_factory.create<IUser>(User,user_router,authenticate_admin,"user");
 crud_factory.read_all<IUser>(User,user_router,authenticate_admin,"user");
-crud_factory.read_one<IUser>(User,user_router,authenticate_admin,"user") ;
+crud_factory.read_one<IUser>(User,user_router,authenticate_admin,"user");
 crud_factory.delete_one<IUser>(User,user_router,authenticate_admin,"user");
 
 user_router.patch(

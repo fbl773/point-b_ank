@@ -14,6 +14,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import path from "path";
+import user_router from "./routes/user";
 
 
 
@@ -49,6 +50,7 @@ app.use("/periods",period_router);
 app.use("/cultures",culture_router);
 app.use("/regions",region_router);
 app.use("/points",projectile_point_router);
+app.use("/users",user_router);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
