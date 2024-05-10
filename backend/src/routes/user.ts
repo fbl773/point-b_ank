@@ -12,6 +12,11 @@ crud_factory.read_all<IUser>(User,user_router,authenticate_admin,"user");
 crud_factory.read_one<IUser>(User,user_router,authenticate_admin,"user");
 crud_factory.delete_one<IUser>(User,user_router,authenticate_admin,"user");
 
+/**
+ * Finds the user that owns the passed token and updates their username IF
+ * their credentials match/they have admin privledges.
+ * @TODO: Refactor this next pass. Update could handle this.
+ */
 user_router.patch(
     "/changeUsername",
     authenticate_admin,
@@ -44,18 +49,22 @@ user_router.patch(
     }
 )
 
+/**
+ * The same as for username, but for passwords.
+ * @TODO: The same. You should be able to generalize most of this
+ */
 user_router.patch(
     "/changePassword",
     authenticate_admin,
     async (req: Request, res: Response) => {
-        let updated_user:IUser = req.body; // the incoming changes to Uname
+        let {oldPassword,newPassword}= req.body; // the incoming changes to Uname
         let payload:TokenData = get_payload(req); // the creds attached to the token
 
         //check password matches
         User.findById(payload._id)
             .then(async (found_user )=> {
                 let existing_password = found_user?.password || "NOT POSSIBLE";
-                await bcrypt.compare(updated_user.password,existing_password)
+                await bcrypt.compare(oldPassword,existing_password)
                     .then(async match => {
                         //If the update had the wrong password, don't update it...
                         if (!match)
@@ -63,10 +72,10 @@ user_router.patch(
 
                         //Do the update (allegedly)
                         if (found_user) {
-                            let hashed_password = await bcrypt.hash(updated_user.password, 10);
+                            let hashed_password = await bcrypt.hash(newPassword, 10);
                             found_user.password = hashed_password;
                             await found_user.save()
-                                .then(() => res.status(200).send({message:`succesfully updated password for user ${payload._id}`}))
+                                .then(() => res.status(200).send({message:`successfully updated password for user ${payload._id}`}))
                                 .catch((err) => res.status(500).send({message:`failed to update user ${payload._id}`,err}));
                         }
                     })
