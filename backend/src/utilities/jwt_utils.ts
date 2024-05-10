@@ -41,9 +41,9 @@ export function get_payload(req:Request):TokenData{
  * Performs the actual authentication
  * @overview pulls the token from the incoming request and checks its validity
  * @param req:AutorizedRequest - a requestthat has an authorization header field
- * @param res:Response - the response to forward
+ * @param admin_required
  */
-async function do_authenticate(req:AuthorizedRequest, res:Response):Promise<void>{
+async function do_authenticate(req:AuthorizedRequest,admin_required:boolean = false):Promise<void>{
     //Grab the token
     let token = req.headers.authorization || "NO TOKEN";
     token = token.split(' ')[1];
@@ -51,6 +51,12 @@ async function do_authenticate(req:AuthorizedRequest, res:Response):Promise<void
     //if the token is bad, send them home
     if(token == null)
         throw Error("Invalid Token");
+
+    if (admin_required){
+       let payload = get_payload(req);
+       if(payload.role != "admin")
+           throw Error("Operation requires Administrator access.")
+    }
 
     //otherwise carry on
     jwt.verify(token,JWT_SECRET,{},(err,payload) => {
@@ -70,10 +76,17 @@ async function do_authenticate(req:AuthorizedRequest, res:Response):Promise<void
  * @param next - whatever we do after...
  */
 async function authenticate(req:Request,res:Response,next:NextFunction){
-    return do_authenticate(req as AuthorizedRequest,res)
+    return do_authenticate(req as AuthorizedRequest)
         .then(next)
         .catch( (err:Error) => res.status(401).json({message:"Authentication failed",error:err.message}));
 }
+
+export async function authenticate_admin(req:Request,res:Response,next:NextFunction){
+    return do_authenticate(req as AuthorizedRequest,true)
+        .then(next)
+        .catch( (err:Error) => res.status(401).json({message:"Authentication failed",error:err.message}));
+}
+
 
 /**
  * Handles the signing of jwt tokens
