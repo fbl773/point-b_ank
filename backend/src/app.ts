@@ -54,6 +54,8 @@ app.use("/projectilepoints",projectile_point_router); //TODO remove after fronte
 app.use("/points",projectile_point_router);
 app.use("/users",user_router);
 
+/** Handler for discontinued routes
+ * TODO: Remove once frontend refactor is complete */
 const unimplemented_router = Router();
 unimplemented_router.all("/",(_req,res) => {
     return res.status(501).send({message:"This feature is under construction"})
