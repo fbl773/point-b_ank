@@ -37,10 +37,6 @@ function LoginModal({ modalVisible, closeModal }) {
 				password,
 			});
 
-			/***
-			 * These loggers are for testing to make sure that the information is properly passed
-			 * MAKE SURE THESE ARE REMOVED BEFORE RELEASE, VERY IMPORTANT
-			 */
 			localStorage.setItem("token",response.data.token);
 
 			if (response.status === 200) {
