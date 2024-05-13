@@ -1,4 +1,4 @@
-import express, {Express, Request, Response} from "express";
+import express, {Express, Request, Response, Router} from "express";
 import dotenv from "dotenv";
 import catalogue_router from "./routes/catalogue";
 import {login_router, access_control_router} from "./routes/access_control";
@@ -49,8 +49,23 @@ app.use("/materials",material_router);
 app.use("/periods",period_router);
 app.use("/cultures",culture_router);
 app.use("/regions",region_router);
+app.use("/artifacts",projectile_point_router);//TODO remove after frontend refactor
+app.use("/projectilepoints",projectile_point_router); //TODO remove after frontend refactor
 app.use("/points",projectile_point_router);
 app.use("/users",user_router);
+
+const unimplemented_router = Router();
+unimplemented_router.all("/",(_req,res) => {
+    return res.status(501).send({message:"This feature is under construction"})
+})
+
+app.use("/aggregateStatisticsGenerators",unimplemented_router);
+app.use("/bladeshapes", unimplemented_router);
+app.use("/baseshapes", unimplemented_router);
+app.use("/haftingshapes", unimplemented_router);
+app.use("/crosssections", unimplemented_router);
+app.use("/artifacttypes", unimplemented_router);
+
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
