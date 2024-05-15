@@ -1,8 +1,5 @@
 import {Schema,Model,model} from "mongoose"
 import {IArtifact} from "./mongo_entity";
-import Culture from "./culture";
-import Material from "./material";
-import Site from "./site";
 
 export interface IProjectilePoint extends IArtifact{
     name: string,
