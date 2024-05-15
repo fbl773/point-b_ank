@@ -1,7 +1,5 @@
 import {Schema,Types,Model,model} from "mongoose"
 import {IMongo_Entity} from "./mongo_entity";
-import Catalogue from "./catalogue";
-import Region from "./region";
 import ProjectilePoint, {IProjectilePoint} from "./projectile_point";
 import {cascade_related} from "../utilities/trigger_factory";
 
