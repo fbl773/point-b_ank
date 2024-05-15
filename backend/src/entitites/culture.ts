@@ -1,6 +1,5 @@
 import {Schema, Model, model, Types} from "mongoose"
 import {IMongo_Entity} from "./mongo_entity";
-import Period from "./period";
 import ProjectilePoint, {IProjectilePoint} from "./projectile_point";
 import {update_related} from "../utilities/trigger_factory";
 
@@ -9,7 +8,6 @@ export interface ICulture extends IMongo_Entity{
     period_id:Types.ObjectId,
     start: number,
     end: number
-    //templates:[],
 }
 
 type CultureModel = Model<ICulture>;
