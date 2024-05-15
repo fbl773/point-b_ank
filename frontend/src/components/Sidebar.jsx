@@ -75,7 +75,7 @@ function Sidebar() {
 		 */
 		const checkLoginStatus = async () => {
 			try {
-				const response = await http.get("/users");
+				const response = await http.get("/verify");
 				setIsLoggedIn(!!response.data);
 			} catch (error) {
 				console.error("Error checking login status:", error);
@@ -133,14 +133,10 @@ function Sidebar() {
 	 * @post Sends a logout request to the backend, logs out the user, and reloads the page.
 	 */
 	const handleLogout = async () => {
-		try {
-			await http.post("/users/logout");
-			setIsLoggedIn(false);
-			navigate("/");
-			window.location.reload();
-		} catch (error) {
-			console.error("Error logging out:", error);
-		}
+		localStorage.removeItem("token");
+		setIsLoggedIn(false);
+		navigate("/");
+		window.location.reload();
 	};
 
 	return (
