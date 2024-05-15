@@ -3,49 +3,30 @@
 version: "3.9"
 
 services:
-  # set up db
-  postgres:
-    image: postgres:latest
-    ports:
-      - "5432:5432"
-    env_file:
-      - ./backend/.env
 
-    # hold database data (persistent data)
-    # run initial database queries on first time
+  mongodb:
+    image: mongo:latest
+    container_name: point_mongo
     volumes:
-      - ./postgresql/data:/var/lib/postgresql/data
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
-
-  # to use pgadmin
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: root
+      - /Users/FrankyB/fgrams/Projects/databases/pblank:/data/db
     ports:
-      - "5050:80"
+      - "27017:27017"
+    env_file:
+      - ./backend/.docker.env
 
   # set up backend
   backend:
     build:
       context: ./backend
-      dockerfile: dockerfile
+      dockerfile: dev.dockerfile
     volumes:
-      - /backend/node_modules
-      - ./backend:/backend
+      - /Users/FrankyB/fgrams/Projects/databases/pblank_uploads:/backend/uploads
     ports:
       - "3000:3000"
-
-    # check if database is initialized
-    command: bash -c 'while !</dev/tcp/postgres/5432; do sleep 1; done; npm run devstart'
     env_file:
-      - ./backend/.env
-    environment:
-      DB_HOST: postgres
+      - ./backend/.docker.env
     depends_on:
-      - postgres
+      - mongodb
 
   # set up frontend
   frontend:

@@ -21,7 +21,7 @@ import DialogTitle from "@mui/material/DialogTitle";
  */
 // eslint-disable-next-line react/prop-types
 function LoginModal({ modalVisible, closeModal }) {
-	const [userName, setUserName] = useState();
+	const [username, setUsername] = useState();
 	const [password, setPassword] = useState();
 
 	/**
@@ -32,17 +32,12 @@ function LoginModal({ modalVisible, closeModal }) {
 		event.preventDefault();
 
 		try {
-			const response = await http.post("/users", {
-				userName,
+			const response = await http.post("/login", {
+				username,
 				password,
 			});
 
-			/***
-			 * These loggers are for testing to make sure that the information is properly passed
-			 * MAKE SURE THESE ARE REMOVED BEFORE RELEASE, VERY IMPORTANT
-			 */
-			log.info("Username entered: " + userName);
-			log.info("Password entered: " + password);
+			localStorage.setItem("token",response.data.token);
 
 			if (response.status === 200) {
 				// Login successful
@@ -74,8 +69,8 @@ function LoginModal({ modalVisible, closeModal }) {
 	 * Set user name value every textfield input change
 	 * @param {object} event input textfield event object
 	 */
-	const userNameChanged = (event) => {
-		setUserName(event.target.value);
+	const usernameChanged = (event) => {
+		setUsername(event.target.value);
 	};
 
 	/**
@@ -118,7 +113,7 @@ function LoginModal({ modalVisible, closeModal }) {
 						type="string"
 						fullWidth
 						variant="outlined"
-						onChange={userNameChanged}
+						onChange={usernameChanged}
 					/>
 					<TextField
 						required
