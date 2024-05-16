@@ -40,39 +40,36 @@ const Catalogue = () => {
 	 * Fetch default catalogue initialized in database
 	 */
 	useEffect(() => {
-		async function fetchCatalogue() {
-			try {
-				let default_cat = {
-					_id:"PLACEHOLDER",
-					name:"PLACEHOLDER",
-					description:"PLACEHOLDER_DESC"
-				};
-				await http.get("/catalogues")
-					.then(cats =>{
-						if (cats.data.length == 0){
-							//If we have no catalogues, then
-							default_cat.name = "Default Catalogue";
-							default_cat.description = "This is the default catalogue";
-							http.post("/catalogues",default_cat)
-								.then(new_cat => default_cat = new_cat)
-								.catch(err => console.error("Failed to create default catalogue",err));
-						} else {
-							let fetched_cat = cats.data[0];
-							default_cat._id = fetched_cat._id;
-							default_cat.name = fetched_cat.name;
-							default_cat.description = fetched_cat.description;
-							console.log("def cat",default_cat);
-							log.info("Default catalogue: ", default_cat);
-						}
-						setCatalogueName(default_cat.name);
-						setCatalogueDescription(default_cat.description);
-					})
-			} catch (error) {
-				log.error("Error fetching default catalogue: ", error);
-			}
+		async function bad_design(){
+			let default_cat = {
+				name: "PLACEHOLDER",
+				description: "PLACEHOLDER_DESC"
+			};
+			//Try to get the catalogues
+			await http.get("/catalogues")
+				.then(cats => {
+					if (cats.status === 200 && cats.data.length === 0) {
+						console.log(cats.data.length,cats.status);
+						//If we have no catalogues, then
+						default_cat.name = "Default Catalogue";
+						default_cat.description = "This is the default catalogue";
+						http.post("/catalogues", default_cat)
+							.then(new_cat => default_cat = new_cat)
+							.catch(err => console.error("Failed to create default catalogue", err));
+					} else {
+						let fetched_cat = cats.data[0];
+						default_cat._id = fetched_cat._id;
+						default_cat.name = fetched_cat.name;
+						default_cat.description = fetched_cat.description;
+						console.log("def cat", default_cat);
+						log.info("Default catalogue: ", default_cat);
+					}
+					setCatalogueName(default_cat.name);
+					setCatalogueDescription(default_cat.description);
+				})
+				.catch(err => console.error("failed to fetch default catalogue: ", err));
 		}
-
-		fetchCatalogue();
+		bad_design();
 	}, [openEdit]);
 
 	/**

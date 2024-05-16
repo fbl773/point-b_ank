@@ -50,7 +50,7 @@ function read_all<T>(model:Model<T>,
         (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE",entity_name); _next()},
         (req: Request, res: Response) => {
             model.find({})
-                .then((entities) => res.status(201).send(entities))
+                .then((entities) => res.status(200).send(entities))
                 .catch(err => res.status(404).send({message:`Failed to find${entity_name}s`,err}))
         }
     );
