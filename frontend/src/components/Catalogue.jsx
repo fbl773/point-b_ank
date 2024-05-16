@@ -25,6 +25,7 @@ import { UserContext } from "../context/userContext.jsx";
  * @returns {JSX.Element} Catalogue React component
  */
 const Catalogue = () => {
+	const [catalogueId,setCatalogueId] = useState("");
 	const [catalogueName, setCatalogueName] = useState("");
 	const [catalogueDescription, setCatalogueDescription] = useState("");
 
@@ -42,6 +43,7 @@ const Catalogue = () => {
 	useEffect(() => {
 		async function bad_design(){
 			let default_cat = {
+				_id: undefined,
 				name: "PLACEHOLDER",
 				description: "PLACEHOLDER_DESC"
 			};
@@ -49,21 +51,17 @@ const Catalogue = () => {
 			await http.get("/catalogues")
 				.then(cats => {
 					if (cats.status === 200 && cats.data.length === 0) {
-						console.log(cats.data.length,cats.status);
 						//If we have no catalogues, then
 						default_cat.name = "Default Catalogue";
 						default_cat.description = "This is the default catalogue";
 						http.post("/catalogues", default_cat)
-							.then(new_cat => default_cat = new_cat)
+							.then(new_cat =>  default_cat = new_cat)
 							.catch(err => console.error("Failed to create default catalogue", err));
 					} else {
 						let fetched_cat = cats.data[0];
-						default_cat._id = fetched_cat._id;
-						default_cat.name = fetched_cat.name;
-						default_cat.description = fetched_cat.description;
-						console.log("def cat", default_cat);
-						log.info("Default catalogue: ", default_cat);
+						default_cat = fetched_cat;
 					}
+					setCatalogueId(default_cat._id);
 					setCatalogueName(default_cat.name);
 					setCatalogueDescription(default_cat.description);
 				})
@@ -199,7 +197,7 @@ const Catalogue = () => {
 				<CatalogueModal
 					openEdit={openEdit}
 					setOpenEdit={setOpenEdit}
-					catalogueId={1}
+					catalogueId={catalogueId}
 					catalogueName={catalogueName}
 				/>
 			)}
