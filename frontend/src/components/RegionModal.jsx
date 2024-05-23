@@ -89,7 +89,7 @@ export default function RegionModal({
 		requestMethod(requestUrl, updatedRegion)
 			.then((response) => {
 				log.info("Region saved successfully: ", response.data);
-				updateRegionsList(response.data.new_ent);
+				updateRegionsList(response.data.new_ent | response.data.updated);//TODO: This is just bad. The whole method should be 2 methods. Clever but confusing.
 				handleClose();
 			})
 			.catch((error) => {
