@@ -170,7 +170,7 @@ const SiteModal = ({
 				);
 				if (filteredRegion) {
 					log.info(filteredRegion);
-					setRegionID(filteredRegion.id);
+					setRegionID(filteredRegion._id);
 				}
 			})
 			.catch((error) => log.error("Error fetching regions:", error));
@@ -209,7 +209,7 @@ const SiteModal = ({
 	const updateRegionsList = (newRegion) => {
 		setRegions((prevRegions) => {
 			const index = prevRegions.findIndex(
-				(region) => region.id === newRegion.id,
+				(region) => region._id === newRegion._id,
 			);
 			if (index > -1) {
 				// Update existing region
@@ -218,17 +218,22 @@ const SiteModal = ({
 				return updatedRegions;
 			} else {
 				// Else, add the new region to the list
+				setSelectedRegionID(newRegion._id);
+				console.log("SET REGION ID TO" + newRegion._id)
+				setSelectedRegion(newRegion.name);
 				return [...prevRegions, newRegion];
 			}
 		});
 	};
 	// This function handles delete a culture from the server and updates the local list.
 	const handleDeleteRegion = () => {
-		if (currentRegion && currentRegion.id) {
+		if (currentRegion && currentRegion._id) {
 			http
-				.delete(`/regions/${currentRegion.id}`)
+				.delete(`/regions/${currentRegion._id}`)
 				.then(() => {
-					setRegions(regions.filter((r) => r.id !== currentRegion.id));
+					setSelectedRegion("");
+					setSelectedRegionID("");
+					setRegions(regions.filter((r) => r._id !== currentRegion._id));
 					handleCloseMenu();
 				})
 				.catch((error) => {
@@ -296,7 +301,7 @@ const SiteModal = ({
 									renderValue={(selected) => selected}
 								>
 									{regions.map((region) => (
-										<MenuItem key={region.id} value={region.name}>
+										<MenuItem key={region._id} value={region.name}>
 											{region.name}
 											<IconButton
 												size="small"
@@ -334,7 +339,7 @@ const SiteModal = ({
 							>
 								<MenuItem
 									onClick={() => {
-										handleOpenRegionModal(currentRegion.id);
+										handleOpenRegionModal(currentRegion._id);
 										handleCloseMenu();
 									}}
 								>

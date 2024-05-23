@@ -21,10 +21,10 @@ function create<T extends IMongo_Entity>(model:Model<T>,
         (req: Request, res: Response) => {
             let new_entity: T = req.body;
             model.create(new_entity)
-                .then((nent:T) => res.status(201).send(
+                .then((new_ent) => res.status(201).send(
                     {
                         message:`Created new ${entity_name}`,
-                        id:nent._id
+                        new_ent
                     }))
                 .catch(err => res.status(404).send({message:`Failed to create ${entity_name}`,err}))
         }
