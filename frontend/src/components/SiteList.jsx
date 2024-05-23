@@ -14,12 +14,10 @@ import {
 	Paper,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { baseURL } from "../../http";
-
 import { useContext } from "react";
 import { UserContext } from "../context/userContext";
 import { sortData } from "../sortUtils";
-import catalogue from "./Catalogue.jsx";
+import http from "../../http.js";
 
 /**
  * Item component styled from the Paper MUI component.
@@ -79,14 +77,17 @@ export default function SiteList({ query, sortValue, host_catalogue_id }) {
 	 * @post Sets the 'data' state to the list of fetched sites. Catches and logs any errors.
 	 */
 	useEffect(() => {
-		fetch(`${baseURL}/sites`)
-			.then((response) => response.json())
-			.then((json) => {
-				// sort JSON first
-				const sortedData = sortData(json, sortValue);
-				setData(sortedData);
-			})
-			.catch((error) => console.error("Error fetching data:", error));
+		async function bad_design(){
+			await http.get("/sites")
+				.then((response) => response.data)
+				.then((json) => {
+					// sort JSON first
+					const sortedData = sortData(json, sortValue);
+					setData(sortedData);
+				})
+				.catch((error) => console.error("Error fetching data:", error));
+		}
+		bad_design();
 	}, [openAdd, sortValue]); // Depend on 'open' to refetch when the modal is closed.
 
 	/**

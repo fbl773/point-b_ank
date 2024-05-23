@@ -8,6 +8,7 @@ import {cascade_related} from "../utilities/trigger_factory";
 export interface ISite extends IMongo_Entity{
     name: string,
     description: string,
+    location: string,
     catalogue_id: Types.ObjectId
     region_id: Types.ObjectId
 }
@@ -16,6 +17,7 @@ type SiteModal = Model<ISite>;
 const siteSchema = new Schema<ISite,SiteModal>({
     name:{type:String, required:true},
     description:{type:String, required:false},
+    location:{type:String, required:false,default:"Unspecified"},
     catalogue_id:{type: Schema.Types.ObjectId, ref:"Catalogue",required:true},
     region_id:{type: Schema.Types.ObjectId, ref:"Region",required:true}
 
