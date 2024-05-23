@@ -39,6 +39,7 @@ const SiteModal = ({
 	setOpenEdit,
 	siteId,
 	siteName,
+	catalogue_id,
 }) => {
 	const [name, setSiteName] = useState("");
 	const [description, setDescription] = useState("");
@@ -105,14 +106,15 @@ const SiteModal = ({
 			name,
 			description,
 			location,
-			catalogueId: 1,
-			regionId: regionID,
+			catalogue_id: catalogue_id,
+			region_id: regionID,
 		};
 
 		// set up API endpoint depending if modal is being used for add or edit
 		const requestUrl = `/sites/${siteId || ""}`;
 		const requestMethod = openAdd ? http.post : http.put;
 
+		console.log("Adding site",newSite);
 		requestMethod(requestUrl, newSite)
 			.then((response) => {
 				if (openAdd) {
@@ -219,7 +221,6 @@ const SiteModal = ({
 			} else {
 				// Else, add the new region to the list
 				setSelectedRegionID(newRegion._id);
-				console.log("SET REGION ID TO" + newRegion._id)
 				setSelectedRegion(newRegion.name);
 				return [...prevRegions, newRegion];
 			}

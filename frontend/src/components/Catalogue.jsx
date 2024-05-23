@@ -206,7 +206,7 @@ const Catalogue = () => {
 					Sites
 				</Typography>
 				{/* Note: this shows all the sites attached to the catalogue oldest first(as of March 9th, 2023) */}
-				<SiteList query={searchValue} sortValue={sortValue} />
+				<SiteList query={searchValue} sortValue={sortValue} host_catalogue_id={catalogueId} />
 			</Grid>
 		</BaseLayout>
 	);

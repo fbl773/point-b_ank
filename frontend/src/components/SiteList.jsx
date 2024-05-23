@@ -19,6 +19,7 @@ import { baseURL } from "../../http";
 import { useContext } from "react";
 import { UserContext } from "../context/userContext";
 import { sortData } from "../sortUtils";
+import catalogue from "./Catalogue.jsx";
 
 /**
  * Item component styled from the Paper MUI component.
@@ -39,11 +40,12 @@ const Item = styled(Paper)(({ theme }) => ({
  *
  * @param {Object} props - The component props.
  * @param {string} props.query - The search query used to filter displayed sites.
+ * @param {string} host_catalogue_id the id of the hosting catalogue
  * @pre None
  * @post Renders a list of site cards filtered by the provided query. Each card is clickable.
  * @returns {JSX.Element} The rendered component with a list of site cards.
  */
-export default function SiteList({ query, sortValue }) {
+export default function SiteList({ query, sortValue, host_catalogue_id }) {
 	const [openAdd, setOpenAdd] = useState(false); // Controls the visibility of the SiteModal.
 	const [data, setData] = useState([]); // Stores the list of sites.
 	const { user } = useContext(UserContext);
@@ -153,7 +155,7 @@ export default function SiteList({ query, sortValue }) {
 					</Box>
 				</Grid>
 			</Item>
-			{openAdd && <SiteModal openAdd={openAdd} setOpenAdd={setOpenAdd} />}
+			{openAdd && <SiteModal openAdd={openAdd} setOpenAdd={setOpenAdd} catalogue_id={host_catalogue_id} />}
 		</div>
 	);
 }
