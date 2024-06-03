@@ -71,6 +71,19 @@ export default function SiteList({ query, sortValue, host_catalogue_id }) {
 	};
 
 	/**
+	 * queries a sites region ID to get it's region details
+	 * @param sites:[] the list of sites
+	 * @return {Promise<void>}
+	 */
+	async function assign_location(site){
+		http.get(`/regions/${site.region_id}`)
+			.then(reg=> {
+				site.location = reg.data.name;
+			})
+			.catch(err => console.error("Your Hacky BS is not working :(",err));
+	}
+
+	/**
 	 * Fetches the list of sites from the backend upon component mount.
 	 *
 	 * @pre None
@@ -80,10 +93,13 @@ export default function SiteList({ query, sortValue, host_catalogue_id }) {
 		async function bad_design(){
 			await http.get("/sites")
 				.then((response) => response.data)
-				.then((json) => {
+				.then((sites) => {
 					// sort JSON first
-					const sortedData = sortData(json, sortValue);
+					const sortedData = sortData(sites, sortValue);
+					sites.forEach(site => assign_location(site));
+					console.log(sites)
 					setData(sortedData);
+
 				})
 				.catch((error) => console.error("Error fetching data:", error));
 		}
@@ -144,7 +160,7 @@ export default function SiteList({ query, sortValue, host_catalogue_id }) {
 																: item.location.substr(0, 15) + "..."}
 														</Typography>
 														<Typography variant="body2" component="p">
-															{item.id}
+															{item._id}
 														</Typography>
 													</CardContent>
 												</Card>

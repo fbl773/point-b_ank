@@ -46,7 +46,7 @@ const Site = () => {
 	const { user } = useContext(UserContext);
 
 	const inComingInfo = useLocation();
-	const siteID = inComingInfo.state.info.id;
+	const siteID = inComingInfo.state.info._id;
 
 	/**
 	 * Fetches detailed information about the site using its ID.
