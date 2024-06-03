@@ -123,9 +123,9 @@ export default function SiteList({ query, sortValue, host_catalogue_id }) {
 							)}
 							{filteredData &&
 								filteredData.map((item) => (
-									<Grid item xl={2} key={item.id}>
+									<Grid item xl={2} key={item._id}>
 										<ButtonBase onClick={handleClick2(item)}>
-											<Link to="/site" state={{ info: item }}>
+											<Link to={`/site/${item._id}`} state={{ info: item }}>
 												<Card
 													sx={{
 														minWidth: "12rem",

@@ -19,7 +19,7 @@ function App() {
 		<UserContextProvider>
 			<Routes>
 				<Route path="/" element={<Catalogue />} />
-				<Route path="/site" element={<Site />} />
+				<Route path="/site/:id" element={<Site />} />
 				<Route path="/stats" element={<StatisticsPage />} />
 				<Route path="/settings" element={<SettingsPage />} />
 				<Route path="/managePeriods" element={<ManagePeriods />} />
