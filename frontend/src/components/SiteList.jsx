@@ -18,6 +18,7 @@ import { useContext } from "react";
 import { UserContext } from "../context/userContext";
 import { sortData } from "../sortUtils";
 import http from "../../http.js";
+import SiteCard from "./SiteCard.jsx";
 
 /**
  * Item component styled from the Paper MUI component.
@@ -97,7 +98,7 @@ export default function SiteList({ query, sortValue, host_catalogue_id }) {
 					// sort JSON first
 					const sortedData = sortData(sites, sortValue);
 					sites.forEach(site => assign_location(site));
-					console.log(sites)
+					console.log(sites);
 					setData(sortedData);
 
 				})
@@ -138,36 +139,7 @@ export default function SiteList({ query, sortValue, host_catalogue_id }) {
 								</Grid>
 							)}
 							{filteredData &&
-								filteredData.map((item) => (
-									<Grid item xl={2} key={item._id}>
-										<ButtonBase onClick={handleClick2(item)}>
-											<Link to={`/site/${item._id}`} state={{ info: item }}>
-												<Card
-													sx={{
-														minWidth: "12rem",
-														minHeight: "12rem",
-														alignContent: "center",
-													}}
-												>
-													<CardContent>
-														<Typography variant="h5" component="h3">
-															{item.name}
-														</Typography>
-														<Typography color="textSecondary" gutterBottom>
-															{/* Limit description characters to prevent text overflow */}
-															{item.location.length <= 15
-																? item.location
-																: item.location.substr(0, 15) + "..."}
-														</Typography>
-														<Typography variant="body2" component="p">
-															{item._id}
-														</Typography>
-													</CardContent>
-												</Card>
-											</Link>
-										</ButtonBase>
-									</Grid>
-								))}
+								filteredData.map((item) => <SiteCard key={item._id} site={item}/> )}
 						</Grid>
 					</Box>
 				</Grid>
