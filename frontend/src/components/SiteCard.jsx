@@ -33,7 +33,7 @@ class SiteCard extends Component {
 	render() {
 		return (
 			<Grid item xl={2} key={this.props.site._id}>
-				<Link to={`/site/${this.props._id}`} state={{info: this.props.site}}>
+				<Link to={`/site/${this.props.site._id}`} state={{info: this.props.site}}>
 					<Card
 						sx={{
 							minWidth: "12rem",

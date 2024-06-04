@@ -40,11 +40,12 @@ const SiteModal = ({
 	siteId,
 	siteName,
 	catalogue_id,
+	regionId,
 }) => {
 	const [name, setSiteName] = useState("");
 	const [description, setDescription] = useState("");
 	const [location, setLocation] = useState("");
-	const [regionID, setRegionID] = useState(0);
+	const [regionID, setRegionID] = useState(regionId ?? "");
 
 	// Site selection and menu functionality
 	const [anchorEl, setAnchorEl] = useState(null);
@@ -53,7 +54,7 @@ const SiteModal = ({
 	const [selectedRegion, setSelectedRegion] = useState("");
 	const [editRegion, setEditRegion] = useState(false);
 	const [regionModalOpen, setRegionModalOpen] = useState(false);
-	const [selectedRegionID, setSelectedRegionID] = useState(null);
+	const [selectedRegionID, setSelectedRegionID] = useState(regionId ?? null);
 	const [editingRegion, setEditingRegion] = useState("");
 
 	const [siteNameError, setSiteNameError] = useState(false); // for artifact type dropdown error handling
@@ -148,7 +149,7 @@ const SiteModal = ({
 					setSiteName(response.data.name);
 					setDescription(response.data.description);
 					setLocation(response.data.location);
-					setSelectedRegion(response.data.region.name);
+					setSelectedRegion(response.data.region.name); //TODO: We need to fetch or pass the region name... what an ugly refactor
 				})
 				.catch((error) => {
 					log.error("Error fetching site: ", error);
@@ -182,7 +183,7 @@ const SiteModal = ({
 	// If a cultureId is provided, the modal is configured for editing that culture.
 	// If no cultureId is provided, the modal is configured for adding a new culture.
 	const handleOpenRegionModal = (regionId = null) => {
-		setSelectedRegionID(regionId);
+		setSelectedRegionID(regionId ?? this.props.regionId);
 		setEditRegion(true);
 		setRegionModalOpen(true);
 	};

@@ -98,7 +98,6 @@ export default function SiteList({ query, sortValue, host_catalogue_id }) {
 					// sort JSON first
 					const sortedData = sortData(sites, sortValue);
 					sites.forEach(site => assign_location(site));
-					console.log(sites);
 					setData(sortedData);
 
 				})
@@ -144,7 +143,7 @@ export default function SiteList({ query, sortValue, host_catalogue_id }) {
 					</Box>
 				</Grid>
 			</Item>
-			{openAdd && <SiteModal openAdd={openAdd} setOpenAdd={setOpenAdd} catalogue_id={host_catalogue_id} />}
+			{openAdd && <SiteModal openAdd={openAdd} setOpenAdd={setOpenAdd} catalogue_id={host_catalogue_id}/>}
 		</div>
 	);
 }

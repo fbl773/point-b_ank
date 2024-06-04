@@ -35,6 +35,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 const Site = () => {
 	const [siteName, setSiteName] = useState("");
 	const [siteDescription, setSiteDescription] = useState("");
+	const [regionId, setRegionId] = useState("...loading");
 
 	const [searchValue, setSearchValue] = useState("");
 	const [sortValue, setSortValue] = useState("newest");
@@ -60,6 +61,7 @@ const Site = () => {
 				const response = await http.get(`/sites/${siteID}`);
 				setSiteName(response.data.name);
 				setSiteDescription(response.data.description);
+				setRegionId(response.data.region_id);
 				log.info("Site: ", response.data);
 			} catch (error) {
 				log.error("Error fetching site:", error);
@@ -246,6 +248,7 @@ const Site = () => {
 					setOpenEdit={setOpenEdit}
 					siteId={siteID}
 					siteName={siteName}
+					regionId={regionId}
 				/>
 			)}
 			<Grid item xs={12}>
