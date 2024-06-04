@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import SiteModal from "./SiteModal";
+import EditSite from "./EditSite.jsx";
 import { Link } from "react-router-dom";
 import {
 	styled,
@@ -70,6 +71,10 @@ export default function SiteList({ query, sortValue, host_catalogue_id }) {
 	const handleClick2 = (item) => () => {
 		console.log("Card clicked! ID:", item.id);
 	};
+
+	function onClose(){
+		setOpenAdd(false)
+	}
 
 	/**
 	 * queries a sites region ID to get it's region details
@@ -143,7 +148,8 @@ export default function SiteList({ query, sortValue, host_catalogue_id }) {
 					</Box>
 				</Grid>
 			</Item>
-			{openAdd && <SiteModal openAdd={openAdd} setOpenAdd={setOpenAdd} catalogue_id={host_catalogue_id}/>}
+			{/*{openAdd && <SiteModal adding_new={true} onClose={() => setOpenAdd(false)} catalogue_id={host_catalogue_id}/>}*/}
+			{openAdd && <EditSite adding_new={true} onClose={onClose} catalogue_id={host_catalogue_id}/>}
 		</div>
 	);
 }
