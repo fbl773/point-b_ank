@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
+import RegionListItem from "../refactor/RegionListItem.jsx";
 import http from "../../http.js";
 import log from "../logger.js";
 import {
@@ -138,26 +139,6 @@ const SiteModal = ({
 	};
 
 	/**
-	 * Pre-populate input fields for editing site
-	 */
-	useEffect(() => {
-		if (openEdit) {
-			http
-				.get(`/sites/${siteId}`)
-				.then((response) => {
-					log.info("Editing site: ", response.data);
-					setSiteName(response.data.name);
-					setDescription(response.data.description);
-					setLocation(response.data.location);
-					setSelectedRegion(response.data.region.name); //TODO: We need to fetch or pass the region name... what an ugly refactor
-				})
-				.catch((error) => {
-					log.error("Error fetching site: ", error);
-				});
-		}
-	}, [openEdit, siteId]);
-
-	/**
 	 * Fetches Site information from the backend when the component mounts.
 	 *
 	 * @pre http must be configured correctly.
@@ -167,6 +148,7 @@ const SiteModal = ({
 		http
 			.get("/regions")
 			.then((response) => {
+				console.log("GETTING REGION")
 				setRegions(response.data);
 				const filteredRegion = response.data.find(
 					(region) => region.name === selectedRegion,
@@ -178,6 +160,31 @@ const SiteModal = ({
 			})
 			.catch((error) => log.error("Error fetching regions:", error));
 	}, [selectedRegion, editingRegion]);
+
+
+	/**
+	 * Pre-populate input fields for editing site
+	 */
+	useEffect(() => {
+		if (openEdit) {
+			http
+				.get(`/sites/${siteId}`)
+				.then((response) => {
+					log.info("Editing site: ", response.data);
+					setSiteName(response.data.name);
+					setDescription(response.data.description);
+					setLocation(response.data.location);
+					let sel_region = regions.find((reg) => reg._id === response.data.region_id)
+					console.log("Regions:",regions)
+					setSelectedRegion(sel_region.name); //TODO: We need to fetch or pass the region name... what an ugly refactor
+				})
+				.catch((error) => {
+					log.error("Error fetching site: ", error);
+				});
+		}
+	}, [openEdit, siteId]);
+
+
 
 	// This function opens the CultureModal for editing an existing culture or adding a new one.
 	// If a cultureId is provided, the modal is configured for editing that culture.
@@ -207,6 +214,13 @@ const SiteModal = ({
 	const handleRegionChange = (event) => {
 		setSelectedRegion(event.target.value);
 	};
+
+	const remove_from_list = (region_id) => {
+		let idx = regions.findIndex((reg) => reg._id === region_id);
+		if(idx >= 0){
+			setRegions(regions.filter((r) => r._id !== region_id));
+		}
+	}
 
 	// This function ensures the dropdown list reflects the most current data without needing to refetch from the server.
 	const updateRegionsList = (newRegion) => {
@@ -302,17 +316,22 @@ const SiteModal = ({
 									onChange={handleRegionChange}
 									renderValue={(selected) => selected}
 								>
-									{regions.map((region) => (
-										<MenuItem key={region._id} value={region.name}>
-											{region.name}
-											<IconButton
-												size="small"
-												onClick={(event) => handleOpenMenu(event, region)}
-												style={{ marginLeft: "auto" }}
-											>
-												<MoreHorizIcon />
-											</IconButton>
-										</MenuItem>
+									{regions.map((reg) => (
+										<RegionListItem
+											key = {reg._id}
+											region = {reg}
+											on_delete = {() => remove_from_list(reg._id)}
+										/>
+										// <MenuItem key={region._id} value={region.name}>
+										// 	{region.name}
+										// 	<IconButton
+										// 		size="small"
+										// 		onClick={(event) => handleOpenMenu(event, region)}
+										// 		style={{ marginLeft: "auto" }}
+										// 	>
+										// 		<MoreHorizIcon />
+										// 	</IconButton>
+										// </MenuItem>
 									))}
 									<MenuItem onClick={() => handleOpenRegionModal()}>
 										+ Add New Region

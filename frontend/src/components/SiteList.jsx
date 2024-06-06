@@ -19,7 +19,7 @@ import { useContext } from "react";
 import { UserContext } from "../context/userContext";
 import { sortData } from "../sortUtils";
 import http from "../../http.js";
-import SiteCard from "./SiteCard.jsx";
+import SiteCard from "../refactor/SiteCard.jsx";
 
 /**
  * Item component styled from the Paper MUI component.
