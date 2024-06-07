@@ -40,7 +40,10 @@ class RegionListItem extends Component{
 
     render() {
         return(
-            <MenuItem key={this.state.region._id} value={this.state.region._id}>
+            <MenuItem key={this.state.region._id}
+                      value={this.state.region._id}
+                      onClick={this.props.onClick}
+            >
                 {this.state.region.name}
                 <IconButton
                     size="small"

@@ -10,7 +10,7 @@ import {
 	TextField,
 	Typography
 } from "@mui/material";
-import RegionListItem from "../refactor/RegionListItem.jsx";
+import RegionList from "../refactor/RegionList.jsx";
 
 class EditSite extends Component {
 
@@ -77,6 +77,8 @@ class EditSite extends Component {
 
 	handleLocationChange = (e) => this.update_site("location",e.target.value);
 
+	handleRegionChange = (e) => this.update_site("region_id",e.target.value);
+
 	handleClose = (e) => this.props.onClose(false);
 
 	handleAddSite = async () => {
@@ -137,7 +139,10 @@ class EditSite extends Component {
 								onChange={this.handleLocationChange}
 							/>
 						</Grid>
-						<Grid item>THIS IS WHERE REGION EDIT WOULD GO</Grid>
+						<RegionList
+							selected_region={this.state.site.region_id ?? undefined}
+							select_region = {(e) => console.log("SITE_NEW_REGION",e.target.value)}
+						/>
 					</Grid>
 				</DialogContent>
 				<DialogActions>
