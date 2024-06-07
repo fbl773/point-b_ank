@@ -144,22 +144,24 @@ const SiteModal = ({
 	 * @pre http must be configured correctly.
 	 * @post Updates the regions state with the fetched data and selects the current region if matched.
 	 */
-	useEffect(() => {
-		http
-			.get("/regions")
-			.then((response) => {
-				console.log("GETTING REGION")
-				setRegions(response.data);
-				const filteredRegion = response.data.find(
-					(region) => region.name === selectedRegion,
-				);
-				if (filteredRegion) {
-					log.info(filteredRegion);
-					setRegionID(filteredRegion._id);
-				}
-			})
-			.catch((error) => log.error("Error fetching regions:", error));
-	}, [selectedRegion, editingRegion]);
+	// useEffect(() => {
+	// 	http
+	// 		.get("/regions")
+	// 		.then((response) => {
+	// 			console.log("GETTING REGION")
+	// 			setRegions(response.data);
+	// 			console.log("REGIONS: ",regions)
+	// 			console.log("REGIONS: ",response.data)
+	// 			const filteredRegion = response.data.find(
+	// 				(region) => region.name === selectedRegion,
+	// 			);
+	// 			if (filteredRegion) {
+	// 				log.info(filteredRegion);
+	// 				setRegionID(filteredRegion._id);
+	// 			}
+	// 		})
+	// 		.catch((error) => log.error("Error fetching regions:", error));
+	// }, [selectedRegion, editingRegion]);
 
 
 	/**
@@ -168,15 +170,22 @@ const SiteModal = ({
 	useEffect(() => {
 		if (openEdit) {
 			http
+				//TODO:Fix -> Go Get our site... which we should not have to... because we were a site...
 				.get(`/sites/${siteId}`)
 				.then((response) => {
 					log.info("Editing site: ", response.data);
 					setSiteName(response.data.name);
 					setDescription(response.data.description);
 					setLocation(response.data.location);
-					let sel_region = regions.find((reg) => reg._id === response.data.region_id)
-					console.log("Regions:",regions)
-					setSelectedRegion(sel_region.name); //TODO: We need to fetch or pass the region name... what an ugly refactor
+
+					//Go get the regions we have available to us
+					http.get("/regions")
+						.then((response) => {
+							let sel_region = response.data.find((reg) => reg._id === regionID)
+							setRegions(response.data);
+							setSelectedRegion(sel_region.name ?? "");
+						})
+						.catch((error) => log.error("Error fetching regions:", error));
 				})
 				.catch((error) => {
 					log.error("Error fetching site: ", error);
