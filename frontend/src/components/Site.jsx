@@ -23,6 +23,7 @@ import {
 
 import { UserContext } from "../context/userContext.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
+import EditSite from "./EditSite.jsx";
 
 /**
  * Site component displays detailed information about a site and allows searching, sorting,
@@ -36,6 +37,8 @@ const Site = () => {
 	const [siteName, setSiteName] = useState("");
 	const [siteDescription, setSiteDescription] = useState("");
 	const [regionId, setRegionId] = useState("...loading");
+	const [catalogueId,setCatalogueId] = useState("");
+	const [location,setLocation] = useState("");
 
 	const [searchValue, setSearchValue] = useState("");
 	const [sortValue, setSortValue] = useState("newest");
@@ -48,6 +51,7 @@ const Site = () => {
 
 	const inComingInfo = useLocation();
 	const siteID = inComingInfo.state.info._id;
+
 
 	/**
 	 * Fetches detailed information about the site using its ID.
@@ -62,6 +66,8 @@ const Site = () => {
 				setSiteName(response.data.name);
 				setSiteDescription(response.data.description);
 				setRegionId(response.data.region_id);
+				setCatalogueId(response.data.catalogue_id);
+				setLocation(response.data.location);
 				log.info("Site: ", response.data);
 			} catch (error) {
 				log.error("Error fetching site:", error);
@@ -126,11 +132,26 @@ const Site = () => {
 		setOpenEdit(true);
 	};
 
-	let navigate = useNavigate();
+	/**
+	 *
+	 * @return {SiteEntity} this as a site
+	 */
+	const as_site = () => {
+		return {
+			_id: siteID,
+			name: siteName,
+			description: siteDescription,
+			location: location,
+			region_id: regionId,
+			catalogueId: catalogueId
+		}
+	}
+
 	/**
 	 * Handles deletion of site on click event
 	 */
 	const handleDelete = () => {
+		let navigate = useNavigate();
 		http
 			.delete(`sites/${siteID}`)
 			.then(() => {
@@ -243,13 +264,23 @@ const Site = () => {
 				</Grid>
 			</Grid>
 			{openEdit && (
-				<SiteModal
-					openEdit={openEdit}
-					setOpenEdit={setOpenEdit}
-					siteId={siteID}
-					siteName={siteName}
-					regionId={regionId}
-				/>
+				<EditSite adding_new={false}
+						  onClose={() => setOpenEdit(false)}
+						  site={as_site()}
+						  catalogue_id={catalogueId}/>
+
+				// <SiteModal
+				// 	openEdit={openEdit}
+				// 	setOpenEdit={setOpenEdit}
+				// 	site={{
+				// 		_id:siteID,
+				// 		catalogue_id:catalogueId,
+				// 		region_id:regionId,
+				// 		name:siteName,
+				// 		location:location,
+				// 		description:siteDescription,
+				// }}
+				//>
 			)}
 			<Grid item xs={12}>
 				<Typography variant="body1" sx={{ fontWeight: "medium" }}>

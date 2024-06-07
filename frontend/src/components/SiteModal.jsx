@@ -21,7 +21,7 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import {SiteEntity} from "../entities/entities.js"
 import RegionModal from "./RegionModal";
 
 /**
@@ -29,6 +29,7 @@ import RegionModal from "./RegionModal";
  *
  * @param {Object} props - The component props.
  * @param {function} props.setOpen - Function to control the modal visibility.
+ * @param {SiteEntity} props.site - Function to control the modal visibility.
  * @pre None
  * @post Renders a form allowing users to create or edit site details. Communicates with backend services to update site information.
  * @returns {JSX.Element} The rendered modal component.
@@ -38,15 +39,12 @@ const SiteModal = ({
 	setOpenAdd,
 	openEdit,
 	setOpenEdit,
-	siteId,
-	siteName,
-	catalogue_id,
-	regionId,
+	site,
 }) => {
-	const [name, setSiteName] = useState("");
-	const [description, setDescription] = useState("");
-	const [location, setLocation] = useState("");
-	const [regionID, setRegionID] = useState(regionId ?? "");
+	const [name, setSiteName] = useState(site.name);
+	const [description, setDescription] = useState(site.description);
+	const [location, setLocation] = useState(site.location);
+	const [regionID, setRegionID] = useState(site.region_id);
 
 	// Site selection and menu functionality
 	const [anchorEl, setAnchorEl] = useState(null);
