@@ -163,6 +163,10 @@ const SiteModal = ({
 	// 		.catch((error) => log.error("Error fetching regions:", error));
 	// }, [selectedRegion, editingRegion]);
 
+	function do_setRegions(regs) {
+		let sel_region = regs.find((reg) => reg._id === regionID)
+		setSelectedRegion(sel_region.name ?? "");
+	}
 
 	/**
 	 * Pre-populate input fields for editing site
@@ -178,14 +182,24 @@ const SiteModal = ({
 					setDescription(response.data.description);
 					setLocation(response.data.location);
 
-					//Go get the regions we have available to us
-					http.get("/regions")
-						.then((response) => {
-							let sel_region = response.data.find((reg) => reg._id === regionID)
-							setRegions(response.data);
-							setSelectedRegion(sel_region.name ?? "");
-						})
-						.catch((error) => log.error("Error fetching regions:", error));
+
+
+					//If we have it, get it
+					console.log(`len: ${regions.length}`)
+					if(regions.length > 0) {
+						console.log("USING FOUND")
+						do_setRegions(regions)
+					} else {
+						//otherwise fetch
+						http.get("/regions")
+							.then((response) => {
+								setRegions(response.data);
+								do_setRegions(response.data)
+							})
+							.catch((error) => log.error("Error fetching regions:", error));
+					}
+
+					//Get the selected
 				})
 				.catch((error) => {
 					log.error("Error fetching site: ", error);
