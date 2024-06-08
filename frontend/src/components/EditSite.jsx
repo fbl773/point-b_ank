@@ -90,9 +90,9 @@ class EditSite extends Component {
 
 	handleEditSite = async () => {
 		console.log("would edit site: ",this.state.site);
-		// await http.put(`/sites/${this.state.site._id}`,this.state.site)
-		// 	.then(edited_site => this.setState({site:edited_site}))
-		// 	.catch(err => console.error("Failed to create new site",err));
+		await http.put(`/sites/${this.state.site._id}`,this.state.site)
+			.then(edited_site => this.setState({site:edited_site}))
+			.catch(err => console.error("Failed to create new site",err));
 	};
 
 	render(){
