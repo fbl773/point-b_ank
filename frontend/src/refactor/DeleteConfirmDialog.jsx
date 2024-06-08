@@ -1,8 +1,19 @@
 import {Component} from "react";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 
-
+/**
+ * Creates a generic delete dialog
+ */
 class DeleteConfirmDialog extends Component{
+
+    /**
+     *
+     * @param props
+     * @param props.title:String the title of the dialogue
+     * @param props.text:String the message to display
+     * @param props.on_cancel:Function what to do if deletion is canceled
+     * @param props.on_proceed:Function how to perform the deletion
+     */
     constructor(props) {
         super(props);
     }

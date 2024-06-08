@@ -8,11 +8,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import log from "../logger.js";
 import {
 	Button,
-	Dialog,
-	DialogTitle,
-	DialogContent,
-	DialogContentText,
-	DialogActions,
 	TextField,
 	IconButton,
 	Typography,
@@ -243,25 +238,6 @@ const Site = () => {
 								Numerically Descending
 							</MenuItem>
 						</TextField>
-					</Grid>
-					<Grid item xs={6} sm={3}>
-						{/* Filter 
-						<TextField
-							id="filter"
-							select
-							label="Filter"
-							variant="filled"
-							fullWidth
-							value={filterValue}
-							onChange={handleFilterChange}
-							size="small"
-							sx={{ minWidth: "250px" }}
-						>
-							<MenuItem value="all">All</MenuItem>
-							<MenuItem value="category1">Category 1</MenuItem>
-							<MenuItem value="category2">Category 2</MenuItem>
-						</TextField>
-							*/}
 					</Grid>
 				</Grid>
 			</Grid>

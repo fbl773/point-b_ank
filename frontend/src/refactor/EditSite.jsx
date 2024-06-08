@@ -5,28 +5,28 @@ import {
 	Dialog, DialogActions,
 	DialogContent,
 	DialogTitle,
-	FormControl,
-	Grid, IconButton, InputLabel, Menu, MenuItem, Select,
+	Grid,
 	TextField,
-	Typography
 } from "@mui/material";
 import RegionList from "./RegionList.jsx";
 
+/**
+ * Replaces the SiteModal, handles editing and creating sites
+ */
 class EditSite extends Component {
 
 	/**
 	 *
 	 * @param props
+	 * @param props.onClose:Function this is what to do to close
+	 * @param props.adding_new:boolean Are we adding a new site? or editing existing?
+	 * @param props.siteNameError:String todo - figure out what this even is.
+	 * @param props.catalogue_id:String the id of the catalouge we represent, (needed for adding new... todo-could this be the descriminator?"
 	 * @param props.site {_id:String,name:_string, region_id:id of our region} the site we will represent
 	 *
 	 */
 	constructor(props) {
 		super(props);
-
-		this.handleNameChange = this.handleNameChange.bind(this);
-		this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-		this.handleLocationChange = this.handleLocationChange.bind(this);
-		this.handleClose = this.handleClose.bind(this);
 
 		this.state = {
 			siteNameError:false,
@@ -44,12 +44,19 @@ class EditSite extends Component {
 	}
 
 
+	/**
+	 * After loading, go get our region details from the server or prepare to add new details (depending on flag)
+	 *
+	 * @return {Promise<void>}
+	 */
 	async componentDidMount() {
 
+		//If adding new, submit means we are creating, and we have no data to fetch
 		if (this.props.adding_new){
 			this.handleSubmit = this.handleAddSite.bind(this);
 			this.setState({title:"Create"});
 		} else {
+			//otherwise, submit means we are editing, and we have a region to fetch
 			this.handleSubmit = this.handleEditSite.bind(this);
 			//editing existing
 			this.setState({title:"Edit"});
@@ -66,36 +73,43 @@ class EditSite extends Component {
 
 	}
 
+	/**
+	 * sets the state for our site sub-object
+	 * @param key:String the key to the field of our site to update
+	 * @param val:any the value to set it to
+	 */
 	update_site = (key,val) => {
 		let updated_site = this.state.site;
 		updated_site[key] = val;
 		this.setState({site:updated_site});
 	}
-	handleDescriptionChange= (e) => this.update_site("description",e.target.value);
 
-	handleNameChange = (e) => this.update_site("name",e.target.value);
-
-	handleLocationChange = (e) => this.update_site("location",e.target.value);
-
-	handleRegionChange = (e) => this.update_site("region_id",e.target.value);
-
-	handleClose = () => this.props.onClose(false);
-
+	/**
+	 * Handles the case when the modals operation is to add the created site.i
+	 * @return {Promise<void>}
+	 */
 	handleAddSite = async () => {
+		//Capture the site
 		let mod_site = this.state.site;
+		//remove the _id field to appease mongo
 		delete mod_site._id
-		console.log("Would add site: ", mod_site);
+
+		//Make the call to create the new site
 		await http.post("/sites",mod_site)
 			.then(new_site => this.setState({site:new_site}))
 			.catch(err => console.error("Failed to create new site",err))
-			.finally(this.handleClose);
+			.finally(this.props.onClose);
 	};
 
+	/**
+	 * Handels the case when the operation is to edit an existing site
+	 * @return {Promise<void>}
+	 */
 	handleEditSite = async () => {
 		await http.put(`/sites/${this.state.site._id}`,this.state.site)
 			.then(edited_site => this.setState({site:edited_site}))
 			.catch(err => console.error("Failed to create new site",err))
-			.finally(this.handleClose);
+			.finally(this.props.onClose);
 	};
 
 	render(){
@@ -119,7 +133,7 @@ class EditSite extends Component {
 						error={this.state.siteNameError}
 						helperText={this.state.siteNameError && "Please enter a Site Name"}
 						value={this.state.site.name}
-						onChange={this.handleNameChange}
+						onChange={(e) => this.update_site("name",e.target.value)}
 					/>
 					<TextField
 						margin="dense"
@@ -129,7 +143,7 @@ class EditSite extends Component {
 						multiline
 						rows={10}
 						value={this.state.site.description}
-						onChange={this.handleDescriptionChange}
+						onChange={(e) => this.update_site("description",e.target.value)}
 					/>
 					<Grid container spacing={2}>
 						<Grid item xs={6}>
@@ -139,7 +153,7 @@ class EditSite extends Component {
 								label="Location"
 								fullWidth
 								value={this.state.site.location}
-								onChange={this.handleLocationChange}
+								onChange={(e) => this.update_site("location",e.target.value)}
 							/>
 						</Grid>
 						<RegionList

@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
-import SiteModal from "./SiteModal";
 import EditSite from "../refactor/EditSite.jsx";
 import { Link } from "react-router-dom";
 import {
@@ -55,32 +54,16 @@ export default function SiteList({ query, sortValue, host_catalogue_id }) {
 	 * @pre None
 	 * @post Sets the 'open' state to true, making the SiteModal visible.
 	 */
-	const handleClick1 = () => {
+	const do_setOpenAdd = () => {
 		setOpenAdd(true);
-		console.log("Add card clicked!");
 	};
 
 	/**
-	 * Logs the click action when an existing site card is clicked.
-	 *
-	 * @param {Object} item - The site data associated with the clicked card.
-	 * @returns {Function} An event handler function for the click event.
-	 * @pre None
-	 * @post Logs the clicked site's ID to the console.
+	 * handles closing because this react method is garbo
 	 */
-	const handleClick2 = (item) => () => {
-		console.log("Card clicked! ID:", item.id);
-	};
-
 	function onClose(){
 		setOpenAdd(false)
 	}
-
-	/**
-	 * queries a sites region ID to get it's region details
-	 * @param sites:[] the list of sites
-	 * @return {Promise<void>}
-	 */
 
 	/**
 	 * Fetches the list of sites from the backend upon component mount.
@@ -118,7 +101,7 @@ export default function SiteList({ query, sortValue, host_catalogue_id }) {
 						<Grid container spacing={5}>
 							{user && (
 								<Grid item xs={12} sm={6} md={3}>
-									<ButtonBase onClick={handleClick1}>
+									<ButtonBase onClick={do_setOpenAdd}>
 										<Card
 											sx={{
 												minWidth: "12rem",

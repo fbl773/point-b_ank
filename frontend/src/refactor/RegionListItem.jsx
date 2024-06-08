@@ -5,12 +5,17 @@ import {Region} from "../entities/entities.js";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 
 
+/**
+ * A region item in the list of regions for a dropdown
+ */
 class RegionListItem extends Component{
 
     /**
      *
      * @param props
-     *
+     * @param props.region:Region - the region this list item represents
+     * @param props.onClick:Function - on select operation
+     * @param props.on_delete:Function - on delete operation
      */
     constructor(props){
         super(props);
@@ -20,14 +25,12 @@ class RegionListItem extends Component{
         }
     }
 
+    /**
+     * Assignes the site details
+     */
     componentDidMount() {
         this.setState({region:this.props.region})
     }
-
-    /**
-     * Handles the deletion of the represented region
-     */
-
 
     render() {
         return(

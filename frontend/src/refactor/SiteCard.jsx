@@ -7,7 +7,7 @@ class SiteCard extends Component {
     /**
      *
      * @param props
-     * @param props.site {_id:String,name:_string, region_id:id of our region} the site we will represent
+     * @param props.site {_id:String,name:String, region_id:String} the site we will represent
      *
      */
 	constructor(props) {
@@ -20,6 +20,11 @@ class SiteCard extends Component {
 		};
 	}
 
+	/**
+	 * When the site card loads, go fetch the details of the related region. if it has one...
+	 * todo - fix the trigger that is preventing this functionality
+	 * @return {Promise<void>}
+	 */
 	async componentDidMount() {
 		console.log(`REGION IS: ${this.props.site.region_id}`);
 		if(this.props.site.region_id !== "") {
