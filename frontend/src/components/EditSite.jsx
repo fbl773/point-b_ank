@@ -82,10 +82,13 @@ class EditSite extends Component {
 	handleClose = () => this.props.onClose(false);
 
 	handleAddSite = async () => {
-		console.log("Would add site: ", this.state.site);
-		// await http.post("/sites",this.state.site)
-		// 	.then(new_site => this.setState({site:new_site}))
-		// 	.catch(err => console.error("Failed to create new site",err));
+		let mod_site = this.state.site;
+		delete mod_site._id
+		console.log("Would add site: ", mod_site);
+		await http.post("/sites",mod_site)
+			.then(new_site => this.setState({site:new_site}))
+			.catch(err => console.error("Failed to create new site",err))
+			.finally(this.handleClose);
 	};
 
 	handleEditSite = async () => {
@@ -93,7 +96,7 @@ class EditSite extends Component {
 		await http.put(`/sites/${this.state.site._id}`,this.state.site)
 			.then(edited_site => this.setState({site:edited_site}))
 			.catch(err => console.error("Failed to create new site",err))
-			.finally(this.handleClose)
+			.finally(this.handleClose);
 	};
 
 	render(){

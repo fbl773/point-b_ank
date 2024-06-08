@@ -19,7 +19,7 @@ class RegionList extends Component{
         http.get("/regions")
             .then(regs => {
                 this.setState({regions: regs.data})
-                if (this.props.select_region_id) {
+                if (this.props.selected_region_id) {
                     let sel_reg = regs.data.find(reg => reg._id === this.props.selected_region_id);
                     this.select_region(sel_reg)
                 }
