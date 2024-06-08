@@ -140,8 +140,8 @@ class EditSite extends Component {
 							/>
 						</Grid>
 						<RegionList
-							selected_region={this.state.site.region_id ?? undefined}
-							select_region = {(e) => console.log("SITE_NEW_REGION",e.target.value)}
+							selected_region_id={this.props.site.region_id ?? "wut"}
+							select_region = {(reg_id) => this.update_site("region_id",reg_id)}
 						/>
 					</Grid>
 				</DialogContent>

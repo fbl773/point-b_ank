@@ -175,7 +175,7 @@ const Site = () => {
 						sx={{ marginBottom: 0, fontWeight: "regular" }}
 						variant="h6"
 					>
-						{siteDescription}
+						{siteDescription} - {location}
 					</Typography>
 					{user && (
 						<Button

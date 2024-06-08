@@ -20,7 +20,7 @@ class RegionList extends Component{
             .then(regs => {
                 this.setState({regions:regs.data})
                 let sel_reg = regs.data.find(reg => reg._id === this.props.selected_region_id);
-                this.setState({selected_region:sel_reg});
+                this.select_region(sel_reg)
             })
             .catch(err => console.error("Failed to fetch regions",err));
     }
@@ -30,10 +30,20 @@ class RegionList extends Component{
         this.setState({regions:regions_updated});
     }
 
-    select_region = (e) => {
-        console.log("Selecting: ",e.target.value)
-        // this.props.select_region(e.target.value);
-        // this.setState({selected_region:e.target.value})
+    select_region = (reg) => {
+        console.log("sel recvs: ",reg);
+        this.props.select_region(reg._id);
+        this.setState({selected_region:reg.name})
+    }
+
+    /**
+     *
+     * @param e the select event
+     * @param e.target.value {Region} the region we are selecting
+     */
+    handle_select_region = (e) => {
+        console.log("Handle recvs: ",e.target.value);
+        this.select_region(e.target.value)
     }
 
 
@@ -47,13 +57,14 @@ class RegionList extends Component{
                         label="Region"
                         labelId="region-label"
                         value={this.state.selected_region}
-                        onChange={this.select_region}
+                        onChange={(e) => this.select_region(e.target.value)}
                         renderValue={(selected) => selected}
                         >
                     {this.state.regions.map((reg) => (
                         <RegionListItem
                             region={reg}
                             on_delete={() => this.delete_region(reg._id)}
+                            value={reg}
                             onClick = {this.select_region}
                         />)
                     )}

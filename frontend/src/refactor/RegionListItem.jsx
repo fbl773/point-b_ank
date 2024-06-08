@@ -41,7 +41,7 @@ class RegionListItem extends Component{
     render() {
         return(
             <MenuItem key={this.state.region._id}
-                      value={this.state.region._id}
+                      value={this.state.region}
                       onClick={this.props.onClick}
             >
                 {this.state.region.name}
