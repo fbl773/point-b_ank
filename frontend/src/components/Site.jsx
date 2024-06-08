@@ -68,7 +68,6 @@ const Site = () => {
 				setRegionId(response.data.region_id);
 				setCatalogueId(response.data.catalogue_id);
 				setLocation(response.data.location);
-				log.info("Site: ", response.data);
 			} catch (error) {
 				log.error("Error fetching site:", error);
 			}
@@ -147,11 +146,11 @@ const Site = () => {
 		}
 	}
 
+	const navigate = useNavigate();
 	/**
 	 * Handles deletion of site on click event
 	 */
 	const handleDelete = () => {
-		let navigate = useNavigate();
 		http
 			.delete(`sites/${siteID}`)
 			.then(() => {
@@ -175,7 +174,10 @@ const Site = () => {
 						sx={{ marginBottom: 0, fontWeight: "regular" }}
 						variant="h6"
 					>
-						{siteDescription} - {location}
+						{siteDescription}
+					</Typography>
+					<Typography>
+						{location}, {"REGION WOULD GO HERE (todo in refactor)"}
 					</Typography>
 					{user && (
 						<Button
