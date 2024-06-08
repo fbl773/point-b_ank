@@ -36,17 +36,6 @@ class RegionList extends Component{
         this.setState({selected_region:reg.name})
     }
 
-    /**
-     *
-     * @param e the select event
-     * @param e.target.value {Region} the region we are selecting
-     */
-    handle_select_region = (e) => {
-        console.log("Handle recvs: ",e.target.value);
-        this.select_region(e.target.value)
-    }
-
-
     render() {
         return(
             <Grid item xs={6}>

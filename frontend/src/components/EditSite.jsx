@@ -79,7 +79,7 @@ class EditSite extends Component {
 
 	handleRegionChange = (e) => this.update_site("region_id",e.target.value);
 
-	handleClose = (e) => this.props.onClose(false);
+	handleClose = () => this.props.onClose(false);
 
 	handleAddSite = async () => {
 		console.log("Would add site: ", this.state.site);
@@ -92,7 +92,8 @@ class EditSite extends Component {
 		console.log("would edit site: ",this.state.site);
 		await http.put(`/sites/${this.state.site._id}`,this.state.site)
 			.then(edited_site => this.setState({site:edited_site}))
-			.catch(err => console.error("Failed to create new site",err));
+			.catch(err => console.error("Failed to create new site",err))
+			.finally(this.handleClose)
 	};
 
 	render(){
