@@ -10,7 +10,7 @@ import {
 	TextField,
 	Typography
 } from "@mui/material";
-import RegionList from "../refactor/RegionList.jsx";
+import RegionList from "./RegionList.jsx";
 
 class EditSite extends Component {
 

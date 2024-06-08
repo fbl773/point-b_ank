@@ -2,7 +2,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState, useContext } from "react";
 import ProjectileList from "./ProjectileList";
-import SiteModal from "./SiteModal";
 import BaseLayout from "./BaseLayout";
 import http from "../../http.js";
 import SearchIcon from "@mui/icons-material/Search";
@@ -23,7 +22,8 @@ import {
 
 import { UserContext } from "../context/userContext.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
-import EditSite from "./EditSite.jsx";
+import EditSite from "../refactor/EditSite.jsx";
+import DeleteConfirmDialog from "../refactor/DeleteConfirmDialog.jsx"
 
 /**
  * Site component displays detailed information about a site and allows searching, sorting,
@@ -270,19 +270,6 @@ const Site = () => {
 						  onClose={() => setOpenEdit(false)}
 						  site={as_site()}
 						  catalogue_id={catalogueId}/>
-
-				// <SiteModal
-				// 	openEdit={openEdit}
-				// 	setOpenEdit={setOpenEdit}
-				// 	site={{
-				// 		_id:siteID,
-				// 		catalogue_id:catalogueId,
-				// 		region_id:regionId,
-				// 		name:siteName,
-				// 		location:location,
-				// 		description:siteDescription,
-				// }}
-				//>
 			)}
 			<Grid item xs={12}>
 				<Typography variant="body1" sx={{ fontWeight: "medium" }}>
@@ -296,23 +283,12 @@ const Site = () => {
 				/>
 			</Grid>
 			<div>
-				<Dialog open={openAlertDelete}>
-					<DialogTitle id="alert-dialog-title">
-						{"Delete Site " + siteName}
-					</DialogTitle>
-					<DialogContent>
-						<DialogContentText id="alert-dialog-description">
-							Are you sure you want to delete site? This will also delete all
-							projectile points saved in site.
-						</DialogContentText>
-					</DialogContent>
-					<DialogActions>
-						<Button onClick={handleCloseAlertDelete}>No</Button>
-						<Button onClick={handleDelete} autoFocus>
-							Yes
-						</Button>
-					</DialogActions>
-				</Dialog>
+				<DeleteConfirmDialog
+					open_condition={openAlertDelete}
+					title={`Delete Site "${siteName}"`}
+					text={`Are you sure you want to delete "${siteName}"? This will also delete any related artifacts.`}
+					on_cancel={handleCloseAlertDelete}
+					on_proceed={handleDelete}/>
 			</div>
 		</BaseLayout>
 	);

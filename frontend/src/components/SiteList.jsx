@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import SiteModal from "./SiteModal";
-import EditSite from "./EditSite.jsx";
+import EditSite from "../refactor/EditSite.jsx";
 import { Link } from "react-router-dom";
 import {
 	styled,
