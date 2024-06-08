@@ -81,13 +81,6 @@ export default function SiteList({ query, sortValue, host_catalogue_id }) {
 	 * @param sites:[] the list of sites
 	 * @return {Promise<void>}
 	 */
-	async function assign_location(site){
-		http.get(`/regions/${site.region_id}`)
-			.then(reg=> {
-				site.location = reg.data.name;
-			})
-			.catch(err => console.error("Your Hacky BS is not working :(",err));
-	}
 
 	/**
 	 * Fetches the list of sites from the backend upon component mount.
@@ -102,7 +95,6 @@ export default function SiteList({ query, sortValue, host_catalogue_id }) {
 				.then((sites) => {
 					// sort JSON first
 					const sortedData = sortData(sites, sortValue);
-					sites.forEach(site => assign_location(site));
 					setData(sortedData);
 
 				})
@@ -154,7 +146,6 @@ export default function SiteList({ query, sortValue, host_catalogue_id }) {
 					</Box>
 				</Grid>
 			</Item>
-			{/*{openAdd && <SiteModal adding_new={true} onClose={() => setOpenAdd(false)} catalogue_id={host_catalogue_id}/>}*/}
 			{openAdd && <EditSite adding_new={true} onClose={onClose} catalogue_id={host_catalogue_id}/>}
 		</div>
 	);

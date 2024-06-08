@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import http from "../../http.js";
 import {Card, CardContent, Grid, Typography} from "@mui/material";
-import {Link} from "react-router-dom";
 
 class SiteCard extends Component {
 
@@ -17,17 +16,20 @@ class SiteCard extends Component {
 		this.state = {
 			_id: this.props.site._id,
 			name: this.props.site.name,
-			region_name: "loading...",
+			region_name: "region unspecified",
 		};
 	}
 
 	async componentDidMount() {
-		await http.get(`/regions/${this.props.site.region_id}`)
-			.then(reg => {
-				this.setState({region_name: reg.data.name});
-			})
-			.catch(err => console.error(`Failed to retrieve details for site ${this.props.site._id}, region: ${this.props.region_id}`,
-				err));
+		console.log(`REGION IS: ${this.props.site.region_id}`);
+		if(this.props.site.region_id !== "") {
+			await http.get(`/regions/${this.props.site.region_id}`)
+				.then(reg => {
+					this.setState({region_name: reg.data.name});
+				})
+				.catch(err => console.error(`Failed to retrieve details for site ${this.props.site._id}, region: ${this.props.region_id}`,
+					err));
+		}
 	}
 
 	render() {
