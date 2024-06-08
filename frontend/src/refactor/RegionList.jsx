@@ -18,9 +18,11 @@ class RegionList extends Component{
     componentDidMount() {
         http.get("/regions")
             .then(regs => {
-                this.setState({regions:regs.data})
-                let sel_reg = regs.data.find(reg => reg._id === this.props.selected_region_id);
-                this.select_region(sel_reg)
+                this.setState({regions: regs.data})
+                if (this.props.select_region_id) {
+                    let sel_reg = regs.data.find(reg => reg._id === this.props.selected_region_id);
+                    this.select_region(sel_reg)
+                }
             })
             .catch(err => console.error("Failed to fetch regions",err));
     }
@@ -31,7 +33,6 @@ class RegionList extends Component{
     }
 
     select_region = (reg) => {
-        console.log("sel recvs: ",reg);
         this.props.select_region(reg._id);
         this.setState({selected_region:reg.name})
     }
@@ -45,7 +46,7 @@ class RegionList extends Component{
                         id="region"
                         label="Region"
                         labelId="region-label"
-                        value={this.state.selected_region}
+                        value={this.state.selected_region ?? ""}
                         onChange={(e) => this.select_region(e.target.value)}
                         renderValue={(selected) => selected}
                         >

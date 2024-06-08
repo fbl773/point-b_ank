@@ -141,7 +141,7 @@ class EditSite extends Component {
 							/>
 						</Grid>
 						<RegionList
-							selected_region_id={this.props.site.region_id ?? "wut"}
+							selected_region_id={this.state.site.region_id ?? "wut"}
 							select_region = {(reg_id) => this.update_site("region_id",reg_id)}
 						/>
 					</Grid>

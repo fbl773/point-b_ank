@@ -143,7 +143,13 @@ export default function SiteList({ query, sortValue, host_catalogue_id }) {
 								</Grid>
 							)}
 							{filteredData &&
-								filteredData.map((item) => <SiteCard key={item._id} site={item}/> )}
+								filteredData.map((item) =>
+								<Grid item xl={2} key={item._id}>
+									<Link to={`/site/${item._id}`} state={{info: item}}>
+										<SiteCard site={item}/>
+									</Link>
+								</Grid>
+								)}
 						</Grid>
 					</Box>
 				</Grid>

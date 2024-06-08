@@ -32,32 +32,28 @@ class SiteCard extends Component {
 
 	render() {
 		return (
-			<Grid item xl={2} key={this.props.site._id}>
-				<Link to={`/site/${this.props.site._id}`} state={{info: this.props.site}}>
-					<Card
-						sx={{
-							minWidth: "12rem",
-							minHeight: "12rem",
-							alignContent: "center",
-						}}
-					>
-						<CardContent>
-							<Typography variant="h5" component="h3">
-								{this.state.name}
-							</Typography>
-							<Typography color="textSecondary" gutterBottom>
-								{/* Limit description characters to prevent text overflow */}
-								{this.state.region_name.length <= 15
-									? this.state.region_name
-									: this.state.region_name.substr(0, 15) + "..."}
-							</Typography>
-							<Typography variant="body2" component="p">
-								{this.props.site._id}
-							</Typography>
-						</CardContent>
-					</Card>
-				</Link>
-			</Grid>
+			<Card
+				sx={{
+					minWidth: "12rem",
+					minHeight: "12rem",
+					alignContent: "center",
+				}}
+			>
+				<CardContent>
+					<Typography variant="h5" component="h3">
+						{this.state.name}
+					</Typography>
+					<Typography color="textSecondary" gutterBottom>
+						{/* Limit description characters to prevent text overflow */}
+						{this.state.region_name.length <= 15
+							? this.state.region_name
+							: this.state.region_name.substr(0, 15) + "..."}
+					</Typography>
+					<Typography variant="body2" component="p">
+						{this.props.site._id}
+					</Typography>
+				</CardContent>
+			</Card>
 		);
 	}
 }
