@@ -18,12 +18,12 @@ const catalogueSchema = new Schema<ICatalogue,CatalogueModel>({
     timestamps:true,
 });
 
-const Catalogue:CatalogueModel = model<ICatalogue,CatalogueModel>('Catalogue',catalogueSchema);
-
 // Triggers
 catalogueSchema.pre("findOneAndDelete", async function(next){
     await cascade_related<ICatalogue,ISite>(this.model,this.getFilter(),Site,"catalogue_id");
     next();
 });
+
+const Catalogue:CatalogueModel = model<ICatalogue,CatalogueModel>('Catalogue',catalogueSchema);
 
 export default Catalogue;

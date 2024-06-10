@@ -22,9 +22,6 @@ const siteSchema = new Schema<ISite,SiteModal>({
     region_id:{type: Schema.Types.ObjectId, ref:"Region",required:true}
 
 },{timestamps:true});
-
-const Site:SiteModal = model<ISite,SiteModal>('Site',siteSchema);
-
 //Triggers
 /*  Cascade delete related artifacts */
 siteSchema.pre("findOneAndDelete", async function(next) {
@@ -32,5 +29,6 @@ siteSchema.pre("findOneAndDelete", async function(next) {
     next();
 });
 
+const Site:SiteModal = model<ISite,SiteModal>('Site',siteSchema);
 
 export default Site;
