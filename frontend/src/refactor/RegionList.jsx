@@ -34,7 +34,9 @@ class RegionList extends Component{
         http.get("/regions")
             .then(regs => {
                 this.setState({regions: regs.data})
-                if (this.props.selected_region_id) {
+
+                //If we have been configured with a region, select it.
+                if (this.props.selected_region_id !== undefined) {
                     let sel_reg = regs.data.find(reg => reg._id === this.props.selected_region_id);
                     this.select_region(sel_reg)
                 }

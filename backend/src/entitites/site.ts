@@ -19,7 +19,7 @@ const siteSchema = new Schema<ISite,SiteModal>({
     description:{type:String, required:false},
     location:{type:String, required:false,default:"Unspecified"},
     catalogue_id:{type: Schema.Types.ObjectId, ref:"Catalogue",required:true},
-    region_id:{type: Schema.Types.ObjectId, ref:"Region",required:true}
+    region_id:{type: Schema.Types.ObjectId, ref:"Region",required:false}
 
 },{timestamps:true});
 //Triggers

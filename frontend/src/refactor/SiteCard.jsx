@@ -16,7 +16,7 @@ class SiteCard extends Component {
 		this.state = {
 			_id: this.props.site._id,
 			name: this.props.site.name,
-			region_name: "region unspecified",
+			region_name: "",
 		};
 	}
 
@@ -27,7 +27,7 @@ class SiteCard extends Component {
 	 */
 	async componentDidMount() {
 		console.log(`REGION IS: ${this.props.site.region_id}`);
-		if(this.props.site.region_id !== "") {
+		if(this.props.site.region_id !== undefined) {
 			await http.get(`/regions/${this.props.site.region_id}`)
 				.then(reg => {
 					this.setState({region_name: reg.data.name});
@@ -35,6 +35,18 @@ class SiteCard extends Component {
 				.catch(err => console.error(`Failed to retrieve details for site ${this.props.site._id}, region: ${this.props.region_id}`,
 					err));
 		}
+	}
+
+	/**
+	 * Gets the region name, if it exists otherwise a placeholder../
+	 * @return {*|string|string}
+	 */
+	get_region_name(){
+		let region_name= this.state.region_name;
+		if(region_name)
+			return region_name.length<= 15 ? region_name : region_name.substr(0, 15) + "...";
+		 else
+			return "";
 	}
 
 	render() {
@@ -52,9 +64,7 @@ class SiteCard extends Component {
 					</Typography>
 					<Typography color="textSecondary" gutterBottom>
 						{/* Limit description characters to prevent text overflow */}
-						{this.state.region_name.length <= 15
-							? this.state.region_name
-							: this.state.region_name.substr(0, 15) + "..."}
+						{this.get_region_name()}
 					</Typography>
 					<Typography variant="body2" component="p">
 						{this.props.site._id}
