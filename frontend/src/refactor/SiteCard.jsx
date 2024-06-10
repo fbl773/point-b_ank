@@ -26,7 +26,6 @@ class SiteCard extends Component {
 	 * @return {Promise<void>}
 	 */
 	async componentDidMount() {
-		console.log(`REGION IS: ${this.props.site.region_id}`);
 		if(this.props.site.region_id !== undefined) {
 			await http.get(`/regions/${this.props.site.region_id}`)
 				.then(reg => {

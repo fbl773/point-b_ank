@@ -116,11 +116,4 @@ class RegionList extends Component{
     }
 }
 
-
-// import {FormControl, Grid, IconButton, InputLabel, Menu, MenuItem, Select} from "@mui/material";
-// import React from "react";
-//
-
-// )}
-
 export default RegionList;

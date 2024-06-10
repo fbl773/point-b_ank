@@ -51,7 +51,6 @@ class EditSite extends Component {
 	async componentDidMount() {
 
 		//If adding new, submit means we are creating, and we have no data to fetch
-		console.log("Adding new? ",this.props.adding_new)
 		if (this.props.adding_new){
 			this.handleSubmit = this.handleAddSite.bind(this);
 			this.setState({title:"Create"});
@@ -63,7 +62,6 @@ class EditSite extends Component {
 			this.setState({site: this.props.site});
 
 			//Get Region
-			console.log("ES: REg",this.state.site.region_id);
 			if (this.state.site.region_id !== undefined) {
 				await http.get(`/regions/${this.state.site.region_id}`)
 					.then(reg => {
@@ -95,9 +93,9 @@ class EditSite extends Component {
 
 		//Capture the site
 		let mod_site = this.state.site;
+
 		//remove the _id field to appease mongo
 		delete mod_site._id
-		console.log("Adding a new site:",mod_site);
 
 		//Make the call to create the new site
 		await http.post("/sites",mod_site)

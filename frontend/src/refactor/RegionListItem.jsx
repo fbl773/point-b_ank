@@ -26,7 +26,7 @@ class RegionListItem extends Component{
     }
 
     /**
-     * Assignes the site details
+     * Assignes the site's region details according to the passed region
      */
     componentDidMount() {
         this.setState({region:this.props.region})
