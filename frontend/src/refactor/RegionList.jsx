@@ -79,8 +79,10 @@ class RegionList extends Component{
      * @param reg:Region The region to set as selected
      */
     select_region = (reg) => {
-        this.props.select_region(reg._id);
-        this.setState({selected_region:reg.name})
+        let reg_name = reg.name ?? "";
+        let reg_id = reg._id ?? "";
+        this.props.select_region(reg_id);
+        this.setState({selected_region:reg_name})
     }
 
     append_region = (reg) => {
@@ -112,6 +114,7 @@ class RegionList extends Component{
                             onClick = {this.select_region}
                         />)
                     )}
+                        <MenuItem key="none" value="" onClick={this.select_region}>(No Region)</MenuItem>
                         <MenuItem key="add_new"
                                   value=""
                                   selected={false}

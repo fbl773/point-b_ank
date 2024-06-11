@@ -109,9 +109,10 @@ class EditSite extends Component {
 	 * @return {Promise<void>}
 	 */
 	handleEditSite = async () => {
+		console.log("edited site is : ",this.state.site)
 		await http.put(`/sites/${this.state.site._id}`,this.state.site)
 			.then(edited_site => this.setState({site:edited_site}))
-			.catch(err => console.error("Failed to create new site",err))
+			.catch(err => console.error("Failed to edit site",err))
 			.finally(this.props.onClose);
 	};
 
