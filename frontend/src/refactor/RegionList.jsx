@@ -3,6 +3,7 @@ import http from "../../http.js";
 import {FormControl, Grid, InputLabel, MenuItem, Select} from "@mui/material";
 import RegionListItem from "./RegionListItem.jsx";
 import DeleteConfirmDialog from "./DeleteConfirmDialog.jsx";
+import RegionModal from "./RegionModal.jsx";
 
 /**
  * Generates a dropdown list or Regions that also manages their deletion
@@ -18,6 +19,8 @@ class RegionList extends Component{
         super(props);
 
         this.delete_region = this.delete_region.bind(this);
+        //this.append_region = this.append_region.bind(this);
+
         this.state = {
             regions:[],
             selected_region:"",
@@ -80,6 +83,14 @@ class RegionList extends Component{
         this.setState({selected_region:reg.name})
     }
 
+    append_region = (reg) => {
+        console.log("APpending: ",reg)
+        let new_regions = this.state.regions;
+        new_regions.push(reg);
+        this.setState({regions:new_regions,selected_region:reg.name});
+        this.props.select_region(reg._id);
+    }
+
     render() {
         return(
             <Grid item xs={6}>
@@ -101,8 +112,19 @@ class RegionList extends Component{
                             onClick = {this.select_region}
                         />)
                     )}
+                        <MenuItem key="add_new"
+                                  value=""
+                                  selected={false}
+                                  onClick={() => this.setState({add_region:true})}
+                        >
+                            + New Region
+                        </MenuItem>
                     </Select>
                 </FormControl>
+                {this.state.add_region && <RegionModal
+                    onClose={() => this.setState({add_region:false})}
+                    append_region={this.append_region}
+                />}
                 <div>
                     <DeleteConfirmDialog
                         open_condition={this.state.show_del}
