@@ -12,7 +12,7 @@ describe("Sidebar", () => {
 			</MemoryRouter>,
 		);
 
-		expect(screen.getByText(/pcubed/i)).toBeInTheDocument();
+		expect(screen.getByText(/point b_ank/i)).toBeInTheDocument();
 		expect(screen.getByTestId("HomeIcon")).toBeInTheDocument();
 		expect(screen.getByText(/catalogue/i)).toBeInTheDocument();
 		expect(screen.getByTestId("UploadIcon")).toBeInTheDocument();

@@ -7,6 +7,9 @@ import axios from "axios";
 export const baseURL = import.meta.env.VITE_API_URL || "http://127.0.0.1:3000";
 
 const http = axios.create({
+	headers:{
+		Authorization:`Bearer ${localStorage.getItem("token") || "NONE"}`
+	},
 	baseURL: baseURL,
 	withCredentials: true,
 });
