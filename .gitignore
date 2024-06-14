@@ -15,6 +15,7 @@ dist-ssr
 .env
 *.docker.env
 *.lock
+*/package-lock.json
 uploads/
 
 # Database
