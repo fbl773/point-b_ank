@@ -140,7 +140,7 @@ export default function ManagementCultures() {
 			valueGetter: (params) => {
 				return params.row.period
 					? `${params.row.period.name} (${params.row.period.start}-${params.row.period.end})`
-					: "No associated period"; //TODO: fix this relation goofup
+					: "No associated period"; //TODO: #32
 			},
 		},
 		{

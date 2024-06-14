@@ -27,11 +27,13 @@ class RegionModal extends Component{
 		}
 	}
 
+	/**
+	 * Creates a region out of the modal's state, and appends it to the list of regions on success.
+	 */
 	saveRegion = () => {
 		let region= this.state;
 		//todo:validate better
 		let can_save = region.name.length > 0 && region.description.length > 0;
-		console.log("can save?", can_save)
 		if(can_save) {
 			http.post("/regions", region)
 				.then(resp => {

@@ -49,7 +49,7 @@ export default function AddCultureDialog({ open, onClose, onSave }) {
 		}
 
 		// Post-condition: If validation passes, call the onSave prop
-		onSave({ name, period_id:periodId,start:1,end:2});
+		onSave({ name, period_id:periodId,start:1,end:2}); //todo: see #32
 
 		// Close the dialog
 		onClose();

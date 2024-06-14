@@ -22,7 +22,7 @@ import log from "../logger.js";
 export default function AddMaterialDialog({ open, onClose, onSave }) {
 	const [name, setName] = useState(""); // State to hold the material name input
 	const [description, setDescription] = useState(""); // State to hold the material description input
-	const [artifactTypeId, setArtifactTypeId] = useState(""); // State to hold the selected artifact type ID
+	const [artifactType, setArtifactType] = useState(""); // State to hold the selected artifact type ID
 	const [artifactTypes, setArtifactTypes] = useState([]); // State to hold the list of fetched artifact types
 	const [error, setError] = useState(""); // State to hold any error message
 
@@ -30,8 +30,7 @@ export default function AddMaterialDialog({ open, onClose, onSave }) {
 	useEffect(() => {
 		const fetchArtifactTypes = async () => {
 			try {
-				//const response = await http.get("/artifactTypes");//TODO: figure out
-				setArtifactTypes(["lithic","faunal","ceramic","other"]); // Update state with fetched artifact types
+				setArtifactTypes(["lithic","faunal","ceramic","other"]); //todo: see issue #33
 			} catch (error) {
 				log.error("Failed to fetch artifact types:", error);
 				setError("Failed to load artifact types. Please try again later."); // Set error message on fail
@@ -49,12 +48,12 @@ export default function AddMaterialDialog({ open, onClose, onSave }) {
 		setError(""); // Reset any existing error message
 
 		// Validation: Ensure name and artifact type are selected
-		if (!name.trim() || !artifactTypeId) {
+		if (!name.trim() || !artifactType) {
 			setError("Both name and associated artifact type are required."); // Set error message if validation fails
 			return;
 		}
 
-		onSave({ name, description, artifact_type:artifactTypeId }); // Call onSave callback with the new material data
+		onSave({ name, description, artifact_type:artifactType });
 		onClose(); // Close the dialog
 	};
 
@@ -96,8 +95,8 @@ export default function AddMaterialDialog({ open, onClose, onSave }) {
 						label="Associated Artifact Type"
 						fullWidth
 						margin="dense"
-						value={artifactTypeId}
-						onChange={(e) => setArtifactTypeId(e.target.value)} // Update selected artifact type ID on change
+						value={artifactType}
+						onChange={(e) => setArtifactType(e.target.value)} // Update selected artifact type ID on change
 						SelectProps={{
 							native: false,
 						}}

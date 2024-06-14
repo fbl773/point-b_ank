@@ -147,9 +147,9 @@ export default function MaterialModal({
 						helperText={errors.selectedArtifactTypeID}
 					>
 						<option value=""></option>
-						{artifactTypes.map((artifact) => (
-							<option key={artifact} value={artifact}>
-								{artifact}
+						{artifactTypes.map((artifact_name) => (
+							<option key={artifact_name} value={artifact_name}>
+								{artifact_name}
 							</option>
 						))}
 					</TextField>

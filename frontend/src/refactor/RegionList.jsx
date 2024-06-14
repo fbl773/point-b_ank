@@ -13,13 +13,14 @@ class RegionList extends Component{
     /**
      *
      * @param props
-     * @param props.
+     * @param props.selected_region_id:String - the id of the selected region
+     * @param props.select_region:Function - What to do when a region has been selected
      */
     constructor(props) {
         super(props);
 
         this.delete_region = this.delete_region.bind(this);
-        //this.append_region = this.append_region.bind(this);
+        this.append_region = this.append_region.bind(this);
 
         this.state = {
             regions:[],
