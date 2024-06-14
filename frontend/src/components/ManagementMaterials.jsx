@@ -46,8 +46,13 @@ export default function ManagementMaterials() {
 	useEffect(() => {
 		const fetchMaterials = async () => {
 			try {
-				const response = await http.get(apiUrlMaterials);
-				setRows(response.data); // Populate materials data into rows
+				http.get(apiUrlMaterials)
+					.then(resp=> {
+						let mats = resp.data;
+						mats.map(mat => mat["id"] = mat._id)
+						setRows(mats); // Populate materials data into rows
+					})
+					.catch(err => log.error("Failed to fetch materials:",err));
 			} catch (error) {
 				log.error("Failed to fetch materials:", error);
 			}
@@ -112,7 +117,9 @@ export default function ManagementMaterials() {
 
 		try {
 			const response = await http.post(apiUrlMaterials, newMaterial);
-			setRows([...rows, response.data]); // Add the new material to the UI
+			let new_mat = response.data.new_ent;
+			new_mat["id"] = new_mat._id;
+			setRows([...rows, new_mat]); // Add the new material to the UI
 			setAlert({
 				open: true,
 				type: "success",

@@ -25,7 +25,7 @@ export default function MaterialModal({
 		selectedMaterial.name ? selectedMaterial.description : "",
 	);
 	const [selectedArtifactTypeID, setSelectedArtifactTypeID] = useState(
-		selectedMaterial.name ? selectedMaterial.artifactType.id : "",
+		selectedMaterial.name ? selectedMaterial.artifact_type: "",
 	);
 	const [errors, setErrors] = useState({
 		materialName: "",
@@ -69,7 +69,7 @@ export default function MaterialModal({
 		const updatedMaterial = {
 			name: materialName,
 			description: materialDescription,
-			artifactTypeId: selectedArtifactTypeID,
+			artifact_type: selectedArtifactTypeID,
 		};
 
 		// Decide endpoint and axiosCall based on whether it's an edit or add operation
@@ -83,6 +83,9 @@ export default function MaterialModal({
 
 		axiosCall
 			.then((response) => {
+				if(response.data.new_ent !== undefined){
+					alert("holdup",response.data)
+				}
 				log.info(
 					`Material processed successfully: ${JSON.stringify(response.data)}`,
 				);
@@ -145,8 +148,8 @@ export default function MaterialModal({
 					>
 						<option value=""></option>
 						{artifactTypes.map((artifact) => (
-							<option key={artifact.id} value={artifact.id}>
-								{artifact.id}
+							<option key={artifact} value={artifact}>
+								{artifact}
 							</option>
 						))}
 					</TextField>

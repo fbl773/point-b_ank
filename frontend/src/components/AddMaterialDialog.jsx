@@ -30,8 +30,8 @@ export default function AddMaterialDialog({ open, onClose, onSave }) {
 	useEffect(() => {
 		const fetchArtifactTypes = async () => {
 			try {
-				const response = await http.get("/artifactTypes");
-				setArtifactTypes(response.data); // Update state with fetched artifact types
+				//const response = await http.get("/artifactTypes");//TODO: figure out
+				setArtifactTypes(["lithic","faunal","ceramic","other"]); // Update state with fetched artifact types
 			} catch (error) {
 				log.error("Failed to fetch artifact types:", error);
 				setError("Failed to load artifact types. Please try again later."); // Set error message on fail
@@ -54,7 +54,7 @@ export default function AddMaterialDialog({ open, onClose, onSave }) {
 			return;
 		}
 
-		onSave({ name, description, artifactTypeId }); // Call onSave callback with the new material data
+		onSave({ name, description, artifact_type:artifactTypeId }); // Call onSave callback with the new material data
 		onClose(); // Close the dialog
 	};
 
@@ -104,8 +104,8 @@ export default function AddMaterialDialog({ open, onClose, onSave }) {
 					>
 						{/* Map through fetched artifact types and render options */}
 						{artifactTypes.map((artifact) => (
-							<MenuItem key={artifact.id} value={artifact.id}>
-								{artifact.id}
+							<MenuItem key={artifact} value={artifact}>
+								{artifact}
 							</MenuItem>
 						))}
 					</TextField>
