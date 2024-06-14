@@ -43,9 +43,14 @@ export default function ManagementPeriods() {
 	useEffect(() => {
 		const fetchPeriods = async () => {
 			try {
-				const response = await http.get(apiUrl); // Fetch periods data
-				setRows(response.data); // Set fetched periods to rows
-				setExistingPeriodNames(response.data.map((period) => period.name)); // Extract names for duplicate checking
+				http.get(apiUrl)
+					.then(resp => {
+						let periods = resp.data;
+						periods.map(period => period["id"] = period._id);
+						setRows(periods); // Set fetched periods to rows
+						setExistingPeriodNames(periods.map((period) => period.name)); // Extract names for duplicate checking
+					})
+					.catch(err => log.error("Error fetching periods:", error));
 			} catch (error) {
 				log.error("Error fetching periods:", error); // Log errors if request fails
 			}
@@ -73,8 +78,8 @@ export default function ManagementPeriods() {
 	const handleConfirmDelete = async () => {
 		if (deleteConfirmation.period) {
 			try {
-				await http.delete(`${apiUrl}/${deleteConfirmation.period.id}`);
-				setRows(rows.filter((row) => row.id !== deleteConfirmation.period.id));
+				await http.delete(`${apiUrl}/${deleteConfirmation.period._id}`);
+				setRows(rows.filter((row) => row._id !== deleteConfirmation.period._id));
 				setAlert({
 					open: true,
 					type: "success",
@@ -96,7 +101,10 @@ export default function ManagementPeriods() {
 	const handleSaveNewPeriod = async (newPeriod) => {
 		try {
 			const response = await http.post(apiUrl, newPeriod); // Send post request to add new period
-			setRows((oldRows) => [...oldRows, { ...response.data, isNew: true }]); // Add new period to local state
+			let new_period = response.data.new_ent;
+			new_period["id"] = new_period._id;
+			console.log("NP: ",new_period)
+			setRows((oldRows) => [...oldRows, { ...new_period, isNew: true }]); // Add new period to local state
 			setAlert({
 				open: true,
 				type: "success",
