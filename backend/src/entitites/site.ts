@@ -29,6 +29,27 @@ siteSchema.pre("findOneAndDelete", async function(next) {
     next();
 });
 
+/**
+ * Handles the case where "no region" is selected from the UI
+ * @summary Because not passing a field to mongo's update just doesn't modify it, and passing an empty string
+ * causes an exception, we need to intercept site updates, check if they have set region_id = "", then take the
+ * proper actions to unset it... An ordeal yes, but this is the way.
+ */
+siteSchema.pre("findOneAndUpdate",async function(next) {
+
+    let mod_update:any = this.getUpdate() as any; // Get a version of the update we can play with
+
+    //If we must play with it
+    if(mod_update.region_id === ""){
+        delete mod_update.region_id; //remove region_id from the object original
+        mod_update.$unset = {region_id:1} //and add the flag to unset it before proceeding with the update
+        this.updateOne(this.getFilter(),mod_update)
+    }
+
+    next();
+});
+
+
 const Site:SiteModal = model<ISite,SiteModal>('Site',siteSchema);
 
 export default Site;
