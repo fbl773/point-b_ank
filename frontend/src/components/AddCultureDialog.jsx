@@ -49,7 +49,7 @@ export default function AddCultureDialog({ open, onClose, onSave }) {
 		}
 
 		// Post-condition: If validation passes, call the onSave prop
-		onSave({ name, periodId: parseInt(periodId, 10) });
+		onSave({ name, period_id:periodId,start:1,end:2});
 
 		// Close the dialog
 		onClose();
@@ -85,7 +85,7 @@ export default function AddCultureDialog({ open, onClose, onSave }) {
 				>
 					{periods.length > 0 ? (
 						periods.map((option) => (
-							<MenuItem key={option.id} value={option.id}>
+							<MenuItem key={option._id} value={option._id}>
 								{option.name} ({option.start} - {option.end})
 							</MenuItem>
 						))
