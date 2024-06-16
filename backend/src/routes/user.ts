@@ -37,10 +37,13 @@ user_router.patch(
                         //Do the update (allegedly)
                         if(found_user) {
                             found_user.username = updated_user.username
-                            found_user.save();
+                            found_user.save()
+                                .then(_ => {
+                                    console.log('hit');
+                                    return res.status(200).send({message:`succesfully updated user ${payload._id}`,user:found_user})
+                                }).catch(err => {console.log("Failed to update uname",err)})
                         }
 
-                        return res.status(200).send({message:`succesfully updated user ${payload._id}`,user:found_user})
                     })
                     .catch(err => res.status(500).send({message:`failed to update user ${payload._id}`,err}))
 
@@ -70,10 +73,9 @@ user_router.patch(
                         if (!match)
                             return res.status(401).send({message: "check provided password"})
 
-                        //Do the update (allegedly)
                         if (found_user) {
-                            let hashed_password = await bcrypt.hash(newPassword, 10);
-                            found_user.password = hashed_password;
+                            // Hash the new Password and assign it to the user
+                            found_user.password = await bcrypt.hash(newPassword, 10);
                             await found_user.save()
                                 .then(() => res.status(200).send({message:`successfully updated password for user ${payload._id}`}))
                                 .catch((err) => res.status(500).send({message:`failed to update user ${payload._id}`,err}));

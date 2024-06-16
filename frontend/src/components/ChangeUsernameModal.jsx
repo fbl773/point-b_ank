@@ -15,10 +15,11 @@ import DialogTitle from "@mui/material/DialogTitle";
  * Modal component for changing user username.
  * @param {boolean} modalVisible - Boolean value to set modal visibility.
  * @param {function} closeModal - Function to hide the modal.
+ * @param {function} updateUsername - Function to update uname on success.
  * @returns {JSX.Element} - ChangeUsernameModal React component.
  */
 // eslint-disable-next-line react/prop-types
-function ChangeUsernameModal({ modalVisible, closeModal }) {
+function ChangeUsernameModal({ modalVisible, closeModal, updateUsername }) {
 	const [userName, setNewUserName] = useState("");
 	const [password, setConfirmPassword] = useState("");
 	// const [checkPassword, setCheckPassword] = useState();
@@ -62,7 +63,7 @@ function ChangeUsernameModal({ modalVisible, closeModal }) {
 
 		try {
 			const response = await http.patch("/users/changeUsername", {
-				newUsername: userName,
+				username: userName,
 				password: password,
 			});
 
@@ -70,8 +71,8 @@ function ChangeUsernameModal({ modalVisible, closeModal }) {
 
 			if (response.status === 200) {
 				alert("Username Changed successfully");
+				updateUsername(userName);
 				closeModal();
-				window.location.reload();
 			} else {
 				alert("An unexpected status was received. Please try again later.");
 			}

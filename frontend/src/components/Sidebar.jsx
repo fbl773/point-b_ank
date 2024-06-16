@@ -180,7 +180,7 @@ function Sidebar() {
 							</ListItemButton>
 						</ListItem>
 					</Link>
-					<ListItem key="Connect" disablePadding onClick={handleClick}>
+					<ListItem key="Connect" disablePadding onClick={() => alert("not implemented")}>
 						<ListItemButton>
 							<SidebarIcon>
 								<UploadIcon />
@@ -189,10 +189,11 @@ function Sidebar() {
 						</ListItemButton>
 					</ListItem>
 					<Link
-						to="/stats"
+						//to="/stats"
+						to=""
 						style={{ textDecoration: "none", color: "inherit" }}
 					>
-						<ListItem key="Statistics" disablePadding onClick={handleClick}>
+						<ListItem key="Statistics" disablePadding onClick={() => alert("not implemented")}>
 							<ListItemButton>
 								<SidebarIcon>
 									<BarChartIcon />
