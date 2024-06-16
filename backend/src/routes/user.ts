@@ -1,6 +1,6 @@
 import {Request, Response, Router} from "express";
 import User, {IUser} from "../entitites/user";
-import authenticate, {authenticate_admin, get_payload, TokenData} from "../utilities/jwt_utils";
+import {authenticate_admin, get_payload, TokenData} from "../utilities/jwt_utils";
 import crud_factory from "../utilities/crud_factory";
 import bcrypt from "bcrypt";
 

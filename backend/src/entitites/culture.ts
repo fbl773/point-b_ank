@@ -19,6 +19,7 @@ const cultureSchema = new Schema<ICulture,CultureModel>({
 });
 
 //Triggers
+
 /**
  * Cascade delete related cultures
  * On delete, update points to reflect unknown culture

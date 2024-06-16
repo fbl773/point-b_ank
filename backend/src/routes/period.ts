@@ -14,8 +14,8 @@ crud_factory.read_one<IPeriod>(Period,period_router,authenticate,"period");
 crud_factory.update_one<IPeriod>(Period,period_router,authenticate,"period");
 crud_factory.delete_one<IPeriod>(Period,period_router,authenticate,"period");
 
-
 // Specialty endpoints
+
 crud_factory.find_related<ICulture>("/:id/cultures",Culture,period_router,
     "period_id", authenticate,"period");
 

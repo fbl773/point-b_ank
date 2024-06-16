@@ -22,8 +22,9 @@ const siteSchema = new Schema<ISite,SiteModal>({
     region_id:{type: Schema.Types.ObjectId, ref:"Region",required:false}
 
 },{timestamps:true});
-//Triggers
-/*  Cascade delete related artifacts */
+
+// Triggers
+/**  Cascade delete related artifacts */
 siteSchema.pre("findOneAndDelete", async function(next) {
     await cascade_related<ISite, IProjectilePoint>(this.model, this.getFilter(), ProjectilePoint, "site_id");
     next();
@@ -37,13 +38,12 @@ siteSchema.pre("findOneAndDelete", async function(next) {
  */
 siteSchema.pre("findOneAndUpdate",async function(next) {
 
-    let mod_update:any = this.getUpdate() as any; // Get a version of the update we can play with
+    let mut_update:any = this.getUpdate() as any; // Get a mutable version of the update we are receiving
 
-    //If we must play with it
-    if(mod_update.region_id === ""){
-        delete mod_update.region_id; //remove region_id from the object original
-        mod_update.$unset = {region_id:1} //and add the flag to unset it before proceeding with the update
-        this.updateOne(this.getFilter(),mod_update)
+    if(mut_update.region_id === ""){
+        delete mut_update.region_id; // remove region_id from the object original
+        mut_update.$unset = {region_id:1} // and add the flag to unset it before proceeding with the update
+        this.updateOne(this.getFilter(),mut_update)
     }
 
     next();

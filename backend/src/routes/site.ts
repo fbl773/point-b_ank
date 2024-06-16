@@ -15,8 +15,6 @@ crud_factory.delete_one<ISite>(Site,site_router,authenticate,"site");
 
 //Specialty endpoints
 
-
-
 crud_factory.find_related<IProjectilePoint>("/:id/points",ProjectilePoint,site_router,
     "site_id",authenticate,"site");
 

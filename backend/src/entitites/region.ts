@@ -15,6 +15,7 @@ const regionSchema = new Schema<IRegion,RegionModal>({
 },{timestamps:true});
 
 //Triggers
+
 /**
  * ON Delete, unset the region_id
  */

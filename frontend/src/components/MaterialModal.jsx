@@ -83,9 +83,6 @@ export default function MaterialModal({
 
 		axiosCall
 			.then((response) => {
-				if(response.data.new_ent !== undefined){
-					alert("holdup",response.data)
-				}
 				log.info(
 					`Material processed successfully: ${JSON.stringify(response.data)}`,
 				);

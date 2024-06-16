@@ -18,7 +18,8 @@ const catalogueSchema = new Schema<ICatalogue,CatalogueModel>({
     timestamps:true,
 });
 
-// Triggers
+//Triggers
+
 catalogueSchema.pre("findOneAndDelete", async function(next){
     await cascade_related<ICatalogue,ISite>(this.model,this.getFilter(),Site,"catalogue_id");
     next();
