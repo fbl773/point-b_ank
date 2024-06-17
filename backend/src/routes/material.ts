@@ -15,6 +15,7 @@ crud_factory.delete_one<IMaterial>(Material,material_router,authenticate,"materi
 
 
 // Specialty Endpoints
+
 crud_factory.find_related<IProjectilePoint>("/:id/points",ProjectilePoint,material_router,
     "material_id", authenticate,"material");
 

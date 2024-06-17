@@ -16,8 +16,8 @@ export const access_control_router = Router();
  * Handles the case when no admin user exists - the intial login
  * @overview When the server is first started, there are no known users in the database.
  * To handle this case, the admin user is created and logged in
- * @param req:{body:{username:string,password:string}} - the request containing the credentials
- * @param res:Response - a handle to the response object
+ * @param req {body:{username:string,password:string}} - the request containing the credentials
+ * @param res {Response} - a handle to the response object
  */
 async function init_login(req:Request,res:Response){
 
@@ -51,8 +51,8 @@ async function init_login(req:Request,res:Response){
 
 /**
  * Handles the standard login case
- * @param req:{body:{username:string,password:string}} - the request containing the credentials
- * @param res:Response - response handle
+ * @param req {body:{username:string,password:string}} - the request containing the credentials
+ * @param res {Response} - response handle
  */
 async function login(req:Request,res:Response){
 

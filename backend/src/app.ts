@@ -67,6 +67,7 @@ app.use("/baseshapes", unimplemented_router);
 app.use("/haftingshapes", unimplemented_router);
 app.use("/crosssections", unimplemented_router);
 app.use("/artifacttypes", unimplemented_router);
+app.use("/users/resetDefaultUser",unimplemented_router);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 

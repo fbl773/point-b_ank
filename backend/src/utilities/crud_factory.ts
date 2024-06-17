@@ -21,10 +21,10 @@ function create<T extends IMongo_Entity>(model:Model<T>,
         (req: Request, res: Response) => {
             let new_entity: T = req.body;
             model.create(new_entity)
-                .then((nent:T) => res.status(201).send(
+                .then((new_ent) => res.status(201).send(
                     {
                         message:`Created new ${entity_name}`,
-                        id:nent._id
+                        new_ent
                     }))
                 .catch(err => res.status(404).send({message:`Failed to create ${entity_name}`,err}))
         }
@@ -50,7 +50,7 @@ function read_all<T>(model:Model<T>,
         (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE",entity_name); _next()},
         (req: Request, res: Response) => {
             model.find({})
-                .then((entities) => res.status(201).send(entities))
+                .then((entities) => res.status(200).send(entities))
                 .catch(err => res.status(404).send({message:`Failed to find${entity_name}s`,err}))
         }
     );

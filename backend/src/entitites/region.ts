@@ -14,14 +14,17 @@ const regionSchema = new Schema<IRegion,RegionModal>({
     description:{type:String, required:false},
 },{timestamps:true});
 
-const Region:RegionModal = model<IRegion,RegionModal>('Region',regionSchema);
-
 //Triggers
-regionSchema.pre("findOneAndDelete", async function(next) {
-    await update_related<IRegion, ISite>(this.model, this.getFilter(),
-        Site, "region_id",{$unset:{region_id:1}});
-    next();
-})
 
+/**
+ * ON Delete, unset the region_id
+ */
+regionSchema.pre("findOneAndDelete", async function(next) {
+	await update_related<IRegion, ISite>(this.model, this.getFilter(),
+		Site, "region_id", {$unset: {region_id: 1}});
+	next();
+});
+
+const Region:RegionModal = model<IRegion,RegionModal>('Region',regionSchema);
 
 export default Region;

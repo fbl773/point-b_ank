@@ -90,7 +90,6 @@ const CatalogueModal = ({
 		http
 			.get(`/catalogues/${catalogueId}`)
 			.then((response) => {
-				log.info("Editing catalogue: ", response.data);
 				setCatalogueName(response.data.name);
 				setDescription(response.data.description);
 			})

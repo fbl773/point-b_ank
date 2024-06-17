@@ -14,6 +14,7 @@ crud_factory.update_one<ICatalogue>(Catalogue,catalogue_router,authenticate,"cat
 crud_factory.delete_one<ICatalogue>(Catalogue,catalogue_router,authenticate,"catalogue");
 
 //Specialty endpoints
+
 crud_factory.find_related<ISite>("/:id/sites",Site,catalogue_router,
     "catalogue_id",authenticate,"catalogue");
 

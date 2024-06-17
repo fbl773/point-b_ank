@@ -12,6 +12,4 @@ crud_factory.read_one<IProjectilePoint>(ProjectilePoint,projectile_point_router,
 crud_factory.update_one<IProjectilePoint>(ProjectilePoint,projectile_point_router,authenticate,"projectile_point");
 crud_factory.delete_one<IProjectilePoint>(ProjectilePoint,projectile_point_router,authenticate,"projectile_point");
 
-//TODO: Special routes to get point specifics (i.e. culture,material,etc)
-
 export default projectile_point_router;

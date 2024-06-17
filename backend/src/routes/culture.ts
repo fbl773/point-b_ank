@@ -13,8 +13,8 @@ crud_factory.read_one<ICulture>(Culture,culture_router,authenticate,"culture");
 crud_factory.update_one<ICulture>(Culture,culture_router,authenticate,"culture");
 crud_factory.delete_one<ICulture>(Culture,culture_router,authenticate,"culture");
 
-
 //Specialty Endpoints
+
 crud_factory.find_related<IProjectilePoint>("/:id/points",ProjectilePoint,culture_router,
     "culture_id", authenticate,"culture");
 

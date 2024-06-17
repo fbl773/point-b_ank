@@ -17,16 +17,17 @@ const periodSchema = new Schema<IPeriod,PeriodModel>({
     end:{type:Number,required:true,min:0}
 
 });
-const Period:PeriodModel = model<IPeriod,PeriodModel>('Period',periodSchema);
-
 
 //Triggers
 
-/* Cascade delete related cultures */
+/** Cascade delete related cultures */
 periodSchema.pre("findOneAndDelete", async function(next){
     await cascade_related<IPeriod,ICulture>(this.model,this.getFilter(),Culture,"period_id");
     next();
 })
+
+const Period:PeriodModel = model<IPeriod,PeriodModel>('Period',periodSchema);
+
 
 
 

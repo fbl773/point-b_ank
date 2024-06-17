@@ -2,18 +2,12 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState, useContext } from "react";
 import ProjectileList from "./ProjectileList";
-import SiteModal from "./SiteModal";
 import BaseLayout from "./BaseLayout";
 import http from "../../http.js";
 import SearchIcon from "@mui/icons-material/Search";
 import log from "../logger.js";
 import {
 	Button,
-	Dialog,
-	DialogTitle,
-	DialogContent,
-	DialogContentText,
-	DialogActions,
 	TextField,
 	IconButton,
 	Typography,
@@ -23,6 +17,8 @@ import {
 
 import { UserContext } from "../context/userContext.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
+import EditSite from "../refactor/EditSite.jsx";
+import DeleteConfirmDialog from "../refactor/DeleteConfirmDialog.jsx"
 
 /**
  * Site component displays detailed information about a site and allows searching, sorting,
@@ -35,6 +31,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 const Site = () => {
 	const [siteName, setSiteName] = useState("");
 	const [siteDescription, setSiteDescription] = useState("");
+	const [regionId, setRegionId] = useState("...loading");
+	const [catalogueId,setCatalogueId] = useState("");
+	const [location,setLocation] = useState("");
 
 	const [searchValue, setSearchValue] = useState("");
 	const [sortValue, setSortValue] = useState("newest");
@@ -46,7 +45,8 @@ const Site = () => {
 	const { user } = useContext(UserContext);
 
 	const inComingInfo = useLocation();
-	const siteID = inComingInfo.state.info.id;
+	const siteID = inComingInfo.state.info._id;
+
 
 	/**
 	 * Fetches detailed information about the site using its ID.
@@ -60,7 +60,9 @@ const Site = () => {
 				const response = await http.get(`/sites/${siteID}`);
 				setSiteName(response.data.name);
 				setSiteDescription(response.data.description);
-				log.info("Site: ", response.data);
+				setRegionId(response.data.region_id);
+				setCatalogueId(response.data.catalogue_id);
+				setLocation(response.data.location);
 			} catch (error) {
 				log.error("Error fetching site:", error);
 			}
@@ -124,7 +126,22 @@ const Site = () => {
 		setOpenEdit(true);
 	};
 
-	let navigate = useNavigate();
+	/**
+	 *
+	 * @return {SiteEntity} this as a site
+	 */
+	const as_site = () => {
+		return {
+			_id: siteID,
+			name: siteName,
+			description: siteDescription,
+			location: location,
+			region_id: regionId,
+			catalogueId: catalogueId
+		}
+	}
+
+	const navigate = useNavigate();
 	/**
 	 * Handles deletion of site on click event
 	 */
@@ -153,6 +170,9 @@ const Site = () => {
 						variant="h6"
 					>
 						{siteDescription}
+					</Typography>
+					<Typography>
+						{location}, {"REGION WOULD GO HERE (todo in refactor)"}
 					</Typography>
 					{user && (
 						<Button
@@ -219,34 +239,13 @@ const Site = () => {
 							</MenuItem>
 						</TextField>
 					</Grid>
-					<Grid item xs={6} sm={3}>
-						{/* Filter 
-						<TextField
-							id="filter"
-							select
-							label="Filter"
-							variant="filled"
-							fullWidth
-							value={filterValue}
-							onChange={handleFilterChange}
-							size="small"
-							sx={{ minWidth: "250px" }}
-						>
-							<MenuItem value="all">All</MenuItem>
-							<MenuItem value="category1">Category 1</MenuItem>
-							<MenuItem value="category2">Category 2</MenuItem>
-						</TextField>
-							*/}
-					</Grid>
 				</Grid>
 			</Grid>
 			{openEdit && (
-				<SiteModal
-					openEdit={openEdit}
-					setOpenEdit={setOpenEdit}
-					siteId={siteID}
-					siteName={siteName}
-				/>
+				<EditSite adding_new={false}
+						  onClose={() => setOpenEdit(false)}
+						  site={as_site()}
+						  catalogue_id={catalogueId}/>
 			)}
 			<Grid item xs={12}>
 				<Typography variant="body1" sx={{ fontWeight: "medium" }}>
@@ -260,23 +259,12 @@ const Site = () => {
 				/>
 			</Grid>
 			<div>
-				<Dialog open={openAlertDelete}>
-					<DialogTitle id="alert-dialog-title">
-						{"Delete Site " + siteName}
-					</DialogTitle>
-					<DialogContent>
-						<DialogContentText id="alert-dialog-description">
-							Are you sure you want to delete site? This will also delete all
-							projectile points saved in site.
-						</DialogContentText>
-					</DialogContent>
-					<DialogActions>
-						<Button onClick={handleCloseAlertDelete}>No</Button>
-						<Button onClick={handleDelete} autoFocus>
-							Yes
-						</Button>
-					</DialogActions>
-				</Dialog>
+				<DeleteConfirmDialog
+					open_condition={openAlertDelete}
+					title={`Delete Site "${siteName}"`}
+					text={`Are you sure you want to delete "${siteName}"? This will also delete any related artifacts.`}
+					on_cancel={handleCloseAlertDelete}
+					on_proceed={handleDelete}/>
 			</div>
 		</BaseLayout>
 	);
