@@ -13,6 +13,7 @@ import log from "../logger.js";
 import Sidebar from "./Sidebar";
 import AddPeriodDialog from "./AddPeriodDialog";
 import RelationsPeriodsDialog from "./RelationsPeriodsDialog.jsx";
+import PeriodModal from "../refactor/PeriodModal.jsx";
 import {
 	Typography,
 	Dialog,
@@ -255,12 +256,17 @@ export default function ManagementPeriods() {
 						toolbar: user ? GridToolbar : undefined,
 					}}
 				/>
-				<AddPeriodDialog
+				{/*<AddPeriodDialog*/}
+				{/*	open={dialogOpen}*/}
+				{/*	onClose={() => setDialogOpen(false)}*/}
+				{/*	onSave={handleSaveNewPeriod}*/}
+				{/*	periodNames={existingPeriodNames}*/}
+				{/*/>*/}
+				<PeriodModal
 					open={dialogOpen}
 					onClose={() => setDialogOpen(false)}
-					onSave={handleSaveNewPeriod}
-					periodNames={existingPeriodNames}
-				/>
+					adding_new={true}
+					/>
 				<RelationsPeriodsDialog
 					open={relationsDialogOpen}
 					onClose={() => setRelationsDialogOpen(false)}
