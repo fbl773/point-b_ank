@@ -11,7 +11,6 @@ import { Alert } from "@mui/material";
 import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import log from "../logger.js";
 import Sidebar from "./Sidebar";
-import AddPeriodDialog from "./AddPeriodDialog";
 import RelationsPeriodsDialog from "./RelationsPeriodsDialog.jsx";
 import PeriodModal from "../refactor/PeriodModal.jsx";
 import {
@@ -22,6 +21,7 @@ import {
 	DialogTitle,
 	DialogContentText,
 } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 
 // URL for backend API for period CRUD operations
 const apiUrl = "/periods";
@@ -31,6 +31,7 @@ export default function ManagementPeriods() {
 	// State variables to manage component data and UI state
 	const [rows, setRows] = useState([]); // Rows for data grid, representing periods
 	const [dialogOpen, setDialogOpen] = useState(false); // Controls visibility of the add dialog
+	const [addingNew,setAddingNew] = useState(false)
 	const [alert, setAlert] = useState({ open: false, message: "" }); // Controls visibility and message of alerts
 	const [existingPeriodNames, setExistingPeriodNames] = useState([]); // Tracks names of all existing periods to prevent duplicates
 	const [deleteConfirmation, setDeleteConfirmation] = useState({
@@ -58,11 +59,6 @@ export default function ManagementPeriods() {
 		};
 		fetchPeriods();
 	}, []);
-
-	// Handler to open the add new period dialog
-	const handleClickOpenDialog = () => {
-		setDialogOpen(true);
-	};
 
 	// Handler to close alert messages
 	const handleCloseAlert = () => {
@@ -116,6 +112,16 @@ export default function ManagementPeriods() {
 			log.error("Error adding new period:", error); // Log errors if request fails
 		}
 	};
+
+	/**
+	 * Appends a new period to the list of periods we manage
+	 * @param new_period: The period to append
+	 */
+	const appendNewPeriod = (new_period) => {
+		new_period["id"] = new_period._id; //set id field for MUI
+		setRows((oldRows) => [...oldRows, {...new_period, isNew: true}]); // Add new period to local state	}
+	}
+
 	const formatPeriodDetails = (period) => {
 		if (!period) return "Loading...";
 
@@ -138,6 +144,26 @@ export default function ManagementPeriods() {
 		setSelectedPeriod(period);
 		setRelationsDialogOpen(true);
 	};
+
+	/**
+	 * Opens the PeriodModal in add mode
+	 */
+	const handleAddNewPeriod = () => {
+		setDialogOpen(true);
+		setAddingNew(true);
+	};
+
+	/**
+	 * Opens the PeriodModal in edit mode for the passed period
+	 * @param period - the period to edit
+	 */
+	const handleEditPeriod = (period) => {
+		setSelectedPeriod(period)
+		console.log(`Editing ID: ${JSON.stringify(period)} Sel: ${JSON.stringify(selectedPeriod)}`)
+		setDialogOpen(true);
+		setAddingNew(false);
+	}
+
 	// Columns configuration for the data grid
 	const columns = [
 		{ field: "id", headerName: "ID", flex: 1, editable: false },
@@ -179,14 +205,20 @@ export default function ManagementPeriods() {
 			getActions: (params) =>
 				user
 					? [
-							<GridActionsCellItem
+						<GridActionsCellItem
+							icon={<EditIcon />}
+							label="Edit"
+							onClick={() => { handleEditPeriod(params.row) }}
+							color="inherit"
+						/>,
+						<GridActionsCellItem
 								icon={<DeleteIcon />}
 								label="Delete"
 								onClick={handleDeleteClick(
 									rows.find((row) => row.id === params.id),
 								)}
 								color="inherit"
-							/>,
+							/>
 						]
 					: [],
 		},
@@ -239,7 +271,7 @@ export default function ManagementPeriods() {
 						<Button
 							variant="contained"
 							startIcon={<AddIcon />}
-							onClick={handleClickOpenDialog}
+							onClick={handleAddNewPeriod}
 							color="primary"
 						>
 							Add Period
@@ -256,18 +288,15 @@ export default function ManagementPeriods() {
 						toolbar: user ? GridToolbar : undefined,
 					}}
 				/>
-				{/*<AddPeriodDialog*/}
-				{/*	open={dialogOpen}*/}
-				{/*	onClose={() => setDialogOpen(false)}*/}
-				{/*	onSave={handleSaveNewPeriod}*/}
-				{/*	periodNames={existingPeriodNames}*/}
-				{/*/>*/}
-				<PeriodModal
+				{dialogOpen &&
+					<PeriodModal
 					open={dialogOpen}
 					onClose={() => setDialogOpen(false)}
-					adding_new={true}
-					append_period={(new_period) => setRows((oldRows) => [...oldRows, { ...new_period, isNew: true }])}
-					/>
+					adding_new={addingNew}
+					append_period={(new_period) => appendNewPeriod(new_period)}
+					on_success={setAlert}// Show success message
+					selected_period={selectedPeriod}
+					/>}
 				<RelationsPeriodsDialog
 					open={relationsDialogOpen}
 					onClose={() => setRelationsDialogOpen(false)}

@@ -22,22 +22,28 @@ class PeriodModal extends Component{
 	constructor(props) {
 		super(props);
 
-		let title = "Add"
-		if(this.props.adding_new){
-			this.handleSubmit = this.addPeriod.bind(this);
-		} else {
-			this.handleSubmit = this.editPeriod.bind(this);
-			title="Edit";
-		}
-
 		this.state = {
-			title:title,
+			title:"...",
 			period: {
 				_id: "",
 				name: "",
 				start: null,
 				end:null,
 			}
+		}
+	}
+
+	/**
+	 * Sets the component up upon mounting
+	 */
+	componentDidMount() {
+		if(this.props.adding_new){
+			this.handleSubmit = this.addPeriod.bind(this);
+			this.setState({title:"Add"});
+		} else {
+			this.handleSubmit = this.editPeriod.bind(this);
+			this.setState({title:"Edit",period:this.props.selected_period});
+
 		}
 	}
 
@@ -73,7 +79,7 @@ class PeriodModal extends Component{
 	 */
 	addPeriod = async () => {
 		let period= this.state.period;
-		delete period._id; //_id cannot be present when adding new to DB
+		delete period._id; //_id cannot be present when adding new to DB, but will be if editing.
 		if(this.validate()) {
 			http.post("/periods", period)
 				.then(resp => {
@@ -82,6 +88,7 @@ class PeriodModal extends Component{
 					this.props.append_period(new_period);
 				})
 				.then(this.props.onClose)
+				.then(this.props.on_success({open:true,type:"success",message:"New Period successfully added."}))
 				.catch(err => console.error("Failed to add new period: ", err))
 		} else {
 			console.error("Period is invalid.")
@@ -94,12 +101,11 @@ class PeriodModal extends Component{
 	 */
 	editPeriod = async () => {
 		let period = this.state.period;
-		alert(`Would EDIT: ${JSON.stringify(period)}`)
-		// console.log("edited period is : ",period)
-		// await http.put(`/periods/${period._id}`,period)
-		// 	.then(edited_period => this.setState({period:edited_period}))
-		// 	.catch(err => console.error("Failed to edit period",err))
-		// 	.finally(this.props.onClose);
+		await http.put(`/periods/${period._id}`,period)
+			.then(edited_period => this.setState({period:edited_period}))
+			.then(this.props.on_success({open:true,type:"success",message:"Period successfully edited."}))
+			.catch(err => console.error("Failed to edit period",err))
+			.finally(this.props.onClose);
 	}
 
 
