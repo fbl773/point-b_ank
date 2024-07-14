@@ -35,8 +35,8 @@ class PeriodModal extends Component{
 			period: {
 				_id: "",
 				name: "",
-				start: 0,
-				end: 0
+				start: null,
+				end:null,
 			}
 		}
 	}
@@ -45,6 +45,7 @@ class PeriodModal extends Component{
 	 * Updates the contained period sub-object
 	 * @param key:String the key to the field of a period object we seek to edit
 	 * @param val:any the value to set it to
+	 * @issues: #45 - Cannot stop entry of non-numeric input due to MUI being trash
 	 */
 	update_period = (key,val) =>{
 		let updated_period = this.state.period;
@@ -120,13 +121,10 @@ class PeriodModal extends Component{
 						label="start"
 						variant="outlined"
 						type="number"
-						inputProps={{
-							inputMode:"numeric",
-							pattern: '/^-?\d+(?:\.\d+)?$/g'
-						}}
 						fullWidth
-						value={this.state.start}
+						value={this.state.period.start}
 						onChange={(e) => this.update_period("start",e.target.value)}
+						margin="normal"
 					/>
 					<TextField
 						id="end_bp"
@@ -134,7 +132,7 @@ class PeriodModal extends Component{
 						variant="outlined"
 						type="number"
 						fullWidth
-						value={this.state.end}
+						value={this.state.period.end}
 						onChange={(e) => this.update_period("end",e.target.value)}
 					/>
 				</DialogContent>
