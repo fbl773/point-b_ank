@@ -266,6 +266,7 @@ export default function ManagementPeriods() {
 					open={dialogOpen}
 					onClose={() => setDialogOpen(false)}
 					adding_new={true}
+					append_period={(new_period) => setRows((oldRows) => [...oldRows, { ...new_period, isNew: true }])}
 					/>
 				<RelationsPeriodsDialog
 					open={relationsDialogOpen}
