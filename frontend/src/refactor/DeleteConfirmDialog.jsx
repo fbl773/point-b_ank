@@ -32,7 +32,7 @@ class DeleteConfirmDialog extends Component{
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={this.props.on_cancel}>No</Button>
-                    <Button onClick={this.props.on_proceed} autoFocus>
+                    <Button color="primary" onClick={this.props.on_proceed} autoFocus>
                         Yes
                     </Button>
                 </DialogActions>

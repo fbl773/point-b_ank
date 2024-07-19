@@ -22,6 +22,7 @@ import {
 	DialogContentText,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteConfirmDialog from "../refactor/DeleteConfirmDialog.jsx";
 
 // URL for backend API for period CRUD operations
 const apiUrl = "/periods";
@@ -242,20 +243,13 @@ export default function ManagementPeriods() {
 				</Box>
 				{/* Deletion confirmation dialog */}
 				{user && (
-					<Dialog open={deleteConfirmation.open} onClose={handleCancelDelete}>
-						<DialogTitle>Delete Period</DialogTitle>
-						<DialogContent>
-							<DialogContentText>
-								{formatPeriodDetails(deleteConfirmation.period)}
-							</DialogContentText>
-						</DialogContent>
-						<DialogActions>
-							<Button onClick={handleCancelDelete}>No</Button>
-							<Button onClick={handleConfirmDelete} color="primary">
-								Yes
-							</Button>
-						</DialogActions>
-					</Dialog>
+					<DeleteConfirmDialog
+						open_condition={deleteConfirmation.open}
+						on_cancel={handleCancelDelete}
+						on_proceed={handleConfirmDelete}
+						text={formatPeriodDetails(deleteConfirmation.period)}
+						title={"Delete Period?"}
+					/>
 				)}
 
 				<Box
