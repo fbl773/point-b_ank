@@ -9,6 +9,7 @@ import AddIcon from "@mui/icons-material/Add.js";
 import {DataGrid, GridToolbar} from "@mui/x-data-grid";
 import PeriodModal from "./PeriodModal.jsx";
 import {UserContext} from "../context/userContext.jsx";
+import DeleteConfirmDialog from "./DeleteConfirmDialog.jsx";
 
 
 const { user } = useContext(UserContext);
@@ -37,6 +38,27 @@ class ManagementPage extends Component{
         }
     }
 
+    //Event Handlers
+
+    /**
+     * Handles calling the passed delete method and
+     * @param ent
+     * @returns {Promise<void>}
+     */
+    async handleDelete(ent){
+        await this.props.delete_entity(ent)
+            .then(() => {
+                this.remove(ent)
+                this.alert_success("delete");
+            })
+            .catch(err => {
+                console.error(`failed to delete ent: ${JSON.stringify(ent)}`,err);
+                this.alert_failure("delete");
+            })
+    }
+
+
+    //Row Modifiers
     /**
      * Adds a new entity to the list of entities we are tracking
      * @param ent:MongoEntity {_id:String} - the entity to add
@@ -61,25 +83,26 @@ class ManagementPage extends Component{
         throw("Unimplemented")
     }
 
+
+    //Alerts
     /**
      * Sets the alert to a success message
-     * @param ent_name - the name of the entity we are operating on
      * @param action - the action we have succeeded in doing
      */
-    alert_success(ent_name,action){
+    alert_success(action){
        this.setState({alert:{
                open: true,
                type: "success",
-               message: ` ${ent_name} successfully ${action}.`,
+               message: ` ${this.props.subject} successfully ${action}.`,
            }
        })
     }
 
-    alert_failure(ent_name,action){
+    alert_failure(action){
         this.setState({alert:{
                 open: true,
                 type: "error",
-                message: ` Failed to ${action} ${ent_name}.`,
+                message: ` Failed to ${action} ${this.props.subject}.`,
             }
         })
     }
@@ -101,7 +124,16 @@ class ManagementPage extends Component{
                             </Alert>
                         )}
                     </Box>
-                    {/* Deletion confirmation dialog : TODO*/}
+                    {/* Deletion confirmation dialog */}
+                    {user && (
+                        <DeleteConfirmDialog
+                            open_condition={this.state.delete_confirmation.open}
+                            on_cancel={() => this.setState({delete_confirmation:{open:false,ent:null}})}
+                            on_proceed={handleConfirmDelete}
+                            text={formatPeriodDetails(deleteConfirmation.period)}
+                            title={"Delete Period?"}
+                        />
+                    )}
                     <Box
                         sx={{
                             display: "flex",
