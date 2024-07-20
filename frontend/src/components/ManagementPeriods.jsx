@@ -116,7 +116,7 @@ export default function ManagementPeriods() {
 
 	/**
 	 * Appends a new period to the list of periods we manage
-	 * @param new_period: The period to append
+	 * @param new_period
 	 */
 	const appendNewPeriod = (new_period) => {
 		new_period["id"] = new_period._id; //set id field for MUI

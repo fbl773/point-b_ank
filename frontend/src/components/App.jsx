@@ -7,6 +7,7 @@ import SettingsPage from "./SettingsPage";
 import ManagePeriods from "./ManagementPeriods";
 import ManageCultures from "./ManagementCultures";
 import ManageMaterials from "./ManagementMaterials";
+import ManagePeriod from "../refactor/ManagePeriod.jsx";
 
 /**
  * Main App component which contains the routing paths
@@ -15,6 +16,10 @@ import ManageMaterials from "./ManagementMaterials";
  * @returns {JSX.Element} App React component
  */
 function App() {
+	let management_periods = <ManagePeriod
+		url={"/periods"}
+		subject={"Period"}
+	/>
 	return (
 		<UserContextProvider>
 			<Routes>
@@ -22,7 +27,8 @@ function App() {
 				<Route path="/site/:id" element={<Site />} />
 				{/*<Route path="/stats" element={<StatisticsPage />} /> // TODO: this is not quite what we had in mind*/}
 				<Route path="/settings" element={<SettingsPage />} />
-				<Route path="/managePeriods" element={<ManagePeriods />} />
+				{/*<Route path="/managePeriods" element={<ManagePeriods />} />*/}
+				<Route path="/managePeriods" element={management_periods} />
 				<Route path="/manageCultures" element={<ManageCultures />} />
 				<Route path="/manageMaterials" element={<ManageMaterials />} />
 				{/* Add new routes here as you make new pages - use '/your_path' as path and the coresponding filename in element. */}

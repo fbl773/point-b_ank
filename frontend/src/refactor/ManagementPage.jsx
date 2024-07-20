@@ -1,27 +1,24 @@
 /* eslint-disable react/prop-types */
-import {Component, useContext} from "react";
-import http from "../../http";
+import {Component} from "react";
 import Box from "@mui/material/Box";
 import Sidebar from "../components/Sidebar.jsx";
-import {Alert, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography} from "@mui/material";
+import {Alert, Typography} from "@mui/material";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add.js";
 import {DataGrid, GridToolbar} from "@mui/x-data-grid";
-import PeriodModal from "./PeriodModal.jsx";
 import {UserContext} from "../context/userContext.jsx";
 import DeleteConfirmDialog from "./DeleteConfirmDialog.jsx";
 
-
-const { user } = useContext(UserContext);
+//TODO: https://dev.to/evangunawan/react-context-the-easy-way-stateful-component-bh0
+//we need to fix context... IDK if this will work.
 
 class ManagementPage extends Component{
-
+    static user = UserContext;
     /**
      *
      * @param props
      * @param props.url {String} the api location that manages this entity
      * @param props.subject {String} the entity we are managing
-     * @param props.cols {[]} the columns for this managment page
      *
      */
     constructor(props) {
@@ -38,51 +35,81 @@ class ManagementPage extends Component{
         }
     }
 
+    //Abstract methods
+    /**
+     * abstract member that handles deletion of an item
+     * @param entity_id {String} the ID of the entity to delete
+     * @abstract
+     */
+    async delete_entity(entity_id){ }
+
+
+    /**
+     * Opens the selected entity for editing
+     * @abstract
+     */
+    generate_editor(){ }
+
+    /**
+     * Generates the cols for the managment table
+     * @abstract
+     */
+    generate_cols(){}
+
+    /**
+     * Fetches the entities that will populate our rows
+     */
+    fetch_entities(){}
+
+
     //Event Handlers
 
     /**
      * Handles calling the passed delete method and
-     * @param ent
+     * @param ent{_id:String} - the entity to delete
      * @returns {Promise<void>}
      */
-    async handleDelete(ent){
-        await this.props.delete_entity(ent)
-            .then(() => {
-                this.remove(ent)
-                this.alert_success("delete");
-            })
-            .catch(err => {
-                console.error(`failed to delete ent: ${JSON.stringify(ent)}`,err);
-                this.alert_failure("delete");
-            })
+    async handleDelete(){
+        let delete_me = this.state.delete_confirmation.ent;
+        console.log(`WOuld delete entity: ${JSON.stringify(delete_me)}`)
+        // await this.delete_entity(delete_me._id)
+        //     .then(() => {
+        //         this.remove(delete_me._id)
+        //         this.alert_success("delete");
+        //     })
+        //     .catch(err => {
+        //         console.error(`failed to delete ent: ${JSON.stringify(delete_me)}`,err);
+        //         this.alert_failure("delete");
+        //     })
+    }
+
+    handleEdit(entity){
+        console.log(`Editing ID: ${JSON.stringify(entity._id)} Sel: ${JSON.stringify(entity)}`)
+        this.setState({selected:entity,dialog:true,adding_new:false})
     }
 
 
     //Row Modifiers
     /**
      * Adds a new entity to the list of entities we are tracking
-     * @param ent:MongoEntity {_id:String} - the entity to add
+     * @param new_ent
      */
-    append_new(ent){
-        throw("Unimplemented")
+    append_new(new_ent){
+        new_ent["id"] = new_ent._id; //set id field for MUI
+        let old_rows = this.state.rows;
+        this.setState({rows:[...old_rows, {...new_ent, isNew: true}]}); // Add new period to local state
     }
 
     /**
      * Removes the entity from the UI
-     * @param ent:MongoEntity {_id:String} - the entity to remove
+     * @param ent_id {String} - the entity to remove
      */
-    remove(ent) {
-        throw("Unimplemented")
+    remove(ent_id) {
+        //This could be done better
+        console.log(`Would Remove Entity with ID: ${ent_id}`);
+        //let updated_rows = this.state.rows.filter((row) => row._id !== ent_id);
+        //this.setState({rows:updated_rows});
     }
-
-    /**
-     * Opens the passed enity for editing by selecting it
-     * @param ent
-     */
-    edit(ent){
-        throw("Unimplemented")
-    }
-
 
     //Alerts
     /**
@@ -107,8 +134,15 @@ class ManagementPage extends Component{
         })
     }
 
+    componentDidMount() {
+        try{
+            this.fetch_entities()
+        } catch(err){
+            console.error(`Failed to fetch entities`,err)
+        }
+    }
 
-   render() {
+    render() {
         return(
             <Box sx={{ display: "flex", height: "100vh", width: "100%" }}>
                 <Sidebar sx={{ width: 240, flexShrink: 0 }} />
@@ -125,13 +159,13 @@ class ManagementPage extends Component{
                         )}
                     </Box>
                     {/* Deletion confirmation dialog */}
-                    {user && (
+                    {this.context.skipOn() && (
                         <DeleteConfirmDialog
                             open_condition={this.state.delete_confirmation.open}
                             on_cancel={() => this.setState({delete_confirmation:{open:false,ent:null}})}
-                            on_proceed={handleConfirmDelete}
-                            text={formatPeriodDetails(deleteConfirmation.period)}
-                            title={"Delete Period?"}
+                            on_proceed={this.handleDelete}
+                            text={`Are you sure you'd like to delete ${this.props.subject} ${this.state.delete_confirmation.ent._id}`}
+                            title={`Delete ${this.props.subject}?`}
                         />
                     )}
                     <Box
@@ -164,19 +198,11 @@ class ManagementPage extends Component{
                             toolbar: user ? GridToolbar : undefined,
                         }}
                     />
-                    {this.state.dialog &&
-                        <PeriodModal
-                            open={this.state.dialog}
-                            onClose={() => this.setState({dialog:false})}
-                            adding_new={this.state.adding_new}
-                            append_period={(new_ent) => this.append_new(new_ent)}
-                            on_success={this.alert_success}// Show success message
-                            selected_period={selectedPeriod}
-                        />}
+                    {this.generate_editor()}
                 </Box>
             </Box>
         )
    }
-
-
 }
+
+export default ManagementPage;
