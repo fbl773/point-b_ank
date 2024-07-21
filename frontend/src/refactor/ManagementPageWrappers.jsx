@@ -2,8 +2,7 @@ import {useContext} from "react";
 import {UserContext} from "../context/userContext.jsx";
 import ManagePeriod from "./ManagePeriod.jsx";
 
-export default function ManagePeriodsWrapper() {
-
+export function ManagePeriodWrapper() {
     const { user } = useContext(UserContext);
     return(
         <ManagePeriod
@@ -13,3 +12,4 @@ export default function ManagePeriodsWrapper() {
         />
     )
 }
+
