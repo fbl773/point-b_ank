@@ -22,6 +22,7 @@ import log from "../logger.js";
 import AddCultureDialog from "./AddCultureDialog";
 import Sidebar from "./Sidebar";
 import RelationsCultureDialog from "./RelationsCultureDialog.jsx";
+import CultureModal from "../refactor/CultureModal.jsx";
 
 const apiUrlCultures = "/cultures"; // API endpoint for fetching and deleting cultures
 
@@ -241,10 +242,16 @@ export default function ManagementCultures() {
 						toolbar: user ? GridToolbar : undefined,
 					}}
 				/>
-				<AddCultureDialog
+				{/*<AddCultureDialog*/}
+				{/*	open={dialogOpen}*/}
+				{/*	onClose={() => setDialogOpen(false)}*/}
+				{/*	onSave={handleSaveNewCulture}*/}
+				{/*/>*/}
+				<CultureModal
 					open={dialogOpen}
-					onClose={() => setDialogOpen(false)}
-					onSave={handleSaveNewCulture}
+					on_close={() => setDialogOpen(false)}
+					adding_new={true}
+					append_culture={() => console.log("would append")}
 				/>
 				<RelationsCultureDialog
 					open={relationsDialogOpen}
