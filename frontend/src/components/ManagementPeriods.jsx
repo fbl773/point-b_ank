@@ -285,7 +285,7 @@ export default function ManagementPeriods() {
 				{dialogOpen &&
 					<PeriodModal
 					open={dialogOpen}
-					onClose={() => setDialogOpen(false)}
+					on_close={() => setDialogOpen(false)}
 					adding_new={addingNew}
 					append_period={(new_period) => appendNewPeriod(new_period)}
 					on_success={setAlert}// Show success message

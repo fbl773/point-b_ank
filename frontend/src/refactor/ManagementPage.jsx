@@ -8,17 +8,18 @@ import AddIcon from "@mui/icons-material/Add.js";
 import {DataGrid, GridToolbar} from "@mui/x-data-grid";
 import {UserContext} from "../context/userContext.jsx";
 import DeleteConfirmDialog from "./DeleteConfirmDialog.jsx";
+import http from "../../http";
 
 //TODO: https://dev.to/evangunawan/react-context-the-easy-way-stateful-component-bh0
 //we need to fix context... IDK if this will work.
 
 class ManagementPage extends Component{
-    static user = UserContext;
     /**
-     *
      * @param props
      * @param props.url {String} the api location that manages this entity
      * @param props.subject {String} the entity we are managing
+     * @param props.context {UserContext} the entity we are managing
+     *
      *
      */
     constructor(props) {
@@ -39,9 +40,12 @@ class ManagementPage extends Component{
     /**
      * abstract member that handles deletion of an item
      * @param entity_id {String} the ID of the entity to delete
-     * @abstract
+     * @override
      */
-    async delete_entity(entity_id){ }
+    async delete_entity(entity_id){
+        return http.delete(`${this.props.url}/${entity_id}`)
+            .finally( () => this.setState({delete_confirmation:{open:false}}));
+    }
 
 
     /**
@@ -66,21 +70,12 @@ class ManagementPage extends Component{
 
     /**
      * Handles calling the passed delete method and
-     * @param ent{_id:String} - the entity to delete
      * @returns {Promise<void>}
      */
-    async handleDelete(){
-        let delete_me = this.state.delete_confirmation.ent;
-        console.log(`WOuld delete entity: ${JSON.stringify(delete_me)}`)
-        // await this.delete_entity(delete_me._id)
-        //     .then(() => {
-        //         this.remove(delete_me._id)
-        //         this.alert_success("delete");
-        //     })
-        //     .catch(err => {
-        //         console.error(`failed to delete ent: ${JSON.stringify(delete_me)}`,err);
-        //         this.alert_failure("delete");
-        //     })
+    async handleDelete(ent){
+        let delete_me = ent;
+        this.setState({delete_confirmation:{open:true,ent:delete_me}});
+        console.log(`WOuld delete entity: ${JSON.stringify(delete_me._id)}`)
     }
 
     handleEdit(entity){
@@ -106,9 +101,8 @@ class ManagementPage extends Component{
      */
     remove(ent_id) {
         //This could be done better
-        console.log(`Would Remove Entity with ID: ${ent_id}`);
-        //let updated_rows = this.state.rows.filter((row) => row._id !== ent_id);
-        //this.setState({rows:updated_rows});
+        let updated_rows = this.state.rows.filter((row) => row._id !== ent_id);
+        this.setState({rows:updated_rows});
     }
 
     //Alerts
@@ -159,12 +153,12 @@ class ManagementPage extends Component{
                         )}
                     </Box>
                     {/* Deletion confirmation dialog */}
-                    {this.context.skipOn() && (
+                    {this.props.context && (
                         <DeleteConfirmDialog
                             open_condition={this.state.delete_confirmation.open}
                             on_cancel={() => this.setState({delete_confirmation:{open:false,ent:null}})}
-                            on_proceed={this.handleDelete}
-                            text={`Are you sure you'd like to delete ${this.props.subject} ${this.state.delete_confirmation.ent._id}`}
+                            on_proceed={() => this.delete_entity(this.state.delete_confirmation.ent._id)}
+                            text={`Are you sure you'd like to delete ${this.props.subject} ${this.state.delete_confirmation.ent?.name ?? ""}`}
                             title={`Delete ${this.props.subject}?`}
                         />
                     )}
@@ -177,7 +171,7 @@ class ManagementPage extends Component{
                         }}
                     >
                         <Typography variant="h6">{this.props.subject} Management</Typography>
-                        {user && (
+                        {this.props.context && (
                             <Button
                                 variant="contained"
                                 startIcon={<AddIcon />}
@@ -189,13 +183,13 @@ class ManagementPage extends Component{
                         )}
                     </Box>
                     <DataGrid
-                        rows={rows}
-                        columns={columns}
+                        rows={this.state.rows}
+                        columns={this.generate_cols()}
                         pageSize={5}
                         autoHeight
                         disableSelectionOnClick
                         components={{
-                            toolbar: user ? GridToolbar : undefined,
+                            toolbar: this.props.context ? GridToolbar : undefined,
                         }}
                     />
                     {this.generate_editor()}

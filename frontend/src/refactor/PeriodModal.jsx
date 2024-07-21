@@ -87,7 +87,7 @@ class PeriodModal extends Component{
 					console.log("Successfully added period: ", period)
 					this.props.append_period(new_period);
 				})
-				.then(this.props.onClose)
+				.then(this.props.on_close)
 				.then(this.props.on_success({open:true,type:"success",message:"New Period successfully added."}))
 				.catch(err => console.error("Failed to add new period: ", err))
 		} else {
@@ -105,14 +105,14 @@ class PeriodModal extends Component{
 			.then(edited_period => this.setState({period:edited_period}))
 			.then(this.props.on_success({open:true,type:"success",message:"Period successfully edited."}))
 			.catch(err => console.error("Failed to edit period",err))
-			.finally(this.props.onClose);
+			.finally(this.props.on_close);
 	}
 
 
 	render(){
 		return(
 			<div>
-			<Dialog open={this.props.open} onClose={this.props.onClose}>
+			<Dialog open={this.props.open} onClose={this.props.on_close}>
 				<DialogTitle>
 					{this.state.title} Period
 				</DialogTitle>
@@ -147,7 +147,7 @@ class PeriodModal extends Component{
 					/>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={this.props.onClose} color="primary">
+					<Button onClick={this.props.on_close} color="primary">
 						Cancel
 					</Button>
 					<Button onClick={this.handleSubmit} color="primary">
