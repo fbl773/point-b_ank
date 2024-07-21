@@ -27,8 +27,8 @@ class PeriodModal extends Component{
 			period: {
 				_id: "",
 				name: "",
-				start: null,
-				end:null,
+				start: undefined,
+				end:undefined,
 			}
 		}
 	}
@@ -70,7 +70,7 @@ class PeriodModal extends Component{
 		let period = this.state.period;
 		let name_vaid = period.name.length > 0; //Has a title
 		let dates_valid = period.start >= period.end; //Dates are in bp (before present)...
-		dates_valid = dates_valid && (period.start !== null && period.end !== null); //Dates are there at all
+		dates_valid = dates_valid && (period.start !== undefined && period.end !== undefined); //Dates are there at all
 		return name_vaid && dates_valid;
 	}
 

@@ -29,8 +29,8 @@ class CultureModal extends Component{
             culture: {
                 _id: "",
                 name: "",
-                start: null,
-                end:null,
+                start: undefined,
+                end:undefined,
                 period_id:"",
             }
         }
@@ -85,11 +85,13 @@ class CultureModal extends Component{
 
     /**
      * Set the configured period
-     * @param period {Period} the period to associate with this culture
+     * @param period_id {String} the period to associate with this culture
      */
-    set_selected_period(period) {
+    set_selected_period(period_id) {
+        let period = this.state.periods.find(period => period._id === period_id);
+        console.log(`Setting selected to :${JSON.stringify(period)}`)
         this.setState({selected_period:period});
-        this.update_culture('period',period)
+        this.update_culture('period_id',period_id)
     }
 
     /**

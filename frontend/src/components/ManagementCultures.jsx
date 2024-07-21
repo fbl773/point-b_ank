@@ -251,7 +251,16 @@ export default function ManagementCultures() {
 					open={dialogOpen}
 					on_close={() => setDialogOpen(false)}
 					adding_new={true}
-					append_culture={() => console.log("would append")}
+					append_culture={(new_ent) => {
+						new_ent["id"] = new_ent._id; //set id field for MUI
+						let old_rows = this.rows
+						this.setRows([...old_rows, new_ent])
+					}}
+					on_success={() => {
+						console.log("Successfully added culture");
+						setDialogOpen(false);
+						handle
+					}}
 				/>
 				<RelationsCultureDialog
 					open={relationsDialogOpen}
