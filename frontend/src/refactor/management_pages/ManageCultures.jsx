@@ -1,11 +1,11 @@
 import ManagementPage from "./ManagementPage.jsx";
-import http from "../../http";
+import http from "../../../http.js";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import PeriodModal from "./PeriodModal.jsx";
+import CultureModal from "../CultureModal.jsx";
 
-class ManagePeriod extends ManagementPage{
+class ManageCulture extends ManagementPage{
     constructor(props) {
         super(props);
     }
@@ -27,14 +27,14 @@ class ManagePeriod extends ManagementPage{
                 this.alert_success("delete");
             })
             .catch(err => {
-                console.error(`failed to delete Period: ${JSON.stringify(entity_id)}`,err);
+                console.error(`failed to delete Culture: ${JSON.stringify(entity_id)}`,err);
                 this.alert_failure("delete");
             })
     }
 
     generate_editor() {
         return (this.state.dialog &&
-            <PeriodModal
+            <CultureModal
                 open={this.state.dialog}
                 adding_new={this.state.adding_new}
                 append_period={(new_period) => this.append_new(new_period)}
@@ -70,7 +70,7 @@ class ManagePeriod extends ManagementPage{
                 flex: 1,
                 cellClassName: "actions",
                 getActions: (params) =>
-                   this.props.context
+                    this.props.context
                         ? [
                             <GridActionsCellItem
                                 icon={<EditIcon />}
@@ -91,4 +91,4 @@ class ManagePeriod extends ManagementPage{
     }
 }
 
-export default ManagePeriod;
+export default ManageCulture;

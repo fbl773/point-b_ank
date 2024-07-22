@@ -6,7 +6,7 @@ import Site from "./Site";
 import SettingsPage from "./SettingsPage";
 import ManageCultures from "./ManagementCultures";
 import ManageMaterials from "./ManagementMaterials";
-import {ManagePeriodWrapper} from "../refactor/ManagementPageWrappers.jsx";
+import {ManagePeriodWrapper} from "../refactor/management_pages/ManagementPageWrappers.jsx";
 
 /**
  * Main App component which contains the routing paths

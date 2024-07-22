@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
 import {Component} from "react";
 import Box from "@mui/material/Box";
-import Sidebar from "../components/Sidebar.jsx";
+import Sidebar from "../../components/Sidebar.jsx";
 import {Alert, Typography} from "@mui/material";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add.js";
 import {DataGrid, GridToolbar} from "@mui/x-data-grid";
-import {UserContext} from "../context/userContext.jsx";
-import DeleteConfirmDialog from "./DeleteConfirmDialog.jsx";
-import http from "../../http";
+import {UserContext} from "../../context/userContext.jsx";
+import DeleteConfirmDialog from "../DeleteConfirmDialog.jsx";
+import http from "../../../http.js";
 
 //TODO: https://dev.to/evangunawan/react-context-the-easy-way-stateful-component-bh0
 //we need to fix context... IDK if this will work.
