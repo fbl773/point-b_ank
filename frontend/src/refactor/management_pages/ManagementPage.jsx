@@ -38,17 +38,6 @@ class ManagementPage extends Component{
 
     //Abstract methods
     /**
-     * abstract member that handles deletion of an item
-     * @param entity_id {String} the ID of the entity to delete
-     * @override
-     */
-    async delete_entity(entity_id){
-        return http.delete(`${this.props.url}/${entity_id}`)
-            .finally( () => this.setState({delete_confirmation:{open:false}}));
-    }
-
-
-    /**
      * Opens the selected entity for editing
      * @abstract
      */
@@ -62,6 +51,7 @@ class ManagementPage extends Component{
 
     /**
      * Fetches the entities that will populate our rows
+     * @abstract
      */
     fetch_entities(){}
 
@@ -83,6 +73,22 @@ class ManagementPage extends Component{
         this.setState({selected:entity,dialog:true,adding_new:false})
     }
 
+    /**
+     * handles making the API call for the deletion of an item
+     * @param entity_id {String} the ID of the entity to delete
+     */
+    async delete_entity(entity_id){
+        return http.delete(`${this.props.url}/${entity_id}`)
+            .then(() => {
+                this.remove(entity_id)
+                this.alert_success("delete");
+            })
+            .catch(err => {
+                    console.error(`failed to delete ${this.props.subject}: ${JSON.stringify(entity_id)}`,err);
+                    this.alert_failure("delete");
+            })
+            .finally( () => this.setState({delete_confirmation:{open:false}}));
+    }
 
     //Row Modifiers
     /**

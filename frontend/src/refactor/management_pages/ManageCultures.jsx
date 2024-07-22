@@ -10,7 +10,11 @@ class ManageCulture extends ManagementPage{
         super(props);
     }
 
-
+    /**
+     * Maps a period_name to the period_id of a culture
+     * @param culture - the culture we are going to assign the period name to
+     * @returns {Promise<void>}
+     */
     async map_period(culture){
         http.get('/periods/'+culture.period_id)
             .then(period => {
@@ -23,24 +27,15 @@ class ManageCulture extends ManagementPage{
         http.get(this.props.url)
             .then(resp => {
                 let cultures = resp.data;
-                cultures.map(culture => { culture["id"] = culture._id });
-                cultures.map(this.map_period)
-                console.log(cultures)
+
+                //Modify culture objects to fit MUI row criteria
+                cultures
+                    .map(culture => { culture["id"] = culture._id })
+                    .map(this.map_period)
+
                 this.setState({rows:cultures});
             })
             .catch(err => console.log(`Error fetching cultures`,err));
-    }
-
-    async delete_entity(entity_id) {
-        return super.delete_entity(entity_id)
-            .then(() => {
-                this.remove(entity_id)
-                this.alert_success("delete");
-            })
-            .catch(err => {
-                console.error(`failed to delete Culture: ${JSON.stringify(entity_id)}`,err);
-                this.alert_failure("delete");
-            })
     }
 
     generate_editor() {

@@ -51,13 +51,6 @@ class CultureModal extends Component{
     }
 
     /**
-     * Sets the period name for new cultures
-     * @param culture - the culture we will add a name to
-     */
-    assign_period_name(culture){
-    }
-
-    /**
      * Sets the component up upon mounting
      */
     componentDidMount() {
@@ -72,7 +65,6 @@ class CultureModal extends Component{
         } else {
             this.handleSubmit = this.editCulture.bind(this);
             this.setState({title:"Edit",culture:this.props.culture});
-
         }
     }
 
@@ -112,8 +104,9 @@ class CultureModal extends Component{
         //fetch entity to validate
         let culture = this.state.culture;
         let period = this.state.selected_period;
+
         //Check basics
-        let name_vaid = culture.name.length > 0; //Has a title
+        let name_vaid = culture.name.length > 0;
         let has_period = culture.period_id.length > 0;
 
         //Check dates
