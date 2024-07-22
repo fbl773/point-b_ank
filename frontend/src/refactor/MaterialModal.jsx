@@ -1,5 +1,5 @@
 import {Component} from "react";
-import http from "../../../http.js"
+import http from "../../http.js"
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
 
 /**
@@ -32,14 +32,14 @@ class MaterialModal extends Component {
             this.setState({title:"Add"});
         } else {
             this.handle_submit = this.editCulture.bind(this);
-            this.setState({title:"Edit",culture:this.props.culture});
+            this.setState({title:"Edit",entity:this.props.entity});
         }
     }
 
     update_entity = (key,val) => {
-        let updated_culture = this.state.culture;
-        updated_culture[key] = val;
-        this.setState({culture:updated_culture});
+        let updated_entity= this.state.culture;
+        updated_entity[key] = val;
+        this.setState({entity:updated_entity});
     }
 
     validate(){

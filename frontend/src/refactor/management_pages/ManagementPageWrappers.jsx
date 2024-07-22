@@ -2,6 +2,7 @@ import {useContext} from "react";
 import {UserContext} from "../../context/userContext.jsx";
 import ManagePeriod from "./ManagePeriod.jsx";
 import ManageCulture from "./ManageCultures.jsx";
+import ManageMaterials from "./ManageMaterials.jsx";
 
 export function ManagePeriodWrapper() {
     const { user } = useContext(UserContext);
@@ -20,6 +21,17 @@ export function ManageCultureWrapper(){
         <ManageCulture
             url={"/cultures"}
             subject={"Culture"}
+            context={user}
+        />
+    )
+}
+
+export function ManageMaterialsWrapper(){
+    const { user } = useContext(UserContext);
+    return(
+        <ManageMaterials
+            url={"/materials"}
+            subject={"Material"}
             context={user}
         />
     )
