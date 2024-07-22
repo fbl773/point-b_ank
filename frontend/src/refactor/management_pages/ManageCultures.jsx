@@ -51,7 +51,7 @@ class ManageCulture extends ManagementPage{
                 append_culture={(new_culture) => this.append_new(new_culture)}
                 on_close={() => this.setState({dialog:false})}
                 on_success={() => this.alert_success(this.state.adding_new ? "created":"edited")}
-                selected_culture={this.state.selected}
+                culture={this.state.selected}
             />
         )
     }

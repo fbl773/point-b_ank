@@ -69,7 +69,7 @@ class ManagementPage extends Component{
     //Event Handlers
 
     /**
-     * Handles calling the passed delete method and
+     * Handles calling the passed delete method
      * @returns {Promise<void>}
      */
     async handleDelete(ent){
