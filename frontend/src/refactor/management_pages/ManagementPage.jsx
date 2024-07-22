@@ -4,14 +4,11 @@ import Box from "@mui/material/Box";
 import Sidebar from "../../components/Sidebar.jsx";
 import {Alert, Typography} from "@mui/material";
 import Button from "@mui/material/Button";
-import AddIcon from "@mui/icons-material/Add.js";
 import {DataGrid, GridToolbar} from "@mui/x-data-grid";
 import {UserContext} from "../../context/userContext.jsx";
 import DeleteConfirmDialog from "../DeleteConfirmDialog.jsx";
 import http from "../../../http.js";
-
-//TODO: https://dev.to/evangunawan/react-context-the-easy-way-stateful-component-bh0
-//we need to fix context... IDK if this will work.
+import AddIcon from "@mui/icons-material/Add";
 
 class ManagementPage extends Component{
     /**
@@ -63,13 +60,14 @@ class ManagementPage extends Component{
      * @returns {Promise<void>}
      */
     async handleDelete(ent){
-        let delete_me = ent;
-        this.setState({delete_confirmation:{open:true,ent:delete_me}});
-        console.log(`WOuld delete entity: ${JSON.stringify(delete_me._id)}`)
+        this.setState({delete_confirmation:{open:true,ent:ent}});
     }
 
+    /**
+     * Sets the selected entity and opens the dialog for editing
+     * @param entity
+     */
     handleEdit(entity){
-        console.log(`Editing ID: ${JSON.stringify(entity._id)} Sel: ${JSON.stringify(entity)}`)
         this.setState({selected:entity,dialog:true,adding_new:false})
     }
 

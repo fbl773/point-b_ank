@@ -6,7 +6,7 @@ import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} fr
  * A list of valid artifact types
  * @type {string[]}
  */
-const artifact_types = ["Lithic","Faunal","Ceramic","Other"];
+const artifact_types = ["lithic","faunal","ceramic","other"];
 
 class MaterialModal extends Component {
 
@@ -28,16 +28,16 @@ class MaterialModal extends Component {
     componentDidMount() {
         //Dynamically configure functionality to fit configured option
         if(this.props.adding_new){
-            this.handle_submit = this.addCulture.bind(this);
+            this.handle_submit = this.addEntity.bind(this);
             this.setState({title:"Add"});
         } else {
-            this.handle_submit = this.editCulture.bind(this);
+            this.handle_submit = this.editEntity.bind(this);
             this.setState({title:"Edit",entity:this.props.entity});
         }
     }
 
     update_entity = (key,val) => {
-        let updated_entity= this.state.culture;
+        let updated_entity= this.state.entity;
         updated_entity[key] = val;
         this.setState({entity:updated_entity});
     }
@@ -46,13 +46,9 @@ class MaterialModal extends Component {
         let material = this.state.entity;
         let name_valid = material.name.length > 0;
         let type_valid = artifact_types
-            .find(artifact_type => artifact_type === material.name) !== undefined;
+            .find(artifact_type => artifact_type === material.artifact_type) !== undefined;
 
         return name_valid && type_valid;
-    }
-
-    set_selected_artifact_type(artifact_type){
-        this.update_entity('artifact_type',artifact_type);
     }
 
     async addEntity(){

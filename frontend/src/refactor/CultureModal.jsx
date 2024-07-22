@@ -81,6 +81,7 @@ class CultureModal extends Component{
             val = isNaN(as_num) ? null:as_num
         }
         updated_culture[key] = val;
+        console.log(JSON.stringify(updated_culture));
         this.setState({culture:updated_culture});
     }
 

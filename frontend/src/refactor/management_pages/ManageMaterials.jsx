@@ -14,15 +14,14 @@ class ManageMaterials extends ManagementPage {
 
     generate_cols() {
         return [
-            { field: "id", headerName: "ID", flex: 1 },
-            { field: "name", headerName: "Name", flex: 1 },
-            { field: "description", headerName: "Description", flex: 3 },
+            { field: "id", headerName: "ID", flex: 1, editable: false },
+            { field: "name", headerName: "Name", flex: 1, editable: false },
+            { field: "description", headerName: "Description", flex: 3 ,editable: false },
             {
                 field: "artifact_type",
                 headerName: "Artifact Type",
                 width: 200,
-                valueGetter: (params) =>
-                    params.row.artifactType ? params.row.artifactType.id : "Indeterminate",
+                editable: false,
             }, {
                 field: "actions",
                 type: "actions",
@@ -65,9 +64,7 @@ class ManageMaterials extends ManagementPage {
         http.get(this.props.url)
             .then(resp => {
                 let materials = resp.data;
-
-                materials.map(material => { material["id"] = material._id });
-
+                materials.map(material => { material["id"] = material._id })
                 this.setState({rows:materials});
             })
     }
