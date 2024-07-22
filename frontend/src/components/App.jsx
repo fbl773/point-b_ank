@@ -6,7 +6,7 @@ import Site from "./Site";
 import SettingsPage from "./SettingsPage";
 import ManageCultures from "./ManagementCultures";
 import ManageMaterials from "./ManagementMaterials";
-import {ManagePeriodWrapper} from "../refactor/management_pages/ManagementPageWrappers.jsx";
+import {ManageCultureWrapper, ManagePeriodWrapper} from "../refactor/management_pages/ManagementPageWrappers.jsx";
 
 /**
  * Main App component which contains the routing paths
@@ -24,7 +24,7 @@ function App() {
 				<Route path="/settings" element={<SettingsPage />} />
 				{/*<Route path="/managePeriods" element={<ManagePeriods />} />*/}
 				<Route path="/managePeriods" element={<ManagePeriodWrapper/>} />
-				<Route path="/manageCultures" element={<ManageCultures />} />
+				<Route path="/manageCultures" element={<ManageCultureWrapper />} />
 				<Route path="/manageMaterials" element={<ManageMaterials />} />
 				{/* Add new routes here as you make new pages - use '/your_path' as path and the coresponding filename in element. */}
 			</Routes>

@@ -1,6 +1,7 @@
 import {useContext} from "react";
 import {UserContext} from "../../context/userContext.jsx";
 import ManagePeriod from "./ManagePeriod.jsx";
+import ManageCulture from "./ManageCultures.jsx";
 
 export function ManagePeriodWrapper() {
     const { user } = useContext(UserContext);
@@ -13,3 +14,13 @@ export function ManagePeriodWrapper() {
     )
 }
 
+export function ManageCultureWrapper(){
+    const { user } = useContext(UserContext);
+    return(
+        <ManageCulture
+            url={"/cultures"}
+            subject={"Culture"}
+            context={user}
+        />
+    )
+}

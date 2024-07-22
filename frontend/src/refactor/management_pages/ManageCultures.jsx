@@ -10,14 +10,25 @@ class ManageCulture extends ManagementPage{
         super(props);
     }
 
+
+    async map_period(culture){
+        http.get('/periods/'+culture.period_id)
+            .then(period => {
+                culture['period_name']=period.data.name
+            })
+            .catch(err => {console.log("Failed to fetch period name",err);})
+    }
+
     async fetch_entities() {
         http.get(this.props.url)
             .then(resp => {
-                let periods = resp.data;
-                periods.map(period => period["id"] = period._id);
-                this.setState({rows:periods});
+                let cultures = resp.data;
+                cultures.map(culture => { culture["id"] = culture._id });
+                cultures.map(this.map_period)
+                console.log(cultures)
+                this.setState({rows:cultures});
             })
-            .catch(err => console.log(`Error to fetch periods`,err));
+            .catch(err => console.log(`Error fetching cultures`,err));
     }
 
     async delete_entity(entity_id) {
@@ -37,10 +48,10 @@ class ManageCulture extends ManagementPage{
             <CultureModal
                 open={this.state.dialog}
                 adding_new={this.state.adding_new}
-                append_period={(new_period) => this.append_new(new_period)}
+                append_culture={(new_culture) => this.append_new(new_culture)}
                 on_close={() => this.setState({dialog:false})}
                 on_success={() => this.alert_success(this.state.adding_new ? "created":"edited")}
-                selected_period={this.state.selected}
+                selected_culture={this.state.selected}
             />
         )
     }
@@ -62,6 +73,12 @@ class ManageCulture extends ManagementPage{
                 type: "number",
                 flex: 1,
                 editable: false,
+            },
+            {
+                field:"period_name",
+                headerName: "Period",
+                flex:1,
+                editable: false
             },
             {
                 field: "actions",
