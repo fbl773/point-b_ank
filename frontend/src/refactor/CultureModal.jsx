@@ -1,11 +1,13 @@
 /* eslint-disable react/prop-types */
 import {
-    TextField,
     Button,
     Dialog,
+    DialogActions,
     DialogContent,
     DialogTitle,
-    DialogActions, MenuItem, Typography,
+    MenuItem,
+    TextField,
+    Typography,
 } from "@mui/material";
 import {Component} from "react";
 import http from "../../http";
@@ -46,6 +48,13 @@ class CultureModal extends Component{
                 this.setState({periods:periods})
             })
             .catch(err => console.log(`Failed to fetch periods`,err));
+    }
+
+    /**
+     * Sets the period name for new cultures
+     * @param culture - the culture we will add a name to
+     */
+    assign_period_name(culture){
     }
 
     /**
@@ -92,6 +101,7 @@ class CultureModal extends Component{
         console.log(`Setting selected to :${JSON.stringify(period)}`)
         this.setState({selected_period:period});
         this.update_culture('period_id',period_id)
+        this.update_culture('period_name',period.name)
     }
 
     /**
@@ -127,6 +137,12 @@ class CultureModal extends Component{
                 .then(resp => {
                     let new_culture = resp.data.new_ent;
                     console.log("Successfully added culture: ", culture)
+
+                    //Assign a period name for the GUI
+                    new_culture['period_name']=this.state.periods
+                        .find(period => period._id === culture.period_id).name ?? "";
+
+                    //Send it back
                     this.props.append_culture(new_culture);
                 })
                 .then(this.props.on_close)
