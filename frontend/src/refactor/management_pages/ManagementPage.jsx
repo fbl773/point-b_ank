@@ -6,7 +6,7 @@ import {Alert, Typography} from "@mui/material";
 import Button from "@mui/material/Button";
 import {DataGrid, GridToolbar} from "@mui/x-data-grid";
 import {UserContext} from "../../context/userContext.jsx";
-import DeleteConfirmDialog from "../DeleteConfirmDialog.jsx";
+import DeleteConfirmDialog from "../modals/DeleteConfirmDialog.jsx";
 import http from "../../../http.js";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -132,6 +132,18 @@ class ManagementPage extends Component{
         })
     }
 
+    build_alert(props){
+        this.setState({
+            alert:{
+                open:props.open,
+                type:props.type,
+                message:props.message
+            }
+        })
+    }
+
+    //Basics
+
     componentDidMount() {
         try{
             this.fetch_entities()
@@ -162,7 +174,7 @@ class ManagementPage extends Component{
                             open_condition={this.state.delete_confirmation.open}
                             on_cancel={() => this.setState({delete_confirmation:{open:false,ent:null}})}
                             on_proceed={() => this.delete_entity(this.state.delete_confirmation.ent._id)}
-                            text={`Are you sure you'd like to delete ${this.props.subject} ${this.state.delete_confirmation.ent?.name ?? ""}`}
+                            text={`Are you sure you'd like to delete ${this.props.subject}: "${this.state.delete_confirmation.ent?.name ?? ""}"`}
                             title={`Delete ${this.props.subject}?`}
                         />
                     )}

@@ -18,11 +18,9 @@ import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import log from "../logger.js";
-
-import AddCultureDialog from "./AddCultureDialog";
 import Sidebar from "./Sidebar";
 import RelationsCultureDialog from "./RelationsCultureDialog.jsx";
-import CultureModal from "../refactor/CultureModal.jsx";
+import CultureModal from "../refactor/modals/CultureModal.jsx";
 
 const apiUrlCultures = "/cultures"; // API endpoint for fetching and deleting cultures
 
@@ -43,7 +41,7 @@ export default function ManagementCultures() {
 		const fetchCultures = async () => {
 			try {
 				const response = await http.get(apiUrlCultures);
-				let cultures = response.data.map(cult => cult["id"] = cult._id)
+				response.data.map(cult => cult["id"] = cult._id)
 				setRows(response.data); // Set fetched cultures to the grid
 			} catch (error) {
 				log.error("Error fetching cultures:", error);

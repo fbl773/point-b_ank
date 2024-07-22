@@ -8,7 +8,7 @@ import {
 	DialogActions,
 } from "@mui/material";
 import {Component} from "react";
-import http from "../../http";
+import http from "../../../http.js";
 
 class PeriodModal extends Component{
 
@@ -16,7 +16,7 @@ class PeriodModal extends Component{
 	 * Constructs the modal to creat a new period
 	 * @param props
 	 * @param props.onClose:Function how we close this modal.
-	 * @param adding_new:Boolean - true/false are we creating a period
+	 * @param props.adding_new:Boolean - true/false are we creating a period
 	 * @param props.append_period:Function how we close this modal.
 	 */
 	constructor(props) {
@@ -49,8 +49,8 @@ class PeriodModal extends Component{
 
 	/**
 	 * Updates the contained period sub-object
-	 * @param key:String the key to the field of a period object we seek to edit
-	 * @param val:String the value to set it to
+	 * @param key {String} the key to the field of a period object we seek to edit
+	 * @param val {String} the value to set it to
 	 * @issues: #45 - Cannot stop entry of non-numeric input for numeric fields due to MUI being trash
 	 */
 	update_period = (key,val) =>{

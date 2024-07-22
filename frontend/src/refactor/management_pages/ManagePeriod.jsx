@@ -3,7 +3,7 @@ import http from "../../../http.js";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import PeriodModal from "../PeriodModal.jsx";
+import PeriodModal from "../modals/PeriodModal.jsx";
 
 class ManagePeriod extends ManagementPage{
     constructor(props) {

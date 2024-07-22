@@ -12,17 +12,12 @@ import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import log from "../logger.js";
 import Sidebar from "./Sidebar";
 import RelationsPeriodsDialog from "./RelationsPeriodsDialog.jsx";
-import PeriodModal from "../refactor/PeriodModal.jsx";
+import PeriodModal from "../refactor/modals/PeriodModal.jsx";
 import {
 	Typography,
-	Dialog,
-	DialogActions,
-	DialogContent,
-	DialogTitle,
-	DialogContentText,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteConfirmDialog from "../refactor/DeleteConfirmDialog.jsx";
+import DeleteConfirmDialog from "../refactor/modals/DeleteConfirmDialog.jsx";
 
 // URL for backend API for period CRUD operations
 const apiUrl = "/periods";
@@ -53,7 +48,7 @@ export default function ManagementPeriods() {
 						setRows(periods); // Set fetched periods to rows
 						setExistingPeriodNames(periods.map((period) => period.name)); // Extract names for duplicate checking
 					})
-					.catch(err => log.error("Error fetching periods:", error));
+					.catch(err => log.error("Error fetching periods:", err));
 			} catch (error) {
 				log.error("Error fetching periods:", error); // Log errors if request fails
 			}

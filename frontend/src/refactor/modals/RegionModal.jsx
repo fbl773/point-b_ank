@@ -8,7 +8,7 @@ import {
 	DialogActions,
 } from "@mui/material";
 import {Component} from "react";
-import http from "../../http";
+import http from "../../../http.js";
 
 class RegionModal extends Component{
 

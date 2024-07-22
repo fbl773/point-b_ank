@@ -3,7 +3,7 @@ import http from "../../../http.js";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import CultureModal from "../CultureModal.jsx";
+import CultureModal from "../modals/CultureModal.jsx";
 
 class ManageCulture extends ManagementPage{
     constructor(props) {

@@ -18,7 +18,7 @@ import {
 import { UserContext } from "../context/userContext.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import EditSite from "../refactor/EditSite.jsx";
-import DeleteConfirmDialog from "../refactor/DeleteConfirmDialog.jsx"
+import DeleteConfirmDialog from "../refactor/modals/DeleteConfirmDialog.jsx"
 
 /**
  * Site component displays detailed information about a site and allows searching, sorting,
