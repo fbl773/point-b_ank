@@ -3,7 +3,7 @@ import http from "../../../http.js";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import MaterialModal from "../modals/MaterialModal.jsx";
+import {MaterialModal} from "../modals/Modals.jsx";
 
 
 class ManageMaterials extends ManagementPage {
@@ -49,16 +49,7 @@ class ManageMaterials extends ManagementPage {
     }
 
     generate_editor() {
-        // return (this.state.dialog &&
-        // <MaterialModal
-        //     open={this.state.dialog}
-        //     adding_new={this.state.adding_new}
-        //     append_new={(new_mat) => this.append_new(new_mat)}
-        //     on_close={() => this.setState({dialog:false})}
-        //     on_success={() => this.alert_success(this.state.adding_new ? "created":"edited")}
-        //     entity={this.state.selected}
-        // />)
-        return(this.state.dialog&&
+        return(this.state.dialog &&
         <MaterialModal
             open={this.state.dialog}
             subject={"material"}

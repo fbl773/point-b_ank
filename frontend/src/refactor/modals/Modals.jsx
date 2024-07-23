@@ -4,7 +4,10 @@ import {DialogContent, TextField} from "@mui/material";
 
 const artifact_types = ["lithic","faunal","ceramic","other"];
 
-class MaterialModal extends EditCreateModal{
+/**
+ * Create/Edit Modal configured for Materials
+ */
+export class MaterialModal extends EditCreateModal{
 
     render_fields() {
         return (
@@ -59,4 +62,56 @@ class MaterialModal extends EditCreateModal{
     }
 }
 
-export default MaterialModal;
+export class PeriodModal extends EditCreateModal{
+
+    render_fields() {
+        return(
+            <DialogContent>
+                <TextField
+                    id="name"
+                    label="Name"
+                    variant="outlined"
+                    fullWidth
+                    value={this.state.entity.name}
+                    onChange={(e) => this.update_entity("name",e.target.value)}
+                    margin="normal"
+                />
+                <TextField
+                    id="start_bp"
+                    label="start"
+                    variant="outlined"
+                    type="number"
+                    fullWidth
+                    value={this.state.entity.start}
+                    onChange={(e) => this.update_entity("start",e.target.value)}
+                    margin="normal"
+                />
+                <TextField
+                    id="end_bp"
+                    label="end"
+                    variant="outlined"
+                    type="number"
+                    fullWidth
+                    value={this.state.entity.end}
+                    onChange={(e) => this.update_entity("end",e.target.value)}
+                />
+            </DialogContent>
+        )
+    }
+
+    validate() {
+        let entity = this.state.entity;
+        let name_vaid = entity.name.length > 0; //Has a title
+        let dates_valid = entity.start >= entity.end; //Dates are in bp (before present)...
+        dates_valid = dates_valid && (entity.start !== undefined && entity.end !== undefined); //Dates are there at all
+        return name_vaid && dates_valid;
+    }
+
+    update_entity(key,value){
+        if(key === "start" || key === "end"){
+            let as_num = parseInt(value,10)
+            value = isNaN(as_num) ? null:as_num
+        }
+        return super.update_entity(key,value)
+    }
+}

@@ -3,7 +3,7 @@ import http from "../../../http.js";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import PeriodModal from "../modals/PeriodModal.jsx";
+import {PeriodModal} from "../modals/Modals.jsx";
 
 class ManagePeriod extends ManagementPage{
     constructor(props) {
@@ -36,11 +36,13 @@ class ManagePeriod extends ManagementPage{
         return (this.state.dialog &&
             <PeriodModal
                 open={this.state.dialog}
+                subject={"period"}
+                url={"periods"}
+                entity={this.state.selected}
                 adding_new={this.state.adding_new}
-                append_period={(new_period) => this.append_new(new_period)}
+                append_new={(new_period) => this.append_new(new_period)}
                 on_close={() => this.setState({dialog:false})}
-                on_success={() => this.alert_success(this.state.adding_new ? "created":"edited")}
-                selected_period={this.state.selected}
+                send_alert={(props) => this.build_alert(props)}
             />
         )
     }
