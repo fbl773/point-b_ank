@@ -3,7 +3,7 @@ import http from "../../../http.js";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import CultureModal from "../modals/CultureModal.jsx";
+import {CultureModal} from "../modals/Modals.jsx";
 
 class ManageCulture extends ManagementPage{
     constructor(props) {
@@ -29,9 +29,8 @@ class ManageCulture extends ManagementPage{
                 let cultures = resp.data;
 
                 //Modify culture objects to fit MUI row criteria
-                cultures
-                    .map(culture => { culture["id"] = culture._id })
-                    .map(this.map_period)
+                cultures.map(culture => { culture["id"] = culture._id })
+                cultures.forEach(async culture => await this.map_period(culture))
 
                 this.setState({rows:cultures});
             })
@@ -42,11 +41,13 @@ class ManageCulture extends ManagementPage{
         return (this.state.dialog &&
             <CultureModal
                 open={this.state.dialog}
+                subject={"culture"}
+                url={"cultures"}
+                entity={this.state.selected}
                 adding_new={this.state.adding_new}
                 append_culture={(new_culture) => this.append_new(new_culture)}
                 on_close={() => this.setState({dialog:false})}
-                on_success={() => this.alert_success(this.state.adding_new ? "created":"edited")}
-                culture={this.state.selected}
+                send_alert={(props) => this.build_alert(props)}
             />
         )
     }
