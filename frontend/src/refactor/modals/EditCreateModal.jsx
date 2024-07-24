@@ -89,7 +89,7 @@ class EditCreateModal extends Component {
         if (this.validate()) {
             await http.put(`${this.props.url}/${edit_me._id}`, edit_me)
                 .then(edited_ent => this.setState({entity: edited_ent}))
-                .then(this.props.send_alert({open: true, type: "success", message: "Material successfully edited."}))
+                .then(this.props.send_alert({open: true, type: "success", message: `${this.props.subject} successfully edited.`}))
                 .catch(err => {
                     console.error(`Failed to edit ${this.props.subject}: `, err)
                     this.props.send_alert({open: true, type: "error", message: `Failed to edit ${this.props.subject}.`})
@@ -103,8 +103,13 @@ class EditCreateModal extends Component {
 
     //Basics
     componentDidMount() {
+
+        //If we have need to append
+        if(this.props.append_new !== undefined){
+            this.append_new = this.props.append_new.bind(this);
+        }
+
         //Dynamically configure functionality to fit configured option
-        this.append_new = this.props.append_new.bind(this);
         if(this.props.adding_new){
             this.handle_submit = this.add_entity.bind(this);
             this.setState({title:"Add"});
@@ -118,7 +123,7 @@ class EditCreateModal extends Component {
         return(
             <div>
                 <Dialog open={this.props.open} onClose={this.props.on_close}>
-                    <DialogTitle>{this.state.title} {this.props.subject}</DialogTitle>
+                    <DialogTitle>{this.state.title} {this.props.subject}: {this.state.entity.name}</DialogTitle>
                     <DialogContent>
                         {this.render_fields()}
                         <DialogActions>

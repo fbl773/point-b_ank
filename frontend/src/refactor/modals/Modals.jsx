@@ -164,7 +164,10 @@ export class CultureModal extends EditCreateModal{
     //Overrides
 
     /**
-     * Sets the component up upon mounting
+     * overridden such that it can
+     * 1. add the specialty state items
+     * 2. bind a specialty `append_new` function
+     * 3. make the call to fetch the periods
      */
     componentDidMount() {
         super.componentDidMount();
@@ -181,7 +184,6 @@ export class CultureModal extends EditCreateModal{
         this.set_selected_period = this.set_selected_period.bind(this);
 
     }
-
 
 
     render_fields() {
@@ -281,10 +283,8 @@ export class SiteModal extends EditCreateModal{
                     label="Site Name"
                     fullWidth
                     required
-                    error={this.state.siteNameError}
-                    helperText={this.state.siteNameError && "Please enter a Site Name"}
-                    value={this.state.site.name}
-                    onChange={(e) => this.update_site("name",e.target.value)}
+                    value={this.state.entity.name}
+                    onChange={(e) => this.update_entity("name",e.target.value)}
                 />
                 <TextField
                     margin="dense"
@@ -293,8 +293,8 @@ export class SiteModal extends EditCreateModal{
                     fullWidth
                     multiline
                     rows={10}
-                    value={this.state.site.description}
-                    onChange={(e) => this.update_site("description",e.target.value)}
+                    value={this.state.entity.description}
+                    onChange={(e) => this.update_entity("description",e.target.value)}
                 />
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
@@ -303,13 +303,13 @@ export class SiteModal extends EditCreateModal{
                             id="location"
                             label="Location"
                             fullWidth
-                            value={this.state.site.location}
-                            onChange={(e) => this.update_site("location",e.target.value)}
+                            value={this.state.entity.location}
+                            onChange={(e) => this.update_entity("location",e.target.value)}
                         />
                     </Grid>
                     <RegionList
-                        selected_region_id={this.state.site.region_id}
-                        select_region = {(reg_id) => this.update_site("region_id",reg_id)}
+                        selected_region_id={this.state.entity.region_id}
+                        select_region = {(reg_id) => this.update_entity("region_id",reg_id)}
                     />
                 </Grid>
             </DialogContent>
@@ -326,19 +326,20 @@ export class SiteModal extends EditCreateModal{
     }
 
     componentDidMount() {
-        super.componentDidMount();
         this.update_entity("catalogue_id",this.props.catalogue_id)
+        super.componentDidMount();
+        console.log(this.state.entity);
 
         //Get region data if it exists
         if(this.props.adding_new === false){
             //Get Region
-            if (this.state.site.region_id !== undefined) {
-                http.get(`/regions/${this.state.site.region_id}`)
+            if (this.state.entity.region_id !== undefined) {
+                http.get(`/regions/${this.state.entity.region_id}`)
                     .then(reg => {
                         this.setState({region_name: reg.data.name});
                     })
                     .catch(err =>
-                        console.error(`Failed to retrieve details for site ${this.state.site._id}, region: ${this.state.site.region_id}`, err));
+                        console.error(`Failed to retrieve details for site ${this.state.entity._id}, region: ${this.state.entity.region_id}`, err));
             } else {
                 this.setState({region_name:""});
             }

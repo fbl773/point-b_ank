@@ -17,8 +17,8 @@ import {
 
 import { UserContext } from "../context/userContext.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
-import EditSite from "../refactor/EditSite.jsx";
 import DeleteConfirmDialog from "../refactor/modals/DeleteConfirmDialog.jsx"
+import {SiteModal} from "../refactor/modals/Modals.jsx";
 
 /**
  * Site component displays detailed information about a site and allows searching, sorting,
@@ -242,10 +242,20 @@ const Site = () => {
 				</Grid>
 			</Grid>
 			{openEdit && (
-				<EditSite adding_new={false}
-						  onClose={() => setOpenEdit(false)}
-						  site={as_site()}
-						  catalogue_id={catalogueId}/>
+				// <EditSite adding_new={false}
+				// 		  onClose={() => setOpenEdit(false)}
+				// 		  site={as_site()}
+				// 		  catalogue_id={catalogueId}/>
+				<SiteModal
+					open={openEdit}
+					on_close={() => setOpenEdit(false)}
+					subject={"site"}
+					url={"sites"}
+					entity={as_site()}
+					adding_new={false}
+					catalogue_id={catalogueId}
+					send_alert={(props) => console.log(JSON.stringify(props))}
+				/>
 			)}
 			<Grid item xs={12}>
 				<Typography variant="body1" sx={{ fontWeight: "medium" }}>
