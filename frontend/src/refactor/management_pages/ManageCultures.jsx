@@ -45,7 +45,7 @@ class ManageCulture extends ManagementPage{
                 url={"cultures"}
                 entity={this.state.selected}
                 adding_new={this.state.adding_new}
-                append_culture={(new_culture) => this.append_new(new_culture)}
+                append_new={(new_culture) => this.append_new(new_culture)}
                 on_close={() => this.setState({dialog:false})}
                 send_alert={(props) => this.build_alert(props)}
             />

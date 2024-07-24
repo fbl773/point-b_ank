@@ -70,7 +70,7 @@ class EditCreateModal extends Component {
             http.post(this.props.url,add_me)
                 .then(resp => {
                     let new_ent = resp.data.new_ent;
-                    this.props.append_new(new_ent);
+                    this.append_new(new_ent);
                 })
                 .catch(err => {
                     console.error(`Failed to add ${this.props.subject}: `, err)
@@ -104,6 +104,7 @@ class EditCreateModal extends Component {
     //Basics
     componentDidMount() {
         //Dynamically configure functionality to fit configured option
+        this.append_new = this.props.append_new.bind(this);
         if(this.props.adding_new){
             this.handle_submit = this.add_entity.bind(this);
             this.setState({title:"Add"});
