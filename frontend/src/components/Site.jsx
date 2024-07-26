@@ -241,11 +241,7 @@ const Site = () => {
 					</Grid>
 				</Grid>
 			</Grid>
-			{openEdit && (
-				// <EditSite adding_new={false}
-				// 		  onClose={() => setOpenEdit(false)}
-				// 		  site={as_site()}
-				// 		  catalogue_id={catalogueId}/>
+			{openEdit &&
 				<SiteModal
 					open={openEdit}
 					on_close={() => setOpenEdit(false)}
@@ -256,7 +252,7 @@ const Site = () => {
 					catalogue_id={catalogueId}
 					send_alert={(props) => console.log(JSON.stringify(props))}
 				/>
-			)}
+			}
 			<Grid item xs={12}>
 				<Typography variant="body1" sx={{ fontWeight: "medium" }}>
 					Projectile Points

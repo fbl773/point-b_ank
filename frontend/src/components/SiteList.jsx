@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
-import EditSite from "../refactor/EditSite.jsx";
 import { Link } from "react-router-dom";
 import {
 	styled,
@@ -19,6 +18,7 @@ import { UserContext } from "../context/userContext";
 import { sortData } from "../sortUtils";
 import http from "../../http.js";
 import SiteCard from "../refactor/SiteCard.jsx";
+import {SiteModal} from "../refactor/modals/Modals.jsx";
 
 /**
  * Item component styled from the Paper MUI component.
@@ -129,7 +129,17 @@ export default function SiteList({ query, sortValue, host_catalogue_id }) {
 					</Box>
 				</Grid>
 			</Item>
-			{openAdd && <EditSite adding_new={true} onClose={onClose} catalogue_id={host_catalogue_id}/>}
+			{openAdd &&
+				<SiteModal
+					open={openAdd}
+					on_close={onClose}
+					subject={"site"}
+					url={"sites"}
+					adding_new={true}
+					catalogue_id={host_catalogue_id}
+					send_alert={(props) => console.log(JSON.stringify(props))}
+					append_new={(new_site) => console.warn(`Somehow ${new_site} makes it here...`)}
+				/>}
 		</div>
 	);
 }
