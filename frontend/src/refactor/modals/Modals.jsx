@@ -4,7 +4,12 @@ import {DialogContent, Grid, MenuItem, TextField, Typography} from "@mui/materia
 import http from "../../../http.js";
 import RegionList from "../RegionList.jsx";
 
+//Validation Lists
 const artifact_types = ["lithic","faunal","ceramic","other"];
+const base_shapes= [];
+const blade_shapes = [];
+const cross_section_shapes = [];
+const hafting_shapes = [];
 
 /**
  * Create/Edit Modal configured for Materials
@@ -344,5 +349,27 @@ export class SiteModal extends EditCreateModal{
                 this.setState({region_name:""});
             }
         }
+    }
+}
+
+export class ProjectileModal extends EditCreateModal{
+
+    get_periods(){
+        throw Error("Unimplemented")
+    }
+
+    get_cultures(){
+        throw Error("Unimplemented")
+    }
+
+    get_materials(){
+        throw Error("Unimplemented")
+    }
+
+
+    render_fields() {
+    }
+
+    validate() {
     }
 }
