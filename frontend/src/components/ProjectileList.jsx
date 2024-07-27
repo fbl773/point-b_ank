@@ -18,6 +18,7 @@ import { useContext } from "react";
 import { UserContext } from "../context/userContext";
 
 import { sortData } from "../sortUtils.js";
+import ProjectileCard from "../refactor/ProjectileCard.jsx";
 /**
  * Create styled Item component, based on Paper MUI component
  */
@@ -125,25 +126,10 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 									<Grid item xl={2} key={item.id}>
 										{/*This section is for displaying all the found artifacts*/}
 										<ButtonBase onClick={handleClick2(item)}>
-											<Card
-												sx={{
-													minWidth: "12rem",
-													minHeight: "12rem",
-													alignContent: "center",
-												}}
-											>
-												<CardContent>
-													<Typography variant="h5" component="h3">
-														{siteName + "-" + item.id}
-													</Typography>
-													<Typography variant="body2" component="p">
-														{/* Limit description characters to prevent text overflow */}
-														{item.description.length <= 15
-															? item.description
-															: item.description.substr(0, 15) + "..."}
-													</Typography>
-												</CardContent>
-											</Card>
+											<ProjectileCard
+												item={item}
+												site_name={siteName}
+											/>
 										</ButtonBase>
 									</Grid>
 								))}
