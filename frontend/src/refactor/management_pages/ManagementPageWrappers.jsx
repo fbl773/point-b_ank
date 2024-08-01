@@ -4,6 +4,11 @@ import ManagePeriod from "./ManagePeriod.jsx";
 import ManageCulture from "./ManageCultures.jsx";
 import ManageMaterials from "./ManageMaterials.jsx";
 
+/**
+* Wraps the <T> Managing component in a function such that we can 
+* use their "context" feature. It is silly, but the cost of an object-y
+* refactor is pretty high. This is a reasonable alternative methinks. 
+*/
 export function ManagePeriodWrapper() {
     const { user } = useContext(UserContext);
     return(
