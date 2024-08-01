@@ -23,6 +23,10 @@ class ManageCulture extends ManagementPage{
             .catch(err => {console.log("Failed to fetch period name",err);})
     }
 
+    /**
+     * Fetches the entitites associated with this management page and then 
+	 * formatss and assigns them as rows to our rows state.
+     */
     async fetch_entities() {
         http.get(this.props.url)
             .then(resp => {
@@ -38,6 +42,9 @@ class ManageCulture extends ManagementPage{
             .catch(err => console.log(`Error fetching cultures`,err));
     }
 
+	/**
+	 * creates the Culture editor modal element
+	*/
     generate_editor() {
         return (this.state.dialog &&
             <CultureModal

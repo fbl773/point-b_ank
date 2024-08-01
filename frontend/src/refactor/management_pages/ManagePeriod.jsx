@@ -20,18 +20,6 @@ class ManagePeriod extends ManagementPage{
             .catch(err => console.log(`Error to fetch periods`,err));
     }
 
-    async delete_entity(entity_id) {
-        return super.delete_entity(entity_id)
-            .then(() => {
-                this.remove(entity_id)
-                this.alert_success("delete");
-            })
-            .catch(err => {
-                console.error(`failed to delete Period: ${JSON.stringify(entity_id)}`,err);
-                this.alert_failure("delete");
-            })
-    }
-
     generate_editor() {
         return (this.state.dialog &&
             <PeriodModal
