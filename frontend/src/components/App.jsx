@@ -2,10 +2,7 @@ import { UserContextProvider } from "../context/userContext";
 import { Route, Routes } from "react-router-dom";
 import Catalogue from "./Catalogue";
 import Site from "./Site";
-//import StatisticsPage from "./StatisticsPage";
 import SettingsPage from "./SettingsPage";
-import ManageCultures from "./ManagementCultures";
-import ManageMaterials from "./ManagementMaterials";
 import {
 	ManageCultureWrapper,
 	ManageMaterialsWrapper,
@@ -24,13 +21,10 @@ function App() {
 			<Routes>
 				<Route path="/" element={<Catalogue />} />
 				<Route path="/site/:id" element={<Site />} />
-				{/*<Route path="/stats" element={<StatisticsPage />} /> // TODO: this is not quite what we had in mind*/}
 				<Route path="/settings" element={<SettingsPage />} />
-				{/*<Route path="/managePeriods" element={<ManagePeriods />} />*/}
 				<Route path="/managePeriods" element={<ManagePeriodWrapper/>} />
 				<Route path="/manageCultures" element={<ManageCultureWrapper />} />
 				<Route path="/manageMaterials" element={<ManageMaterialsWrapper/>} />
-				{/*<Route path="/manageMaterials" element={<ManageMaterials />} />*/}
 				{/* Add new routes here as you make new pages - use '/your_path' as path and the coresponding filename in element. */}
 			</Routes>
 		</UserContextProvider>
