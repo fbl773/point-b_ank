@@ -27,7 +27,7 @@ class ManagementPage extends Component{
             dialog_open:false,
             adding_new:false,
             alert:{open:false,message:""},
-            delete_confirmation:{open:false,ent:null}, //todo remove if we can
+            delete_confirmation:{open:false,entity:null}, //todo remove if we can
             selected:null,
             dialog:false,
         }
@@ -59,8 +59,8 @@ class ManagementPage extends Component{
      * Handles calling the passed delete method
      * @returns {Promise<void>}
      */
-    async handleDelete(ent){
-        this.setState({delete_confirmation:{open:true,ent:ent}});
+    async handleDelete(entity){
+        this.setState({delete_confirmation:{open:true,entity:entity}});
     }
 
     /**
@@ -91,21 +91,21 @@ class ManagementPage extends Component{
     //Row Modifiers
     /**
      * Adds a new entity to the list of entities we are tracking
-     * @param new_ent
+     * @param new_entity
      */
-    append_new(new_ent){
-        new_ent["id"] = new_ent._id; //set id field for MUI
+    append_new(new_entity){
+        new_entity["id"] = new_entity._id; //set id field for MUI
         let old_rows = this.state.rows;
-        this.setState({rows:[...old_rows, {...new_ent, isNew: true}]}); // Add new period to local state
+        this.setState({rows:[...old_rows, {...new_entity, isNew: true}]}); // Add new period to local state
     }
 
     /**
      * Removes the entity from the UI
-     * @param ent_id {String} - the entity to remove
+     * @param entity_id {String} - the entity to remove
      */
-    remove(ent_id) {
+    remove(entity_id) {
         //This could be done better
-        let updated_rows = this.state.rows.filter((row) => row._id !== ent_id);
+        let updated_rows = this.state.rows.filter((row) => row._id !== entity_id);
         this.setState({rows:updated_rows});
     }
 
@@ -160,9 +160,9 @@ class ManagementPage extends Component{
                     {this.props.context && (
                         <DeleteConfirmDialog
                             open_condition={this.state.delete_confirmation.open}
-                            on_cancel={() => this.setState({delete_confirmation:{open:false,ent:null}})}
-                            on_proceed={() => this.delete_entity(this.state.delete_confirmation.ent._id)}
-                            text={`Are you sure you'd like to delete ${this.props.subject} ${this.state.delete_confirmation.ent?.name ?? ""}`}
+                            on_cancel={() => this.setState({delete_confirmation:{open:false,entity:null}})}
+                            on_proceed={() => this.delete_entity(this.state.delete_confirmation.entity._id)}
+                            text={`Are you sure you'd like to delete ${this.props.subject} ${this.state.delete_confirmation.entity?.name ?? ""}`}
                             title={`Delete ${this.props.subject}?`}
                         />
                     )}
