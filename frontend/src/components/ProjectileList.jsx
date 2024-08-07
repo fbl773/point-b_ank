@@ -86,7 +86,7 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 	}, [openAdd, openView, sortValue]);
 
 	// Filter projectile points to current selected site
-	const siteData = data?.filter((item) => item.site.id == siteId);
+	const siteData = data?.filter((item) => item.site_id == siteId);
 
 	// Filter data based on search query (mock)
 	const filteredData = siteData?.filter((item) =>
@@ -123,7 +123,7 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 							)}
 							{filteredData &&
 								filteredData.map((item) => (
-									<Grid item xl={2} key={item.id}>
+									<Grid item xl={2} key={item._id}>
 										{/*This section is for displaying all the found artifacts*/}
 										<ButtonBase onClick={handleClick2(item)}>
 											<ProjectileCard
