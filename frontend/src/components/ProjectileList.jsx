@@ -59,9 +59,9 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 	 * Toggle view projectile modal visibility to true
 	 */
 	const handleClick2 = (item) => () => {
-		setProjectilePointId(item.id);
-		setOpenView(true);
-		log.info("Card clicked! ID:", item.id);
+		//setProjectilePointId(item.id);
+		//setOpenView(true);
+		log.info("Card clicked! ID:", item._id);
 	};
 
 	/**
@@ -71,7 +71,7 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 	useEffect(() => {
 		async function fetchprojectilePoints() {
 			try {
-				const response = await http.get("/projectilePoints");
+				const response = await http.get(`sites/${siteId}/points`);
 				log.info("Projectile points: ", response.data);
 
 				// Sort JSON
@@ -85,11 +85,8 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 		fetchprojectilePoints();
 	}, [openAdd, openView, sortValue]);
 
-	// Filter projectile points to current selected site
-	const siteData = data?.filter((item) => item.site_id == siteId);
-
 	// Filter data based on search query (mock)
-	const filteredData = siteData?.filter((item) =>
+	const filteredData = data?.filter((item) =>
 		// eslint-disable-next-line react/prop-types
 		item.name.toLowerCase().includes(query.toLowerCase()),
 	);
