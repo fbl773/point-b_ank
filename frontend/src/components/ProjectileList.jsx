@@ -44,7 +44,7 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 	const [openAdd, setOpenAdd] = useState(false);
 	const [openView, setOpenView] = useState(false);
 	const [openEdit, setOpenEdit] = useState(false);
-	const [projectilePointId, setProjectilePointId] = useState(0);
+	const [projectilePointId, setProjectilePointId] = useState("");
 	const [data, setData] = useState([]);
 	const { user } = useContext(UserContext);
 	/**
@@ -60,7 +60,7 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 	 */
 	const handleClick2 = (item) => () => {
 		//setProjectilePointId(item.id);
-		//setOpenView(true);
+		setOpenView(true);
 		log.info("Card clicked! ID:", item._id);
 	};
 
