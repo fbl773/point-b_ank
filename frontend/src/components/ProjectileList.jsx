@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import http from "../../http.js";
 import ProjectileModal from "./ProjectileModal";
-import Projectile from "./Projectile";
 import log from "../logger.js";
 import {
 	styled,
@@ -19,6 +18,7 @@ import { UserContext } from "../context/userContext";
 
 import { sortData } from "../sortUtils.js";
 import ProjectileCard from "../refactor/ProjectileCard.jsx";
+import Projectile from "../refactor/modals/Projectile.jsx";
 /**
  * Create styled Item component, based on Paper MUI component
  */
@@ -45,6 +45,7 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 	const [openView, setOpenView] = useState(false);
 	const [openEdit, setOpenEdit] = useState(false);
 	const [projectilePointId, setProjectilePointId] = useState("");
+	const [point,setPoint] = useState(undefined)
 	const [data, setData] = useState([]);
 	const { user } = useContext(UserContext);
 	/**
@@ -59,7 +60,8 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 	 * Toggle view projectile modal visibility to true
 	 */
 	const handleClick2 = (item) => () => {
-		//setProjectilePointId(item.id);
+		console.log(`ITEM IS ${item}`);
+		setPoint(item)
 		setOpenView(true);
 		log.info("Card clicked! ID:", item._id);
 	};
@@ -141,12 +143,13 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 			</div>
 			<div>
 				{openView && (
-					<Projectile
-						setOpenView={setOpenView}
-						setOpenEdit={setOpenEdit}
-						projectilePointId={projectilePointId}
-						siteName={siteName}
-					/>
+				<Projectile
+					adding_new={false}
+					url={"projectile_point"}
+					entity={point}
+					open={openView}
+					on_close={() => setOpenView(false)}
+				/>
 				)}
 			</div>
 			<div>

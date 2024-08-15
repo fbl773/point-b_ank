@@ -21,7 +21,7 @@ class Projectile extends EditCreateModal{
      */
     image_area(){
         return(
-            <Grid item xs={6}>
+            <Grid item xs={7}>
                 <img
                     src={"/wat"}
                     alt="POINT"/>
@@ -38,8 +38,8 @@ class Projectile extends EditCreateModal{
      */
     attribute_area(){
         return(
-            <Grid item s={6}>
-                <Typography varient="h3">Attributes</Typography>
+            <Grid item s={8}>
+                <Typography varient="h3">Details:</Typography>
             </Grid>
         )
     }
@@ -49,8 +49,8 @@ class Projectile extends EditCreateModal{
      */
     notes_area(){
         return(
-            <Grid item s={6}>
-                <Typography sx={{mt:2}} varient="h6">Description</Typography>
+            <Grid item s={5}>
+                <Typography sx={{mt:2}} varient="h6">Description:</Typography>
                 <Typography varient="body1">This would be the description</Typography>
             </Grid>
         )
@@ -63,7 +63,7 @@ class Projectile extends EditCreateModal{
      */
     specs_area(){
         return(
-            <Grid item s={6}>
+            <Grid item s={5}>
                 <Typography sx={{mt:2}} varient="h6">Dimensions: 4 x 8 x 16 </Typography>
                 <Typography sx={{mt:2}} varient="h6">Material: boop</Typography>
             </Grid>
@@ -107,3 +107,4 @@ class Projectile extends EditCreateModal{
         return super.render();
     }
 }
+export default Projectile;
