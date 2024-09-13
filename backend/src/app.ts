@@ -40,19 +40,21 @@ app.use(cors({
     credentials:true
 }));
 
+const demo_use = (url:String,router:Router) => app.use(`api${url}`,router)
+
 /** ROUTES */
-app.use("/login",login_router);
-app.use("/verify",access_control_router);
-app.use("/catalogues",catalogue_router);
-app.use("/sites",site_router);
-app.use("/materials",material_router);
-app.use("/periods",period_router);
-app.use("/cultures",culture_router);
-app.use("/regions",region_router);
-app.use("/artifacts",projectile_point_router);//TODO remove after frontend refactor
-app.use("/projectilepoints",projectile_point_router); //TODO remove after frontend refactor
-app.use("/points",projectile_point_router);
-app.use("/users",user_router);
+demo_use("/login",login_router);
+demo_use("/verify",access_control_router);
+demo_use("/catalogues",catalogue_router);
+demo_use("/sites",site_router);
+demo_use("/materials",material_router);
+demo_use("/periods",period_router);
+demo_use("/cultures",culture_router);
+demo_use("/regions",region_router);
+demo_use("/artifacts",projectile_point_router);//TODO remove after frontend refactor
+demo_use("/projectilepoints",projectile_point_router); //TODO remove after frontend refactor
+demo_use("/points",projectile_point_router);
+demo_use("/users",user_router);
 
 /** Handler for discontinued routes
  * TODO: Remove once frontend refactor is complete */
@@ -61,19 +63,19 @@ unimplemented_router.all("/",(_req,res) => {
     return res.status(501).send({message:"This feature is under construction"})
 })
 
-app.use("/aggregateStatisticsGenerators",unimplemented_router);
-app.use("/bladeshapes", unimplemented_router);
-app.use("/baseshapes", unimplemented_router);
-app.use("/haftingshapes", unimplemented_router);
-app.use("/crosssections", unimplemented_router);
-app.use("/artifacttypes", unimplemented_router);
-app.use("/users/resetDefaultUser",unimplemented_router);
+demo_use("/aggregateStatisticsGenerators",unimplemented_router);
+demo_use("/bladeshapes", unimplemented_router);
+demo_use("/baseshapes", unimplemented_router);
+demo_use("/haftingshapes", unimplemented_router);
+demo_use("/crosssections", unimplemented_router);
+demo_use("/artifacttypes", unimplemented_router);
+demo_use("/users/resetDefaultUser",unimplemented_router);
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("api/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 /** BASE*/
-app.get('/', (req:Request,res:Response) => {
+app.get('/api', (req:Request,res:Response) => {
     res.send("Hello, this is api")
 })
 
