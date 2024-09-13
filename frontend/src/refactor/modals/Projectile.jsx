@@ -21,9 +21,10 @@ class Projectile extends EditCreateModal{
      */
     image_area(){
         return(
-            <Grid item xs={7}>
+            <Grid item xs={7} >
                 <img
-                    src={"/wat"}
+                    src={"/src/assets/DC_AH-4F.JPG"}
+                    style={{maxWidth: "100%"}}
                     alt="POINT"/>
             </Grid>
         )
@@ -78,10 +79,8 @@ class Projectile extends EditCreateModal{
      */
     title_area(){
         return(
-            <Grid item l={6}>
-                <Typography sx={{fontWeight:"bold"}} varient="h4">
-                    SiteID/G00B3R
-                </Typography>
+            <Grid item xs={4}>
+                <Typography sx={{fontWeight:"bold"}} varient="h4"> SiteID/G00B3R </Typography>
                 <Typography variant="body1">Middle Plains/Oxbow</Typography>
                 <Typography variant="body1">Location:44deg wabba0</Typography>
             </Grid>
@@ -90,9 +89,9 @@ class Projectile extends EditCreateModal{
 
     render_fields() {
         return(
-            <Grid container spacing={6} sx={{paddingTop:0}}>
-                {this.title_area()}
+            <Grid container spacing={2}>
                 {this.image_area()}
+                {this.title_area()}
                 {this.specs_area()}
                 {this.attribute_area()}
                 {this.notes_area()}
@@ -104,7 +103,28 @@ class Projectile extends EditCreateModal{
     }
 
     render() {
-        return super.render();
+        return(
+            <div>
+            <Dialog
+                open={this.props.open}
+                onClose={this.props.onClose}
+                maxWidth="md"
+                >
+                <DialogTitle>{this.state.title} {this.props.subject}: {this.state.entity.name}</DialogTitle>
+                <DialogContent>
+                    {this.render_fields()}
+                <DialogActions>
+                    <Button onClick={this.props.on_close} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={this.handle_submit} color="primary">
+                        Save
+                    </Button>
+                </DialogActions>
+            </DialogContent>
+            </Dialog>
+            </div>
+        )
     }
 }
 export default Projectile;
