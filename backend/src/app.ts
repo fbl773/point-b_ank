@@ -40,42 +40,40 @@ app.use(cors({
     credentials:true
 }));
 
-const demo_use = (url:String,router:Router) => app.use(`api${url}`,router)
-
 /** ROUTES */
-demo_use("/login",login_router);
-demo_use("/verify",access_control_router);
-demo_use("/catalogues",catalogue_router);
-demo_use("/sites",site_router);
-demo_use("/materials",material_router);
-demo_use("/periods",period_router);
-demo_use("/cultures",culture_router);
-demo_use("/regions",region_router);
-demo_use("/artifacts",projectile_point_router);//TODO remove after frontend refactor
-demo_use("/projectilepoints",projectile_point_router); //TODO remove after frontend refactor
-demo_use("/points",projectile_point_router);
-demo_use("/users",user_router);
+app.use("/api/login",login_router);
+app.use("/api/verify",access_control_router);
+app.use("/api/catalogues",catalogue_router);
+app.use("/api/sites",site_router);
+app.use("/api/materials",material_router);
+app.use("/api/periods",period_router);
+app.use("/api/cultures",culture_router);
+app.use("/api/regions",region_router);
+app.use("/api/artifacts",projectile_point_router);//TODO remove after frontend refactor
+app.use("/api/projectilepoints",projectile_point_router); //TODO remove after frontend refactor
+app.use("/api/points",projectile_point_router);
+app.use("/api/users",user_router);
 
 /** Handler for discontinued routes
  * TODO: Remove once frontend refactor is complete */
 const unimplemented_router = Router();
-unimplemented_router.all("/",(_req,res) => {
+unimplemented_router.all("/api/",(_req,res) => {
     return res.status(501).send({message:"This feature is under construction"})
 })
 
-demo_use("/aggregateStatisticsGenerators",unimplemented_router);
-demo_use("/bladeshapes", unimplemented_router);
-demo_use("/baseshapes", unimplemented_router);
-demo_use("/haftingshapes", unimplemented_router);
-demo_use("/crosssections", unimplemented_router);
-demo_use("/artifacttypes", unimplemented_router);
-demo_use("/users/resetDefaultUser",unimplemented_router);
+app.use("/api/aggregateStatisticsGenerators",unimplemented_router);
+app.use("/api/bladeshapes", unimplemented_router);
+app.use("/api/baseshapes", unimplemented_router);
+app.use("/api/haftingshapes", unimplemented_router);
+app.use("/api/crosssections", unimplemented_router);
+app.use("/api/artifacttypes", unimplemented_router);
+app.use("/api/users/api/resetDefaultUser",unimplemented_router);
 
-app.use("api/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/api/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 /** BASE*/
-app.get('/api', (req:Request,res:Response) => {
+app.get('/', (req:Request,res:Response) => {
     res.send("Hello, this is api")
 })
 
