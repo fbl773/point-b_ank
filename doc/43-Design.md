@@ -66,9 +66,9 @@ current dialog and our new DB spec for it
 | TODO          | `string`    | name                                        | `NULL`          |
 
 ### 3.2 Prerequisites 
-- [ ] Add missing db fields `Length, Width, Height`
-- [ ] Add missing db field  `period_id` for cases where only period can be determined. ~meet
-- [ ] Add missing db field `location`
+- [x] Add missing db fields `Length, Width, Height`
+- [x] Add missing db field  `period_id` for cases where only period can be determined. ~meet
+- [x] Add missing db field `location`
 
 ### 3.3 TODO
 - [ ] Generate name from `_id` and perhaps `culture`

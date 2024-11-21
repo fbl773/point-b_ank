@@ -138,7 +138,13 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 			</Item>
 			<div>
 				{openAdd && (
-					<ProjectileModal openAdd={openAdd} setOpenAdd={setOpenAdd} />
+					// <ProjectileModal openAdd={openAdd} setOpenAdd={setOpenAdd} />
+					<Projectile
+						adding_new={true}
+						url={"projectile_point"}
+						open={openAdd}
+						on_close={() => setOpenAdd(false)}
+					/>
 				)}
 			</div>
 			<div>

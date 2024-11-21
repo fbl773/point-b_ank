@@ -6,14 +6,43 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    Grid,
+    Grid, TextareaAutosize,
     Typography
 } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import {Projectile_Point} from "../../entities/entities.js";
 
 class Projectile extends EditCreateModal{
 
     constructor(props) {
         super(props);
+        this.state.entity = {
+            image:"",
+            description:"",
+            culture_id:"",
+            period_id:"",
+            material_id:"",
+            site_id:"",
+            blade_shape:"",
+            base_shape:"",
+            hafting_shape:"",
+            cross_section:"",
+            location:"",
+            dimensions:[0,0,0]
+        }
+    }
+
+    /**
+     * Edits the dimensions field for entities
+     * FORMAT IS L X W X H
+     * @param idx - the idx to insert the dimensions at
+     * @param dimension - the value of the dimension
+     */
+    edit_dimensions(idx,dimension){
+        console.log(`CALLED WITH ${idx,dimension}!`);
+        let dimensions = this.state.entity.dimensions;
+        dimensions[idx]=dimension;
+        this.update_entity("dimensions",dimensions);
     }
 
     /**
@@ -41,7 +70,50 @@ class Projectile extends EditCreateModal{
         return(
             <Grid item s={8}>
                 <Typography varient="h3">Details:</Typography>
+                {/*Point Attributes*/}
+                <TextField
+                autoFocus
+                id="blade_shape"
+                label="Blade Shape"
+                fullWidth
+                value={this.state.entity.blade_shape}
+                onChange={e => this.update_entity("blade_shape",e.target.value)}/>
+
+                <TextField
+                    autoFocus
+                    id="base_shape"
+                    label="Base Shape"
+                    fullWidth
+                    value={this.state.entity.base_shape}
+                    onChange={e => this.update_entity("base_shape",e.target.value)}/>
+
+                <TextField
+                    autoFocus
+                    id="hafting_shape"
+                    label="Hafting Shape"
+                    fullWidth
+                    value={this.state.entity.hafting_shape}
+                    onChange={e => this.update_entity("hafting_shape",e.target.value)}/>
+
+                <TextField
+                    autoFocus
+                    id="hafting_shape"
+                    label="Hafting Shape"
+                    fullWidth
+                    value={this.state.entity.hafting_shape}
+                    onChange={e => this.update_entity("hafting_shape",e.target.value)}/>
+
+                <TextField
+                    autoFocus
+                    id="cross_section"
+                    label="Cross Section"
+                    fullWidth
+                    value={this.state.entity.cross_section}
+                    onChange={e => this.update_entity("hafting_shape",e.target.value)}/>
+
             </Grid>
+
+
         )
     }
 
@@ -51,10 +123,59 @@ class Projectile extends EditCreateModal{
     notes_area(){
         return(
             <Grid item s={5}>
+                <TextField
+                    minRows={5}
+                    maxRows={5}
+                    multiline={true}
+                    autoFocus
+                    id="notes"
+                    label="Notes"
+                    fullWidth
+                    required
+                    value={this.state.entity.note}
+                    onChange={(e) => this.update_entity("note",e.target.value)}
+                    />
+
+
                 <Typography sx={{mt:2}} varient="h6">Description:</Typography>
                 <Typography varient="body1">This would be the description</Typography>
             </Grid>
         )
+    }
+
+    /**
+     * Generates the area for editing dimensions
+     * @return {JSX.Element}
+     */
+    dimensions_area(){
+        return(
+            <div>
+            <TextField
+                autoFocus
+                id={"length"}
+                label="Length"
+                fullWidth
+                value={this.state.entity.dimensions[0]}
+                onChange={e => this.edit_dimensions(0,e.target.value)}
+            />
+            <TextField
+                autoFocus
+                id={"width"}
+                label="Width"
+                fullWidth
+                value={this.state.entity.dimensions[1]}
+                onChange={e => this.edit_dimensions(1,e.target.value)}
+            />
+            <TextField
+                autoFocus
+                id={"height"}
+                label="Height"
+                fullWidth
+                value={this.state.entity.dimensions[2]}
+                onChange={e => this.edit_dimensions(2,e.target.value)}
+            />
+            </div>
+    )
     }
 
     /**
@@ -63,12 +184,22 @@ class Projectile extends EditCreateModal{
      * - Material
      */
     specs_area(){
-        return(
-            <Grid item s={5}>
-                <Typography sx={{mt:2}} varient="h6">Dimensions: 4 x 8 x 16 </Typography>
-                <Typography sx={{mt:2}} varient="h6">Material: boop</Typography>
-            </Grid>
-        )
+        if(!this.props.adding_new) {
+            return (
+                <Grid item s={5}>
+                    <Typography sx={{mt: 2}} varient="h6">
+                        Dimensions: {this.state.entity.dimensions.filter(x => x >0).join("mm X ")}
+                    </Typography>
+                    <Typography sx={{mt: 2}} varient="h6">Material: boop</Typography>
+                </Grid>
+            )
+        } else {
+            return(
+                <Grid item s={5}>
+                {this.dimensions_area()}
+                </Grid>
+            )
+        }
     }
 
     /**
