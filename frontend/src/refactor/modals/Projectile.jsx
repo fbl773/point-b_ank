@@ -97,16 +97,34 @@ class Projectile extends EditCreateModal{
 
     select_period(period){
         let period_id = period._id ?? "";
-        let period_name = period.name ?? "";
+        let period_name = period.name ?? "Indeterminate";
 
-        console.log(`SELECTED: ${period}`)
+        //UPDATE CULTURES
+        let filtered_cultures = this.state.cultures.filter(culture => culture.period_id === period_id)
+
+        this.setState({cultures:filtered_cultures})
+
+        this.update_entity("period_id",period_id)
+        this.setState({selected_period:period_name})
     }
 
     select_culture(culture){
         let culture_id = culture._id ?? "";
-        let culture_name = culture.name ?? "";
+        let culture_name = culture.name ?? "Indeterminate";
 
-        console.log(`SELECTED: ${culture}`)
+        //Filter PERIODS
+        let period= this.state.periods.filter(period=> period._id === culture.period_id)[0] ?? "Indeterminate";
+        if (period !== "Indeterminate"){
+            this.setState({selected_period:period.name})
+            this.update_entity("period_id",period._id)
+        } else {
+            this.setState({selected_period:"Indeterminate"})
+            this.update_entity("period_id","")
+        }
+
+        this.update_entity("culture_id",culture_id)
+        this.setState({selected_culture:culture_name})
+
     }
 
 
@@ -347,6 +365,7 @@ class Projectile extends EditCreateModal{
         else{
             return(
                 <Grid item xs={4}>
+                    {/*PERIOD SELECTOR*/}
                     <InputLabel id="period-label">Period</InputLabel>
                     <FormControl fullWidth>
                         <Select
@@ -365,10 +384,11 @@ class Projectile extends EditCreateModal{
                                 >{period.name} ({period.start}-{period.end} BP)</MenuItem>
                             ))}
 
-                            <MenuItem key="none" value="">Indeterminate</MenuItem>
+                            <MenuItem key="none" value="Indeterminate">Indeterminate</MenuItem>
                         </Select>
                     </FormControl>
 
+                    {/*CULTURE SELECTOR*/}
                     <InputLabel id="culture-label">Culture</InputLabel>
                     <FormControl fullWidth>
                         <Select
@@ -386,13 +406,20 @@ class Projectile extends EditCreateModal{
                                     selected={false}
                                 >{culture.name} ({culture.start}-{culture.end} BP)</MenuItem>
                             ))}
-
-                            <MenuItem key="none" value="">Indeterminate</MenuItem>
+                            <MenuItem key="none" value="Indeterminate">Indeterminate</MenuItem>
                         </Select>
                     </FormControl>
 
-
-
+                    {/*LOCATION*/}
+                    <TextField
+                        autoFocus
+                        id={"location"}
+                        label="Location"
+                        style={{paddingTop:"8px",paddingBottom:"8px"}}
+                        fullWidth
+                        value={this.state.entity.location}
+                        onChange={e => this.update_entity("location",e.target.value)}
+                    />
                 </Grid>
             )}
     }
