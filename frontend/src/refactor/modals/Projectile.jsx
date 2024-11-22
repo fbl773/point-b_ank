@@ -35,10 +35,14 @@ class Projectile extends EditCreateModal{
 
         //Prefilled values
         this.state.materials = [];
-        this.state.selected_material = "";
         this.state.periods = [];
         this.state.cultures = [];
         this.state.base_shapes = [];
+
+        //Selector Name holders
+        this.state.selected_material = "";
+        this.state.selected_period = "";
+        this.state.selected_culture = "";
     }
 
     componentDidMount(){
@@ -89,6 +93,22 @@ class Projectile extends EditCreateModal{
         this.update_entity("material",mat_id)
         this.setState({selected_material:mat_name})
     }
+
+
+    select_period(period){
+        let period_id = period._id ?? "";
+        let period_name = period.name ?? "";
+
+        console.log(`SELECTED: ${period}`)
+    }
+
+    select_culture(culture){
+        let culture_id = culture._id ?? "";
+        let culture_name = culture.name ?? "";
+
+        console.log(`SELECTED: ${culture}`)
+    }
+
 
     /**
      * Generates the area associated with the image collection
@@ -316,13 +336,65 @@ class Projectile extends EditCreateModal{
      * - Location
      */
     title_area(){
+        if(!this.props.adding_new){
         return(
             <Grid item xs={4}>
                 <Typography sx={{fontWeight:"bold"}} varient="h4"> SiteID/G00B3R </Typography>
                 <Typography variant="body1">Middle Plains/Oxbow</Typography>
                 <Typography variant="body1">Location:44deg wabba0</Typography>
             </Grid>
-        )
+        )}
+        else{
+            return(
+                <Grid item xs={4}>
+                    <InputLabel id="period-label">Period</InputLabel>
+                    <FormControl fullWidth>
+                        <Select
+                        labelId="period-label"
+                        id="period_select"
+                        label="Period"
+                        value={this.state.selected_period ?? ""}
+                        renderValue={(selected) =>selected}
+                        onChange={(e) => this.select_period(e.target.value)}
+                        >
+                            {this.state.periods.map((period)=> (
+                                <MenuItem
+                                    key={period._id}
+                                    value={period}
+                                    selected={false}
+                                >{period.name} ({period.start}-{period.end} BP)</MenuItem>
+                            ))}
+
+                            <MenuItem key="none" value="">Indeterminate</MenuItem>
+                        </Select>
+                    </FormControl>
+
+                    <InputLabel id="culture-label">Culture</InputLabel>
+                    <FormControl fullWidth>
+                        <Select
+                            labelId="culture-label"
+                            id="culture_select"
+                            label="culture"
+                            value={this.state.selected_culture ?? ""}
+                            renderValue={(selected) =>selected}
+                            onChange={(e) => this.select_culture(e.target.value)}
+                        >
+                            {this.state.cultures.map((culture)=> (
+                                <MenuItem
+                                    key={culture._id}
+                                    value={culture}
+                                    selected={false}
+                                >{culture.name} ({culture.start}-{culture.end} BP)</MenuItem>
+                            ))}
+
+                            <MenuItem key="none" value="">Indeterminate</MenuItem>
+                        </Select>
+                    </FormControl>
+
+
+
+                </Grid>
+            )}
     }
 
     render_fields() {
