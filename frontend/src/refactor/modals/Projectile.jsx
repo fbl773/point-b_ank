@@ -37,6 +37,7 @@ class Projectile extends EditCreateModal{
         this.state.materials = [];
         this.state.periods = [];
         this.state.cultures = [];
+        this.state.base_shapes = [];
     }
 
     componentDidMount(){
@@ -100,67 +101,87 @@ class Projectile extends EditCreateModal{
             <Grid item s={8}>
                 <Typography varient="h3">Details:</Typography>
                 {/*Point Attributes*/}
-                <TextField
-                autoFocus
-                id="blade_shape"
-                label="Blade Shape"
-                fullWidth
-                value={this.state.entity.blade_shape}
-                onChange={e => this.update_entity("blade_shape",e.target.value)}/>
-
-                <TextField
-                    autoFocus
-                    id="base_shapea"
-                    label="Base Shape"
-                    fullWidth
-                    value={this.state.entity.base_shape}
-                    onChange={e => this.update_entity("base_shape",e.target.value)}/>
-
-                <FormControl>
-                    <InputLabel id="base_shape">Base Shape</InputLabel>
+                <FormControl fullWidth>
+                    <InputLabel id="blade_shape-label">Blade Shape</InputLabel>
                     <Select
-                        labelId="base_shape"
-                        id="base_shape_select"
-                        label="Base Shape"
-                        onChange={e => console.log(`Set to ${e.target.value}`)}
-                    />
-                    {this.state.base_shapes.map((bs )=> (
-                        <MenuItem
-                            value={"WAT"}
-                            key={bs}
-                            onClick={(e) => console.log(e.target.value)}
-                            />))}
-                    <MenuItem key="none" value="NONE" onClick={(selected)=>console.log(e.target.value)}>(NONE)</MenuItem>
-
+                        labelId="blade_shape-label"
+                        id="blade_shape_select"
+                        label="Blade Shape"
+                        value={this.state.entity.blade_shape ?? ""}
+                        renderValue={(selected) => selected}
+                        onChange={(e) => this.update_entity("blade_shape",e.target.value)}>
+                        {blade_shapes.map((bs )=> (
+                            <MenuItem
+                                value={bs}
+                                key={bs}
+                                selected={false}
+                                onClick={(e) => this.update_entity("blade_shape",e.target.value)}
+                            >{bs}</MenuItem>
+                        ))}
+                    </Select>
                 </FormControl>
 
-                <TextField
-                    autoFocus
-                    id="hafting_shape"
-                    label="Hafting Shape"
-                    fullWidth
-                    value={this.state.entity.hafting_shape}
-                    onChange={e => this.update_entity("hafting_shape",e.target.value)}/>
+                <FormControl fullWidth>
+                    <InputLabel id="base_shape-label">Base Shape</InputLabel>
+                    <Select
+                        labelId="base_shape-label"
+                        id="base_shape_select"
+                        label="Base Shape"
+                        value={this.state.entity.base_shape ?? ""}
+                        renderValue={(selected) => selected}
+                        onChange={(e) => this.update_entity("base_shape",e.target.value)}>
+                    {base_shapes.map((bs )=> (
+                        <MenuItem
+                            value={bs}
+                            key={bs}
+                            selected={false}
+                            onClick={(e) => this.update_entity("base_shape",e.target.value)}
+                        >{bs}</MenuItem>
+                    ))}
+                    </Select>
+                </FormControl>
 
-                <TextField
-                    autoFocus
-                    id="hafting_shape"
-                    label="Hafting Shape"
-                    fullWidth
-                    value={this.state.entity.hafting_shape}
-                    onChange={e => this.update_entity("hafting_shape",e.target.value)}/>
+                <FormControl fullWidth>
+                    <InputLabel id="hafting_shape-label">hafting Shape</InputLabel>
+                    <Select
+                        labelId="hafting_shape-label"
+                        id="hafting_shape_select"
+                        label="hafting Shape"
+                        value={this.state.entity.hafting_shape ?? ""}
+                        renderValue={(selected) => selected}
+                        onChange={(e) => this.update_entity("hafting_shape",e.target.value)}>
+                        {hafting_shapes.map((hs )=> (
+                            <MenuItem
+                                value={hs}
+                                key={hs}
+                                selected={false}
+                                onClick={(e) => this.update_entity("hafting_shape",e.target.value)}
+                            >{hs}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
 
-                <TextField
-                    autoFocus
-                    id="cross_section"
-                    label="Cross Section"
-                    fullWidth
-                    value={this.state.entity.cross_section}
-                    onChange={e => this.update_entity("hafting_shape",e.target.value)}/>
+                <FormControl fullWidth>
+                    <InputLabel id="cross_section-label">Cross Section</InputLabel>
+                    <Select
+                        labelId="cross_section-label"
+                        id="cross_section_select"
+                        label="Cross Sectrion"
+                        value={this.state.entity.cross_section ?? ""}
+                        renderValue={(selected) => selected}
+                        onChange={(e) => this.update_entity("cross_section",e.target.value)}>
+                        {cross_sections.map((cs )=> (
+                            <MenuItem
+                                value={cs}
+                                key={cs}
+                                selected={false}
+                                onClick={(e) => this.update_entity("cross_section",e.target.value)}
+                            >{cs}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
 
             </Grid>
-
-
         )
     }
 
