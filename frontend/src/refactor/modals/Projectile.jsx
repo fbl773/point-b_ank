@@ -35,6 +35,7 @@ class Projectile extends EditCreateModal{
 
         //Prefilled values
         this.state.materials = [];
+        this.state.selected_material = "";
         this.state.periods = [];
         this.state.cultures = [];
         this.state.base_shapes = [];
@@ -55,9 +56,9 @@ class Projectile extends EditCreateModal{
             })
             .catch(err => console.error("Failed to fetch periods",err));
 
-        http.get("/periods")
+        http.get("/cultures")
             .then(cultures=> {
-                this.setState({periods: cultures.data});
+                this.setState({cultures: cultures.data});
             })
             .catch(err => console.error("Failed to fetch periods",err));
     }
@@ -73,6 +74,20 @@ class Projectile extends EditCreateModal{
         let dimensions = this.state.entity.dimensions;
         dimensions[idx]=dimension;
         this.update_entity("dimensions",dimensions);
+    }
+
+    /**
+     * Selects the passed material and updates the PP entity accordingly
+     * @param material:Material - the material we will be updating
+     */
+    select_material(material){
+        // Get the values if present
+        let mat_id = material._id ?? "";
+        let mat_name = material.name ?? "Indeterminate";
+
+        //Update the entity, and the user facing display
+        this.update_entity("material",mat_id)
+        this.setState({selected_material:mat_name})
     }
 
     /**
@@ -99,7 +114,7 @@ class Projectile extends EditCreateModal{
     attribute_area(){
         return(
             <Grid item s={8}>
-                <Typography varient="h3">Details:</Typography>
+                <Typography varient="h3">Blade Details:</Typography>
                 {/*Point Attributes*/}
                 <FormControl fullWidth>
                     <InputLabel id="blade_shape-label">Blade Shape</InputLabel>
@@ -200,13 +215,13 @@ class Projectile extends EditCreateModal{
                     label="Notes"
                     fullWidth
                     required
-                    value={this.state.entity.note}
+                    value={this.state.entity.description}
                     onChange={(e) => this.update_entity("note",e.target.value)}
                     />
 
 
-                <Typography sx={{mt:2}} varient="h6">Description:</Typography>
-                <Typography varient="body1">This would be the description</Typography>
+                <Typography sx={{mt:2}} varient="h6">Notes:</Typography>
+                <Typography varient="body1">{this.state.entity.description}</Typography>
             </Grid>
         )
     }
@@ -218,10 +233,12 @@ class Projectile extends EditCreateModal{
     dimensions_area(){
         return(
             <div>
+            <Typography varient="h3" style={{paddingBottom:"8px"}}>Dimensions: </Typography>
             <TextField
                 autoFocus
                 id={"length"}
-                label="Length"
+                label="Length (mm)"
+                style={{paddingTop:"8px",paddingBottom:"8px"}}
                 fullWidth
                 value={this.state.entity.dimensions[0]}
                 onChange={e => this.edit_dimensions(0,e.target.value)}
@@ -229,7 +246,8 @@ class Projectile extends EditCreateModal{
             <TextField
                 autoFocus
                 id={"width"}
-                label="Width"
+                label="Width (mm)"
+                style={{paddingTop:"8px",paddingBottom:"8px"}}
                 fullWidth
                 value={this.state.entity.dimensions[1]}
                 onChange={e => this.edit_dimensions(1,e.target.value)}
@@ -237,7 +255,8 @@ class Projectile extends EditCreateModal{
             <TextField
                 autoFocus
                 id={"height"}
-                label="Height"
+                label="Height (mm)"
+                style={{paddingTop:"8px",paddingBottom:"8px"}}
                 fullWidth
                 value={this.state.entity.dimensions[2]}
                 onChange={e => this.edit_dimensions(2,e.target.value)}
@@ -265,14 +284,26 @@ class Projectile extends EditCreateModal{
             return(
                 <Grid item s={5}>
                 {this.dimensions_area()}
-                <TextField
-                    autoFocus
-                    id="material"
-                    label="Material"
-                    fullWidth
-                    value={this.state.entity.material}
-                    onChange={e => this.update_entity("material_id",e.target.value)}
-                />
+                <FormControl fullWidth>
+                    <InputLabel id="material-label">Material</InputLabel>
+                    <Select
+                        labelId="material-label"
+                        id="material_select"
+                        label="Material"
+                        value={this.state.selected_material?? ""}
+                        renderValue={(selected) => selected}
+                        onChange={(e) => this.select_material(e.target.value)}
+                        >
+                    {this.state.materials.map((mat)=> (
+                        <MenuItem
+                            key={mat._id}
+                            value={mat}
+                            selected={false}
+                        >{mat.name}</MenuItem>
+                    ))}
+                        <MenuItem key="none" value="">Indeterminate</MenuItem>
+                    </Select>
+                </FormControl>
                 </Grid>
             )
         }
