@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import http from "../../http.js";
-import ProjectileModal from "./ProjectileModal";
 import log from "../logger.js";
 import {
 	styled,
@@ -18,7 +17,7 @@ import { UserContext } from "../context/userContext";
 
 import { sortData } from "../sortUtils.js";
 import ProjectileCard from "../refactor/ProjectileCard.jsx";
-import Projectile from "../refactor/modals/Projectile.jsx";
+import ProjectileModal from "../refactor/modals/Projectile/ProjectileModal.jsx";
 /**
  * Create styled Item component, based on Paper MUI component
  */
@@ -139,8 +138,9 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 			<div>
 				{openAdd && (
 					// <ProjectileModal openAdd={openAdd} setOpenAdd={setOpenAdd} />
-					<Projectile
+					<ProjectileModal
 						adding_new={true}
+						site_name={siteName}
 						url={"projectile_point"}
 						open={openAdd}
 						on_close={() => setOpenAdd(false)}
@@ -149,7 +149,7 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 			</div>
 			<div>
 				{openView && (
-				<Projectile
+				<ProjectileModal
 					adding_new={false}
 					url={"projectile_point"}
 					entity={point}
