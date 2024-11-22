@@ -216,7 +216,7 @@ class Projectile extends EditCreateModal{
                     fullWidth
                     required
                     value={this.state.entity.description}
-                    onChange={(e) => this.update_entity("note",e.target.value)}
+                    onChange={(e) => this.update_entity("description",e.target.value)}
                     />
 
 
