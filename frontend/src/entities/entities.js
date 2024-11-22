@@ -55,4 +55,4 @@ export const blade_shapes = ["triangular","excurvate","incurvate","ovate","indet
 export const base_shapes = ["straight","concave","convex","indeterminate"];
 export const hafting_shapes =["lanceolate","stemmed","basally concave","expanding","contracting",
     "corner-notched","side-notched","basal-notched","triangular un-notched","indeterminate"] ;
-export const cross_section = ["rhomboid","lenticular","plano-convex","fluted","median-ridged","flat","indeterminate"];
+export const cross_sections = ["rhomboid","lenticular","plano-convex","fluted","median-ridged","flat","indeterminate"];

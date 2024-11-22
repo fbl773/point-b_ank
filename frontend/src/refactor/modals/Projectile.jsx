@@ -1,16 +1,18 @@
 import EditCreateModal from "./EditCreateModal.jsx";
+import http from "../../../http.js";
 import {
     Button,
     Dialog,
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle,
-    Grid, TextareaAutosize,
+    DialogTitle, FormControl,
+    Grid, InputLabel, MenuItem, Select, TextareaAutosize,
     Typography
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import {Projectile_Point} from "../../entities/entities.js";
+import {blade_shapes,base_shapes,hafting_shapes,cross_sections} from "../../entities/entities.js"
+import React from "react";
 
 class Projectile extends EditCreateModal{
 
@@ -30,6 +32,33 @@ class Projectile extends EditCreateModal{
             location:"",
             dimensions:[0,0,0]
         }
+
+        //Prefilled values
+        this.state.materials = [];
+        this.state.periods = [];
+        this.state.cultures = [];
+    }
+
+    componentDidMount(){
+        super.componentDidMount();
+        this.setState({base_shapes:base_shapes});
+        http.get("/materials")
+            .then(mats => {
+                this.setState({materials: mats.data});
+            })
+            .catch(err => console.error("Failed to fetch materials",err));
+
+        http.get("/periods")
+            .then(periods=> {
+                this.setState({periods: periods.data});
+            })
+            .catch(err => console.error("Failed to fetch periods",err));
+
+        http.get("/periods")
+            .then(cultures=> {
+                this.setState({periods: cultures.data});
+            })
+            .catch(err => console.error("Failed to fetch periods",err));
     }
 
     /**
@@ -81,11 +110,29 @@ class Projectile extends EditCreateModal{
 
                 <TextField
                     autoFocus
-                    id="base_shape"
+                    id="base_shapea"
                     label="Base Shape"
                     fullWidth
                     value={this.state.entity.base_shape}
                     onChange={e => this.update_entity("base_shape",e.target.value)}/>
+
+                <FormControl>
+                    <InputLabel id="base_shape">Base Shape</InputLabel>
+                    <Select
+                        labelId="base_shape"
+                        id="base_shape_select"
+                        label="Base Shape"
+                        onChange={e => console.log(`Set to ${e.target.value}`)}
+                    />
+                    {this.state.base_shapes.map((bs )=> (
+                        <MenuItem
+                            value={"WAT"}
+                            key={bs}
+                            onClick={(e) => console.log(e.target.value)}
+                            />))}
+                    <MenuItem key="none" value="NONE" onClick={(selected)=>console.log(e.target.value)}>(NONE)</MenuItem>
+
+                </FormControl>
 
                 <TextField
                     autoFocus
@@ -190,13 +237,21 @@ class Projectile extends EditCreateModal{
                     <Typography sx={{mt: 2}} varient="h6">
                         Dimensions: {this.state.entity.dimensions.filter(x => x >0).join("mm X ")}
                     </Typography>
-                    <Typography sx={{mt: 2}} varient="h6">Material: boop</Typography>
+                    <Typography sx={{mt: 2}} varient="h6">Material: {this.state.entity.material_id}</Typography>
                 </Grid>
             )
         } else {
             return(
                 <Grid item s={5}>
                 {this.dimensions_area()}
+                <TextField
+                    autoFocus
+                    id="material"
+                    label="Material"
+                    fullWidth
+                    value={this.state.entity.material}
+                    onChange={e => this.update_entity("material_id",e.target.value)}
+                />
                 </Grid>
             )
         }
