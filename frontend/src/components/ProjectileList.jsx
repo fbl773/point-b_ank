@@ -89,7 +89,7 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 	// Filter data based on search query (mock)
 	const filteredData = data?.filter((item) =>
 		// eslint-disable-next-line react/prop-types
-		item.name.toLowerCase().includes(query.toLowerCase()),
+		item._id.toLowerCase().includes(query.toLowerCase()),
 	);
 
 	return (
@@ -141,6 +141,7 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 					<ProjectileModal
 						adding_new={true}
 						site_name={siteName}
+						site_id={siteId}
 						url={"projectile_point"}
 						send_alert={(msg) => console.warn(`TODO: ${JSON.stringify(msg)}`)}
 						append_new={(ent) => console.warn(`TODO: Would append ${JSON.stringify(ent)}`)}

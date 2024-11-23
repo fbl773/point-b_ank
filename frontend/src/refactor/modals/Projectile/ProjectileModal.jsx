@@ -56,6 +56,7 @@ class ProjectileModal extends EditCreateModal{
 
         //Set title
         this.setState({title:`${this.props.site_name}/${this.state.entity._id ?? "*New*"}`})
+        this.update_entity("site_id",this.props.site_id)
 
     }
 
