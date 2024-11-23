@@ -17,6 +17,7 @@ import {
     MaterialSelector, NoteArea,
     PeriodCultureSelector
 } from "./ProjectileAttributes.jsx";
+import http from "../../../../http.js";
 
 class ProjectileModal extends EditCreateModal{
 
@@ -45,6 +46,9 @@ class ProjectileModal extends EditCreateModal{
         //Selector Name holders
         this.state.selected_period = "";
         this.state.selected_culture = "";
+
+        //Image needs
+        this.state.image_body = "";
     }
 
     componentDidMount(){
@@ -108,6 +112,32 @@ class ProjectileModal extends EditCreateModal{
     }
 
     validate() {
+        return false;
+    }
+
+    async add_entity() {
+        //Then go in for the photo? Yep. We will need the ID from our new entity. this is a full override
+        let add_me = this.state.entity;
+        delete add_me._id;
+
+        if(this.validate()){
+            http.post(this.props.url,add_me)
+                .then(resp => {
+                    let new_point = resp.data.new_ent;
+                    this.append_new(new_point);
+                    //TODO: UPLOAD THE PHOTO
+                }).catch(err => {
+                    console.error(`Failed to add point:`,err);
+                    this.props.send_alert({open:true,type:"error",message:`Failed to add new Poit`})
+                })
+                .then(this.props.send_alert({open:true,type:"success",message:`Successfully added new Point!`}))
+                .finally(this.props.on_close)
+        } else {
+            console.error(`${this.props.subject} Invalid!: ${JSON.stringify(add_me)}`)
+            this.props.send_alert({open: true, type: "error", message: `Failed to add new ${this.props.subject}.`})
+        }
+
+
     }
 
     render() {

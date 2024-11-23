@@ -18,19 +18,27 @@ export class ArtifactImage extends Component{
         //Get the image (gulp)
     }
 
+    upload_body(file){
+        return {
+            method: 'POST',
+            body: file,
+            headers: {
+                'content-type': file.type,
+                'content-length': `${file.size}`
+            }
+        }
+    }
+
     update_photo(e){
-        let allowedTypes = ["image/jpeg", "image/png"]; // Add more if needed
         let file = e.target.files[0];
-        //let reader = new FileReader();
-        if(file && allowedTypes.includes(file.type)){
+        if(file){
             let img_url = URL.createObjectURL(file);
             this.setState({image_path:img_url});
+            this.props.update_entity("image_body",this.upload_body(file))
             console.log(`Soemthing happened!: ${img_url}`)
         } else {
             alert("Invalid image")
         }
-
-
     }
 
     img_preview(){
@@ -51,7 +59,7 @@ export class ArtifactImage extends Component{
                     <FormLabel sx={{ mb: 1.5 }}>
                         Upload {this.state.image_path && "New"} Photo
                     </FormLabel>
-                    <input type="file" onChange={this.update_photo.bind(this)} accept="image/*" />
+                    <input type="file" onChange={this.update_photo.bind(this)} accept="image/jpeg" />
                 </FormControl>
             </Grid>
         )

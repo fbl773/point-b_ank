@@ -142,6 +142,8 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 						adding_new={true}
 						site_name={siteName}
 						url={"projectile_point"}
+						send_alert={(msg) => console.warn(`TODO: ${JSON.stringify(msg)}`)}
+						append_new={(ent) => console.warn(`TODO: Would append ${JSON.stringify(ent)}`)}
 						open={openAdd}
 						on_close={() => setOpenAdd(false)}
 					/>
