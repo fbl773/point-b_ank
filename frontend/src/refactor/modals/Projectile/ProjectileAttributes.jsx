@@ -321,8 +321,8 @@ export class PeriodCultureSelector extends Component {
             .catch(err => console.error("Failed to fetch periods",err));
 
         //Fetch period/culture if exists
-        let pre_culture = this.state.cultures.filter(culture => culture._id === this.props.culture._id)[0] ?? "Indeterminate";
-        let pre_period = this.state.periods.filter(period => period._id === this.props.period._id)[0] ?? "Indeterminate";
+        let pre_culture = this.state.cultures.filter(culture => culture._id === this.props.culture_id)[0] ?? "Indeterminate";
+        let pre_period = this.state.periods.filter(period => period._id === this.props.period_id)[0] ?? "Indeterminate";
 
         //Set them as default values
         this.setState({selected_period:pre_period});
