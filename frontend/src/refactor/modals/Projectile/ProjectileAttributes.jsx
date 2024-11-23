@@ -35,7 +35,6 @@ export class ArtifactImage extends Component{
             let img_url = URL.createObjectURL(file);
             this.setState({image_path:img_url});
             this.props.update_entity("image_body",this.upload_body(file))
-            console.log(`Soemthing happened!: ${img_url}`)
         } else {
             alert("Invalid image")
         }
@@ -45,9 +44,9 @@ export class ArtifactImage extends Component{
         return(
                 <img
                     id="artifact_img"
-                    src={this.state.image_path ?? "/src/assets/DC_AH-4F.JPG"}
+                    src={this.state.image_path ?? ""}
                     style={{maxWidth: "100%"}}
-                    alt="POINT"/>
+                    alt="Add a photo..."/>
         )
     }
 

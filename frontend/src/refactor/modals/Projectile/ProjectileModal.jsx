@@ -81,7 +81,9 @@ class ProjectileModal extends EditCreateModal{
     render_fields() {
         return(
             <Grid container spacing={2}>
-                <ArtifactImage/>
+                <ArtifactImage
+                    update_entity={(k,v) => this.update_entity(k,v)}
+                />
                 {/*{this.title_area()}*/}
                 <PeriodCultureSelector
                     update_entity={(k,v) => this.update_entity(k,v)}
