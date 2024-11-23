@@ -258,7 +258,7 @@ export class DimensionDetails extends Component{
      * @param dimension - the value of the dimension
      */
     edit_dimensions(idx,dimension){
-        let dimensions = this.props.dimensions;
+        let dimensions = this.state.dimensions
         dimensions[idx]=dimension;
         this.setState({dimensions:dimensions});
         this.props.update_entity("dimensions",dimensions);
