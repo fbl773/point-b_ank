@@ -113,14 +113,16 @@ class ProjectileModal extends EditCreateModal{
     }
 
     validate() {
-        return false;
+        return true;
     }
 
     async add_entity() {
         //Then go in for the photo? Yep. We will need the ID from our new entity. this is a full override
         let add_me = this.state.entity;
         delete add_me._id;
-
+        if(add_me.material_id === ""){
+            delete add_me.material_id
+        }
         if(this.validate()){
             http.post(this.props.url,add_me)
                 .then(resp => {
