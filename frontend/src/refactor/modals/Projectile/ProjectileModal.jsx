@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import {
+    ArtifactImage,
     BladeDetails,
     DimensionDetails,
     LocationDetails,
@@ -75,12 +76,7 @@ class ProjectileModal extends EditCreateModal{
     render_fields() {
         return(
             <Grid container spacing={2}>
-                <Grid item xs={7} >
-                    <img
-                        src={"/src/assets/DC_AH-4F.JPG"}
-                        style={{maxWidth: "100%"}}
-                        alt="POINT"/>
-                </Grid>
+                <ArtifactImage/>
                 {/*{this.title_area()}*/}
                 <PeriodCultureSelector
                     update_entity={(k,v) => this.update_entity(k,v)}

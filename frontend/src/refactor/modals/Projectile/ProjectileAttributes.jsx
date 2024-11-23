@@ -1,8 +1,64 @@
 import React, {Component} from "react";
-import {FormControl, Grid, InputLabel, MenuItem, Select, Typography} from "@mui/material";
+import {FormControl, FormLabel, Grid, InputLabel, MenuItem, Select, Typography} from "@mui/material";
 import {base_shapes, blade_shapes, cross_sections, hafting_shapes} from "../../../entities/entities.js";
 import TextField from "@mui/material/TextField";
 import http from "../../../../http.js";
+
+
+export class ArtifactImage extends Component{
+    constructor() {
+        super();
+
+        this.state={
+            image_path:null
+        }
+    }
+
+    componentDidMount() {
+        //Get the image (gulp)
+    }
+
+    update_photo(e){
+        let allowedTypes = ["image/jpeg", "image/png"]; // Add more if needed
+        let file = e.target.files[0];
+        //let reader = new FileReader();
+        if(file && allowedTypes.includes(file.type)){
+            let img_url = URL.createObjectURL(file);
+            this.setState({image_path:img_url});
+            console.log(`Soemthing happened!: ${img_url}`)
+        } else {
+            alert("Invalid image")
+        }
+
+
+    }
+
+    img_preview(){
+        return(
+                <img
+                    id="artifact_img"
+                    src={this.state.image_path ?? "/src/assets/DC_AH-4F.JPG"}
+                    style={{maxWidth: "100%"}}
+                    alt="POINT"/>
+        )
+    }
+
+    render() {
+        return(
+            <Grid item xs={7} >
+                {this.img_preview()}
+                <FormControl sx={{ my: 3.4 }}>
+                    <FormLabel sx={{ mb: 1.5 }}>
+                        Upload {this.state.image_path && "New"} Photo
+                    </FormLabel>
+                    <input type="file" onChange={this.update_photo.bind(this)} accept="image/*" />
+                </FormControl>
+            </Grid>
+        )
+    }
+
+
+}
 
 export class BladeDetails extends Component {
     constructor() {
@@ -71,7 +127,7 @@ export class BladeDetails extends Component {
                 </FormControl>
 
                 <FormControl fullWidth>
-                    <InputLabel id="hafting_shape-label">hafting Shape</InputLabel>
+                    <InputLabel id="hafting_shape-label">Hafting Shape</InputLabel>
                     <Select
                         labelId="hafting_shape-label"
                         id="hafting_shape_select"
@@ -205,7 +261,6 @@ export class DimensionDetails extends Component{
             <div>
                 <Typography varient="h3" style={{paddingBottom: "8px"}}>Dimensions: </Typography>
                 <TextField
-                    autoFocus
                     id={"length"}
                     label="Length (mm)"
                     style={{paddingTop: "8px", paddingBottom: "8px"}}
@@ -214,7 +269,6 @@ export class DimensionDetails extends Component{
                     onChange={e => this.edit_dimensions(0, e.target.value)}
                 />
                 <TextField
-                    autoFocus
                     id={"width"}
                     label="Width (mm)"
                     style={{paddingTop: "8px", paddingBottom: "8px"}}
@@ -223,7 +277,6 @@ export class DimensionDetails extends Component{
                     onChange={e => this.edit_dimensions(1, e.target.value)}
                 />
                 <TextField
-                    autoFocus
                     id={"height"}
                     label="Height (mm)"
                     style={{paddingTop: "8px", paddingBottom: "8px"}}
@@ -251,7 +304,6 @@ export class LocationDetails extends Component{
     render() {
         return(
         <TextField
-            autoFocus
             id={"location"}
             label="Location"
             style={{paddingTop:"8px",paddingBottom:"8px"}}
