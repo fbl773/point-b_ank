@@ -89,6 +89,13 @@ export class BladeDetails extends Component {
         })
     }
 
+    update_details(k, v){
+        let update_me = this.state;
+        update_me[k] = v;
+        this.setState({update_me});
+        this.props.update_entity(k,v);
+    }
+
     render() {
         return(
             <Grid item s={8}>
@@ -102,13 +109,13 @@ export class BladeDetails extends Component {
                         label="Blade Shape"
                         value={this.state.blade_shape ?? ""}
                         renderValue={(selected) => selected}
-                        onChange={(e) => this.props.update_entity("blade_shape",e.target.value)}>
+                        onChange={(e) => this.update_details("blade_shape",e.target.value)}>
                         {blade_shapes.map((bs )=> (
                             <MenuItem
                                 value={bs}
                                 key={bs}
                                 selected={false}
-                                onClick={(e) => this.props.update_entity("blade_shape",e.target.value)}
+                                onClick={(e) => this.update_details("blade_shape",e.target.value)}
                             >{bs}</MenuItem>
                         ))}
                     </Select>
@@ -122,13 +129,13 @@ export class BladeDetails extends Component {
                         label="Base Shape"
                         value={this.state.base_shape ?? ""}
                         renderValue={(selected) => selected}
-                        onChange={(e) => this.props.update_entity("base_shape",e.target.value)}>
+                        onChange={(e) => this.update_details("base_shape",e.target.value)}>
                         {base_shapes.map((bs )=> (
                             <MenuItem
                                 value={bs}
                                 key={bs}
                                 selected={false}
-                                onClick={(e) => this.props.update_entity("base_shape",e.target.value)}
+                                onClick={(e) => this.update_details("base_shape",e.target.value)}
                             >{bs}</MenuItem>
                         ))}
                     </Select>
@@ -142,13 +149,13 @@ export class BladeDetails extends Component {
                         label="hafting Shape"
                         value={this.state.hafting_shape ?? ""}
                         renderValue={(selected) => selected}
-                        onChange={(e) => this.props.update_entity("hafting_shape",e.target.value)}>
+                        onChange={(e) => this.update_details("hafting_shape",e.target.value)}>
                         {hafting_shapes.map((hs )=> (
                             <MenuItem
                                 value={hs}
                                 key={hs}
                                 selected={false}
-                                onClick={(e) => this.props.update_entity("hafting_shape",e.target.value)}
+                                onClick={(e) => this.update_details("hafting_shape",e.target.value)}
                             >{hs}</MenuItem>
                         ))}
                     </Select>
@@ -162,13 +169,13 @@ export class BladeDetails extends Component {
                         label="Cross Sectrion"
                         value={this.state.cross_section ?? ""}
                         renderValue={(selected) => selected}
-                        onChange={(e) => this.props.update_entity("cross_section",e.target.value)}>
+                        onChange={(e) => this.update_details("cross_section",e.target.value)}>
                         {cross_sections.map((cs )=> (
                             <MenuItem
                                 value={cs}
                                 key={cs}
                                 selected={false}
-                                onClick={(e) => this.props.update_entity("cross_section",e.target.value)}
+                                onClick={(e) => this.update_details("cross_section",e.target.value)}
                             >{cs}</MenuItem>
                         ))}
                     </Select>
