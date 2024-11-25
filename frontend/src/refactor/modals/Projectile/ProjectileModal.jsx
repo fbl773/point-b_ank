@@ -118,6 +118,11 @@ class ProjectileModal extends EditCreateModal{
         return true;
     }
 
+    upload_photo(point_id){
+        let upload_url = `${this.props.url}/upload/${point_id}`
+        alert(`POSTS TO: ${upload_url}`)
+    }
+
     async add_entity() {
         //Then go in for the photo? Yep. We will need the ID from our new entity. this is a full override
         let add_me = this.state.entity;
@@ -131,6 +136,8 @@ class ProjectileModal extends EditCreateModal{
                     let new_point = resp.data.new_ent;
                     this.append_new(new_point);
                     //TODO: UPLOAD THE PHOTO
+                    this.upload_photo(new_point._id)
+
                 }).catch(err => {
                     console.error(`Failed to add point:`,err);
                     this.props.send_alert({open:true,type:"error",message:`Failed to add new Poit`})
