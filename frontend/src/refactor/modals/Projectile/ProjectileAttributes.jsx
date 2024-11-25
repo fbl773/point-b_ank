@@ -10,7 +10,7 @@ export class ArtifactImage extends Component{
         super();
 
         this.state={
-            image_path:null
+            img_data:""//should be base 64
         }
     }
 
@@ -18,25 +18,29 @@ export class ArtifactImage extends Component{
         //Get the image (gulp)
     }
 
-    upload_body(file){
-        return {
-            method: 'POST',
-            body: file,
+    upload_body(b64_img, file_type,file_size){
+        this.setState({img_data:b64_img})
+        let img_req = {
+            body: b64_img,
             headers: {
-                'content-type': file.type,
-                'content-length': `${file.size}`
+                'content-type': file_type,
+                'content-length': `${file_size}`
             }
         }
+        console.log(`SENDING: ${JSON.stringify(img_req)}`);
+        this.props.update_image(img_req);
     }
 
     update_photo(e){
         let file = e.target.files[0];
-        if(file){
-            let img_url = URL.createObjectURL(file);
-            this.setState({image_path:img_url});
-            this.props.update_image(this.upload_body(file))
+        if(file) {
+            let reader = new FileReader();
+            reader.onloadend = (e) => {
+                this.upload_body(reader.result,file.type,file.size)
+            }
+            reader.readAsDataURL(file);
         } else {
-            alert("Invalid image")
+            alert("FAILED TO UPLOAD IMAGE")
         }
     }
 
@@ -44,7 +48,7 @@ export class ArtifactImage extends Component{
         return(
                 <img
                     id="artifact_img"
-                    src={this.state.image_path ?? ""}
+                    src={this.state.img_data ?? ""}
                     style={{maxWidth: "100%"}}
                     alt="Add a photo..."/>
         )
@@ -56,9 +60,9 @@ export class ArtifactImage extends Component{
                 {this.img_preview()}
                 <FormControl sx={{ my: 3.4 }}>
                     <FormLabel sx={{ mb: 1.5 }}>
-                        Upload {this.state.image_path && "New"} Photo
+                        Upload New Photo
                     </FormLabel>
-                    <input type="file" onChange={this.update_photo.bind(this)} accept="image/jpeg" />
+                    <input type="file" onChange={(e => this.update_photo(e))} accept="image/*" />
                 </FormControl>
             </Grid>
         )

@@ -17,7 +17,7 @@ import {
     MaterialSelector, NoteArea,
     PeriodCultureSelector
 } from "./ProjectileAttributes.jsx";
-import http from "../../../../http.js";
+import http, {http_custom} from "../../../../http.js";
 
 class ProjectileModal extends EditCreateModal{
 
@@ -48,7 +48,7 @@ class ProjectileModal extends EditCreateModal{
         this.state.selected_culture = "";
 
         //Image needs
-        this.state.image_body = "";
+        this.state.img_payload = {};
     }
 
     componentDidMount(){
@@ -119,11 +119,12 @@ class ProjectileModal extends EditCreateModal{
         return true;
     }
 
-    upload_photo(site_id,point_id){
-        //points/upload/6744a8535652ac7c755068a
-        let upload_url = `sites/${site_id}/upload/${point_id}`
-        alert(`POSTS TO: ${upload_url} --> ${JSON.stringify(this.state.image_body)}`)
-        http.post(upload_url,this.state.image_body)
+    async upload_photo(site_id,point_id){
+        let upload_url = `/sites/${site_id}/upload/${point_id}`
+        console.log(`POSTS TO: ${upload_url} --> ${JSON.stringify(this.state.image_body)}`)
+        let payload = this.state.img_payload;
+        return http_custom(payload.headers).post(upload_url,payload.body)
+                .catch(err => console.error("FAILEd TO ADD IMAGE",err))
     }
 
     async add_entity() {
@@ -140,6 +141,7 @@ class ProjectileModal extends EditCreateModal{
                     this.append_new(new_point);
                     //TODO: UPLOAD THE PHOTO
                     this.upload_photo(this.props.site_id,new_point._id)
+                        .finally(() => console.log("image added (allegedly)"))
 
                 }).catch(err => {
                     console.error(`Failed to add point:`,err);

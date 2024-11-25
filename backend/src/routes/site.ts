@@ -14,12 +14,13 @@ import multer from "multer";
  * @param res - vestigial
  * @param next
  */
-function upload_point(req:Request, res:Response, next: NextFunction):RequestHandler<any>{
+function upload_point(req:Request, res:Response):RequestHandler<any>{
+    console.log("We tried to uplaod a point...")
     let site_id = req.params.site_id;
     let point_id = req.params.point_id;
-    let file_dest = `${site_id}/${point_id}`;
+    let file_dest = `uploads/${site_id}/${point_id}`;
     let uploader:multer.Multer = multer({dest:file_dest})
-    return uploader.single("file");
+    return uploader.single("body");
 }
 
 const site_router= Router();
