@@ -26,7 +26,7 @@ export const Material= {
  * @type {{catalogue_id: string, name: string, region_id: string, description: string, location: string, _id: string}}
  */
 export const SiteEntity = {
-    "_id":"",
+    _id:"",
     name:"",
     description:"",
     location:"",

@@ -78,11 +78,12 @@ class ProjectileModal extends EditCreateModal{
             )
     }
 
+
     render_fields() {
         return(
             <Grid container spacing={2}>
                 <ArtifactImage
-                    update_entity={(k,v) => this.update_entity(k,v)}
+                    update_image={(img) => this.setState({image_body:img})}
                 />
                 {/*{this.title_area()}*/}
                 <PeriodCultureSelector
@@ -118,9 +119,11 @@ class ProjectileModal extends EditCreateModal{
         return true;
     }
 
-    upload_photo(point_id){
-        let upload_url = `${this.props.url}/upload/${point_id}`
-        alert(`POSTS TO: ${upload_url}`)
+    upload_photo(site_id,point_id){
+        //points/upload/6744a8535652ac7c755068a
+        let upload_url = `sites/${site_id}/upload/${point_id}`
+        alert(`POSTS TO: ${upload_url} --> ${JSON.stringify(this.state.image_body)}`)
+        http.post(upload_url,this.state.image_body)
     }
 
     async add_entity() {
@@ -136,7 +139,7 @@ class ProjectileModal extends EditCreateModal{
                     let new_point = resp.data.new_ent;
                     this.append_new(new_point);
                     //TODO: UPLOAD THE PHOTO
-                    this.upload_photo(new_point._id)
+                    this.upload_photo(this.props.site_id,new_point._id)
 
                 }).catch(err => {
                     console.error(`Failed to add point:`,err);

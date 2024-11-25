@@ -1,10 +1,10 @@
 import {Request, Response, NextFunction, Router, RequestHandler} from "express";
-import multer from "multer";
 import Site, {ISite} from "../entitites/site";
 import authenticate from "../utilities/jwt_utils";
 import crud_factory from "../utilities/crud_factory";
 import ProjectilePoint, {IProjectilePoint} from "../entitites/projectile_point";
 import file_utils from "../utilities/file_utils";
+import multer from "multer";
 
 
 /* Helpers*/

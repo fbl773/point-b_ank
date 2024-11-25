@@ -34,7 +34,7 @@ export class ArtifactImage extends Component{
         if(file){
             let img_url = URL.createObjectURL(file);
             this.setState({image_path:img_url});
-            this.props.update_entity("image_body",this.upload_body(file))
+            this.props.update_image(this.upload_body(file))
         } else {
             alert("Invalid image")
         }
