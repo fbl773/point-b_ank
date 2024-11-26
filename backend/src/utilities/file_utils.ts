@@ -3,7 +3,10 @@ import multer from "multer";
 import path from "path";
 
 const storage = multer.diskStorage({
-            destination: "./uploads",
+            destination: (req,file,cb) => {
+                let dirname = `./uploads/sites/${req.params.site_id}`
+                cb(null,dirname)
+            },
             filename: (req,file,cb) => {
                 let filename = `${req.params.point_id}${path.extname(file.originalname)}`
                 cb(null,filename);
