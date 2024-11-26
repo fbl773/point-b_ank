@@ -3,6 +3,7 @@ import {FormControl, FormLabel, Grid, InputLabel, MenuItem, Select, Typography} 
 import {base_shapes, blade_shapes, cross_sections, hafting_shapes} from "../../../entities/entities.js";
 import TextField from "@mui/material/TextField";
 import http from "../../../../http.js";
+import form from "jsdom/lib/jsdom/living/fetch/header-list.js";
 
 
 export class ArtifactImage extends Component{
@@ -10,7 +11,7 @@ export class ArtifactImage extends Component{
         super();
 
         this.state={
-            img_data:""//should be base 64
+            img_data:""
         }
     }
 
@@ -18,27 +19,15 @@ export class ArtifactImage extends Component{
         //Get the image (gulp)
     }
 
-    upload_body(b64_img, file_type,file_size){
-        this.setState({img_data:b64_img})
-        let img_req = {
-            body: b64_img,
-            headers: {
-                'content-type': file_type,
-                'content-length': `${file_size}`
-            }
-        }
-        console.log(`SENDING: ${JSON.stringify(img_req)}`);
-        this.props.update_image(img_req);
-    }
-
     update_photo(e){
+        e.preventDefault()
         let file = e.target.files[0];
         if(file) {
-            let reader = new FileReader();
-            reader.onloadend = (e) => {
-                this.upload_body(reader.result,file.type,file.size)
-            }
-            reader.readAsDataURL(file);
+            const form_data = new FormData()
+            form_data.append("file", file);
+            console.log("uploading file...",form_data);
+            this.props.update_image(form_data);
+            this.setState({img_data:URL.createObjectURL(file)});
         } else {
             alert("FAILED TO UPLOAD IMAGE")
         }

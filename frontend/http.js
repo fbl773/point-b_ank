@@ -15,17 +15,11 @@ const http = axios.create({
 });
 
 export const http_custom = (custom_headers) => {
-	let headers = {
-		Authorization: `Bearer ${localStorage.getItem("token") || "NONE"}`
-	}
-	//copy over the scustom headers
-	for (let key in custom_headers) {
-		headers[`${key}`] = custom_headers[key];
-	}
+	custom_headers["Authorization"] = `Bearer ${localStorage.getItem("token") || "NONE"}`
+
+	console.log(`HEADERS ARE: ${JSON.stringify(custom_headers)}`)
 	return axios.create({
-		headers: {
-			Authorization: `Bearer ${localStorage.getItem("token") || "NONE"}`
-		},
+		headers: custom_headers,
 		baseURL: baseURL,
 		withCredentials: true
 	});

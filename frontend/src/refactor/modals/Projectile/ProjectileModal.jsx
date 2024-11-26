@@ -83,7 +83,7 @@ class ProjectileModal extends EditCreateModal{
         return(
             <Grid container spacing={2}>
                 <ArtifactImage
-                    update_image={(img) => this.setState({image_body:img})}
+                    update_image={(img) => this.setState({img_payload:img})}
                 />
                 {/*{this.title_area()}*/}
                 <PeriodCultureSelector
@@ -121,10 +121,12 @@ class ProjectileModal extends EditCreateModal{
 
     async upload_photo(site_id,point_id){
         let upload_url = `/sites/${site_id}/upload/${point_id}`
-        console.log(`POSTS TO: ${upload_url} --> ${JSON.stringify(this.state.image_body)}`)
         let payload = this.state.img_payload;
-        return http_custom(payload.headers).post(upload_url,payload.body)
-                .catch(err => console.error("FAILEd TO ADD IMAGE",err))
+        console.log(`FORM DATA IS:`,payload)
+        let headers = {'Content-Type':"multipart/form-data"}
+
+        return http_custom(headers).post(upload_url,payload)
+            .catch(err => console.error("FAILEd TO ADD IMAGE",err))
     }
 
     async add_entity() {
