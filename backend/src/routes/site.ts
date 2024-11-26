@@ -7,6 +7,21 @@ import file_utils from "../utilities/file_utils";
 import multer from "multer";
 import path from "path";
 
+const storage = multer.diskStorage({
+    destination: (req,file,cb) => {
+        let dirname = `./uploads/sites/${req.params.site_id}`
+        cb(null,dirname)
+    },
+    filename: (req,file,cb) => {
+        let filename = `${req.params.point_id}${path.extname(file.originalname)}`
+        cb(null,filename);
+    }
+})
+
+const upload_site_img = multer({
+    storage: storage,
+}).single("file");
+
 const site_router= Router();
 
 /* Give them the CRUD treatment*/
@@ -21,6 +36,6 @@ crud_factory.find_related<IProjectilePoint>("/:id/points",ProjectilePoint,site_r
     "site_id",authenticate,"site");
 
 
-file_utils.upload_one(site_router,authenticate,"/:site_id/upload/:point_id","site/point");
+file_utils.upload_one(site_router,authenticate,upload_site_img,"/:site_id/upload/:point_id","site/point");
 
 export default site_router;
