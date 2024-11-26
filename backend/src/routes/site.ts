@@ -6,6 +6,7 @@ import ProjectilePoint, {IProjectilePoint} from "../entitites/projectile_point";
 import file_utils from "../utilities/file_utils";
 import multer from "multer";
 import path from "path";
+import {MulterFactory} from "../utilities/multer_factory";
 
 const storage = multer.diskStorage({
     destination: (req,file,cb) => {
@@ -22,6 +23,8 @@ const upload_site_img = multer({
     storage: storage,
 }).single("file");
 
+const site_multer = new MulterFactory("sites","site_id","file","point_id")
+
 const site_router= Router();
 
 /* Give them the CRUD treatment*/
@@ -36,6 +39,6 @@ crud_factory.find_related<IProjectilePoint>("/:id/points",ProjectilePoint,site_r
     "site_id",authenticate,"site");
 
 
-file_utils.upload_one(site_router,authenticate,upload_site_img,"/:site_id/upload/:point_id","site/point");
+file_utils.upload_one(site_router,authenticate,site_multer.create_single(),"/:site_id/upload/:point_id","site/point");
 
 export default site_router;
