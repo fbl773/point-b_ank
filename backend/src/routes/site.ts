@@ -1,27 +1,10 @@
-import {Request, Response, NextFunction, Router, RequestHandler} from "express";
+import {Router} from "express";
 import Site, {ISite} from "../entitites/site";
 import authenticate from "../utilities/jwt_utils";
 import crud_factory from "../utilities/crud_factory";
 import ProjectilePoint, {IProjectilePoint} from "../entitites/projectile_point";
 import file_utils from "../utilities/file_utils";
-import multer from "multer";
-import path from "path";
 import {MulterFactory} from "../utilities/multer_factory";
-
-const storage = multer.diskStorage({
-    destination: (req,file,cb) => {
-        let dirname = `./uploads/sites/${req.params.site_id}`
-        cb(null,dirname)
-    },
-    filename: (req,file,cb) => {
-        let filename = `${req.params.point_id}${path.extname(file.originalname)}`
-        cb(null,filename);
-    }
-})
-
-const upload_site_img = multer({
-    storage: storage,
-}).single("file");
 
 const site_multer = new MulterFactory("sites","site_id","file","point_id")
 

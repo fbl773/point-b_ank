@@ -1,6 +1,7 @@
 import multer from "multer"
 import {Request,RequestHandler} from "express";
 import path from "path";
+import {upload_root} from "./file_utils"
 import * as fs from "node:fs";
 
 export class MulterFactory {
@@ -25,7 +26,7 @@ export class MulterFactory {
 
         //Default destination generator
         this.dest_gen = (req:Request,_file,cb) => {
-            let dirname = `./uploads/${this.dirname}/${req.params[this.primary_id]}`;
+            let dirname = `${upload_root}/${this.dirname}/${req.params[this.primary_id]}`;
             fs.mkdirSync(dirname,{recursive:true});
             cb(null,dirname)
         }

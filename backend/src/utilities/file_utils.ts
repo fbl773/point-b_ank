@@ -1,5 +1,9 @@
 import {Request, Response, NextFunction, Router, RequestHandler} from "express";
 import path from "path";
+import dotenv from "dotenv";
+dotenv.config();
+
+export const upload_root = process.env.UPLOAD_ROOT ?? "/srv/point-b_ank/uploads";
 
 function upload_one(router: Router,
                     authenticate: (req: Request, res: Response, next: NextFunction) => Promise<any>,
@@ -25,9 +29,9 @@ function get_img(router: Router,
     router.get(endpoint,
         authenticate,
         (req:Request, res:Response)=>{
-        let file_name = `uploads/${host_dir}/${req.params[primary_id]}/${req.params[secondary_id]}` + ".JPG";
-        console.log(`TRYING TO GET ${file_name}`);
-        res.sendFile(path.join("/Users/FrankyB/fGrams/Projects/point-b_ank/backend",file_name));
+        let file_name = `${host_dir}/${req.params[primary_id]}/${req.params[secondary_id]}` + ".JPG";
+        console.log(`Would upload to ${upload_root}-${file_name})`);
+        res.sendFile(path.join(upload_root,file_name));
     })
 }
 
