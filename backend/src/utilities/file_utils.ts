@@ -29,7 +29,7 @@ function get_img(router: Router,
     router.get(endpoint,
         authenticate,
         (req:Request, res:Response)=>{
-        let file_name = `${host_dir}/${req.params[primary_id]}/${req.params[secondary_id]}` + ".JPG";
+        let file_name = `${host_dir}/${req.params[primary_id]}/${req.params[secondary_id]}`;
         console.log(`Would upload to ${upload_root}-${file_name})`);
         res.sendFile(path.join(upload_root,file_name));
     })

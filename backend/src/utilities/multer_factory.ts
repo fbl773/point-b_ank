@@ -15,26 +15,24 @@ export class MulterFactory {
     public file_gen: (req:Request,file:Express.Multer.File,cb:(error:Error|null,destination:string) => void) => void;
 
 
-    constructor(dirname:string,primary_id:string, file_fieldname:string, secondary_id?:string) {
+    constructor(dirname: string, primary_id: string, secondary_id: string, file_fieldname: string) {
         this.storage = null;
         this.multer = null;
         this.dirname = dirname;
         this.primary_id = primary_id;
-        this.secondary_id = secondary_id ?? null;
+        this.secondary_id = secondary_id;
         this.file_fieldname = file_fieldname;
 
 
         //Default destination generator
         this.dest_gen = (req:Request,_file,cb) => {
-            let dirname = `${upload_root}/${this.dirname}/${req.params[this.primary_id]}`;
+            let dirname = `${upload_root}/${this.dirname}/${req.params[this.primary_id]}/${req.params[this.secondary_id]}`;
             fs.mkdirSync(dirname,{recursive:true});
             cb(null,dirname)
         }
 
         this.file_gen = (req,file,cb) => {
             let filename:string = file.originalname;
-            if(this.secondary_id)
-                filename = `${req.params[this.secondary_id]}${path.extname(file.originalname)}`;
             cb(null,filename);
         }
     }

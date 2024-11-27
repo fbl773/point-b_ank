@@ -6,7 +6,7 @@ import ProjectilePoint, {IProjectilePoint} from "../entitites/projectile_point";
 import file_utils from "../utilities/file_utils";
 import {MulterFactory} from "../utilities/multer_factory";
 
-const site_multer = new MulterFactory("sites","site_id","file","point_id")
+const site_multer = new MulterFactory("sites", "site_id", "point_id", "file")
 
 const site_router= Router();
 
