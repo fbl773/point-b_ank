@@ -3,6 +3,8 @@ import path from "path";
 import dotenv from "dotenv";
 dotenv.config();
 
+//TODO: Comment & Cleanup
+
 export const upload_root = process.env.UPLOAD_ROOT ?? "/srv/point-b_ank/uploads";
 
 function upload_one(router: Router,

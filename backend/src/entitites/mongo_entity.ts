@@ -4,7 +4,7 @@ export interface IMongo_Entity{
 }
 
 export interface IHas_Image extends IMongo_Entity{
-    image:string
+    image:string //List of strings for multiple images?
 }
 
 export interface IArtifact extends IHas_Image{

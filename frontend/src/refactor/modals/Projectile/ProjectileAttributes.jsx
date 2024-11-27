@@ -5,7 +5,9 @@ import TextField from "@mui/material/TextField";
 import http from "../../../../http.js";
 import form from "jsdom/lib/jsdom/living/fetch/header-list.js";
 
-
+/**
+ * TODO: Comment and cleanup
+ */
 export class ArtifactImage extends Component{
     constructor() {
         super();

@@ -19,6 +19,10 @@ import {
 } from "./ProjectileAttributes.jsx";
 import http, {http_custom} from "../../../../http.js";
 
+
+/**
+ * TODO: Comment & Cleanup
+ */
 class ProjectileModal extends EditCreateModal{
 
     constructor(props) {
@@ -115,6 +119,10 @@ class ProjectileModal extends EditCreateModal{
         )
     }
 
+    /**
+     * TODO
+     * @return {boolean}
+     */
     validate() {
         return true;
     }
