@@ -6,21 +6,26 @@ import http from "../../../../http.js";
 import form from "jsdom/lib/jsdom/living/fetch/header-list.js";
 
 /**
- * TODO: Comment and cleanup
+ * Component responsible for handling the disply of artifact images and formating them as FormData to
+ * be uploaded to the server
  */
 export class ArtifactImage extends Component{
     constructor() {
         super();
-
         this.state={
-            img_data:""
+            img_preview:""
         }
     }
 
     componentDidMount() {
-        //Get the image (gulp)
+        //TODO: Get the image (gulp)
     }
 
+    /**
+     * @syopsis: updates the preview of the image, converts it to FormData, and fires it back to the host component for
+     * upload
+     * @param e - the FileChangeEvent
+     */
     update_photo(e){
         e.preventDefault()
         let file = e.target.files[0];
@@ -29,17 +34,22 @@ export class ArtifactImage extends Component{
             form_data.append("file", file);
             console.log("uploading file...",form_data);
             this.props.update_image(form_data);
-            this.setState({img_data:URL.createObjectURL(file)});
+            this.setState({img_preview:URL.createObjectURL(file)});
         } else {
+            //TODO:Implement actual error message
             alert("FAILED TO UPLOAD IMAGE")
         }
     }
 
-    img_preview(){
+    /**
+     * The area the hosts the image preview
+     * @return {Element}
+     */
+    preview(){
         return(
                 <img
                     id="artifact_img"
-                    src={this.state.img_data ?? ""}
+                    src={this.state.img_preview ?? ""}
                     style={{maxWidth: "100%"}}
                     alt="Add a photo..."/>
         )
@@ -48,7 +58,7 @@ export class ArtifactImage extends Component{
     render() {
         return(
             <Grid item xs={7} >
-                {this.img_preview()}
+                {this.preview()}
                 <FormControl sx={{ my: 3.4 }}>
                     <FormLabel sx={{ mb: 1.5 }}>
                         Upload New Photo
