@@ -153,6 +153,9 @@ export class BladeDetails extends Component {
     }
 }
 
+/**
+ * A drop-down selector to fetch materials from the DB for point configuration
+ */
 export class MaterialSelector extends Component{
     constructor() {
         super();
@@ -188,6 +191,7 @@ export class MaterialSelector extends Component{
     }
 
     render() {
+        //TODO: We _could_ generalize the entire selector like we did before. maybe we have a "general utils" for forms?
         return(
             <FormControl fullWidth>
                 <InputLabel id="material-label">Material</InputLabel>
@@ -213,9 +217,13 @@ export class MaterialSelector extends Component{
     }
 }
 
+/**
+ * The Lenght, width, and height configuration for an artifact.
+ */
 export class DimensionDetails extends Component{
     constructor() {
         super();
+        //TODO: Do we _need_ a height?
         this.state = {
             dimensions:[0,0,0]
         }
@@ -238,34 +246,34 @@ export class DimensionDetails extends Component{
         this.props.update_entity("dimensions",dimensions);
     }
 
+
+    /**
+     * Creates a text edit field for a dimension
+     * @param prop_name The name of the dimension property
+     * @param idx the dimensions idx in the dimension array
+     * @param label the user-facing label for the field
+     * @return {Element} - A Text field for editing a dimension.
+     */
+    edit_dimension(prop_name,idx,label){
+        return(
+            <TextField
+                id={prop_name}
+                label={label}
+                style={{paddingTop: "8px", paddingBottom: "8px"}}
+                fullWidth
+                value={this.state.dimensions[idx]}
+                onChange={e => this.edit_dimensions(idx, e.target.value)}
+            />
+        )
+    }
+
     render(){
         return (
             <div>
-                <Typography varient="h3" style={{paddingBottom: "8px"}}>Dimensions: </Typography>
-                <TextField
-                    id={"length"}
-                    label="Length (mm)"
-                    style={{paddingTop: "8px", paddingBottom: "8px"}}
-                    fullWidth
-                    value={this.state.dimensions[0]}
-                    onChange={e => this.edit_dimensions(0, e.target.value)}
-                />
-                <TextField
-                    id={"width"}
-                    label="Width (mm)"
-                    style={{paddingTop: "8px", paddingBottom: "8px"}}
-                    fullWidth
-                    value={this.state.dimensions[1]}
-                    onChange={e => this.edit_dimensions(1, e.target.value)}
-                />
-                <TextField
-                    id={"height"}
-                    label="Height (mm)"
-                    style={{paddingTop: "8px", paddingBottom: "8px"}}
-                    fullWidth
-                    value={this.state.dimensions[2]}
-                    onChange={e => this.edit_dimensions(2, e.target.value)}
-                />
+                <Typography varient="h3" style={{paddingBottom: "8px"}}>Dimensions (mm): </Typography>
+                {this.edit_dimension('length',0,"Length")}
+                {this.edit_dimension('width',1,"Width")}
+                {this.edit_dimension('height',2,"Height")}
             </div>
         )
     }
