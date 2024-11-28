@@ -279,6 +279,9 @@ export class DimensionDetails extends Component{
     }
 }
 
+/**
+ * Pretty basic for right now, simply a text field to denote location
+ */
 export class LocationDetails extends Component{
     constructor() {
         super();
@@ -291,6 +294,7 @@ export class LocationDetails extends Component{
         this.setState({location:this.props.location})
     }
 
+    //TODO: This could also be a general textfield updater
     render() {
         return(
         <TextField
@@ -305,6 +309,9 @@ export class LocationDetails extends Component{
     }
 }
 
+/**
+ * Selector for Period/Culture for a point
+ */
 export class PeriodCultureSelector extends Component {
     constructor() {
         super();
@@ -319,35 +326,51 @@ export class PeriodCultureSelector extends Component {
         }
     }
 
+    /**
+     * Sets the selected period and adjusts available cultures accordinglyk
+     * @param period the period object that has been selected
+     * @param period._id mongo id of the period, used to filter cultures
+     * @param period.name friendly name of the period
+     */
     select_period(period){
         let period_id = period._id ?? "";
         let period_name = period.name ?? "Indeterminate";
 
-        //UPDATE CULTURES
+        //UPDATE AVAIL CULTURES
         let filtered_cultures = this.state.cultures.filter(culture => culture.period_id === period_id)
-
         this.setState({display_cultures:filtered_cultures})
 
+        //Set the parent and update state for selected
         this.props.update_entity("period_id",period_id)
         this.setState({selected_period:period_name})
     }
 
+    /**
+     * Updates the culture and selects the appropriate period
+     * @param culture - the culture object we will be selecting
+     * @param culture._id:string the mongo_id of the culture, used to select appt. period
+     * @param culture.name:string the friendly name of the culture we have selected
+     * @param culture.period_id:string the mongoid of the period that this culture belongs to.
+     */
     select_culture(culture){
         let culture_id = culture._id ?? "";
         let culture_name = culture.name ?? "Indeterminate";
 
-        //Filter PERIODS
+        //Filter PERIODS to autoselect
         if (culture_name !== "Indeterminate") {
             let period = this.state.periods.filter(period => period._id === culture.period_id)[0] ?? "Indeterminate";
             this.setState({selected_period: period.name})
             this.props.update_entity("period_id", period._id)
         }
 
+        //update the parent artifact
         this.props.update_entity("culture_id",culture_id)
         this.setState({selected_culture:culture_name})
     }
 
     componentDidMount() {
+
+        //TODO: Again, we _could_ fetch these at a site level to save API calls, but separation of concerns is real...
 
         // Go Get the periods/cultures
         http.get("/periods")
