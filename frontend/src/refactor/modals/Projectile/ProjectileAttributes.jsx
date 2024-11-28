@@ -72,6 +72,9 @@ export class ArtifactImage extends Component{
 
 }
 
+/**
+ * Component to hold the blade attributes of a projectile point
+ */
 export class BladeDetails extends Component {
     constructor() {
         super();
@@ -93,11 +96,47 @@ export class BladeDetails extends Component {
         })
     }
 
+    /**
+     * Helper to update _this_ component's state & the parent's as they are changed.
+     * @param k - the blade attribute to edit
+     * @param v - the value to set the blade attribute to
+     */
     update_details(k, v){
         let update_me = this.state;
         update_me[k] = v;
-        this.setState({update_me});
-        this.props.update_entity(k,v);
+        this.setState({update_me}); //Update our values
+        this.props.update_entity(k,v); //Update the entity's values
+    }
+
+    /**
+     * Builds a selector for any of the 4 point attributes
+     * @param prop_name the name of the property to update
+     * @param label the label we put on its selector
+     * @param values the potential values it could have
+     * @return {Element} - a dropdown for <prop_name> with values <values>
+     */
+    attribute_selector(prop_name,label,values){
+        return(
+            <FormControl fullWidth>
+                <InputLabel id={`${prop_name}-label`}>{label}</InputLabel>
+                <Select
+                    labelId={`${prop_name}-label`}
+                    id={`${prop_name}_select`}
+                    label={label}
+                    value={this.state[prop_name] ?? ""}
+                    renderValue={(selected) => selected}
+                    onChange={(e) => this.update_details(prop_name,e.target.value)}>
+                    {values.map((opt )=> (
+                        <MenuItem
+                            value={opt}
+                            key={opt}
+                            selected={false}
+                            onClick={(e) => this.update_details(prop_name,e.target.value)}
+                        >{opt}</MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+        )
     }
 
     render() {
@@ -105,86 +144,10 @@ export class BladeDetails extends Component {
             <Grid item s={8}>
                 <Typography varient="h3">Blade Details:</Typography>
                 {/*Point Attributes*/}
-                <FormControl fullWidth>
-                    <InputLabel id="blade_shape-label">Blade Shape</InputLabel>
-                    <Select
-                        labelId="blade_shape-label"
-                        id="blade_shape_select"
-                        label="Blade Shape"
-                        value={this.state.blade_shape ?? ""}
-                        renderValue={(selected) => selected}
-                        onChange={(e) => this.update_details("blade_shape",e.target.value)}>
-                        {blade_shapes.map((bs )=> (
-                            <MenuItem
-                                value={bs}
-                                key={bs}
-                                selected={false}
-                                onClick={(e) => this.update_details("blade_shape",e.target.value)}
-                            >{bs}</MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-
-                <FormControl fullWidth>
-                    <InputLabel id="base_shape-label">Base Shape</InputLabel>
-                    <Select
-                        labelId="base_shape-label"
-                        id="base_shape_select"
-                        label="Base Shape"
-                        value={this.state.base_shape ?? ""}
-                        renderValue={(selected) => selected}
-                        onChange={(e) => this.update_details("base_shape",e.target.value)}>
-                        {base_shapes.map((bs )=> (
-                            <MenuItem
-                                value={bs}
-                                key={bs}
-                                selected={false}
-                                onClick={(e) => this.update_details("base_shape",e.target.value)}
-                            >{bs}</MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-
-                <FormControl fullWidth>
-                    <InputLabel id="hafting_shape-label">Hafting Shape</InputLabel>
-                    <Select
-                        labelId="hafting_shape-label"
-                        id="hafting_shape_select"
-                        label="hafting Shape"
-                        value={this.state.hafting_shape ?? ""}
-                        renderValue={(selected) => selected}
-                        onChange={(e) => this.update_details("hafting_shape",e.target.value)}>
-                        {hafting_shapes.map((hs )=> (
-                            <MenuItem
-                                value={hs}
-                                key={hs}
-                                selected={false}
-                                onClick={(e) => this.update_details("hafting_shape",e.target.value)}
-                            >{hs}</MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-
-                <FormControl fullWidth>
-                    <InputLabel id="cross_section-label">Cross Section</InputLabel>
-                    <Select
-                        labelId="cross_section-label"
-                        id="cross_section_select"
-                        label="Cross Sectrion"
-                        value={this.state.cross_section ?? ""}
-                        renderValue={(selected) => selected}
-                        onChange={(e) => this.update_details("cross_section",e.target.value)}>
-                        {cross_sections.map((cs )=> (
-                            <MenuItem
-                                value={cs}
-                                key={cs}
-                                selected={false}
-                                onClick={(e) => this.update_details("cross_section",e.target.value)}
-                            >{cs}</MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-
+                {this.attribute_selector("blade_shape","Blade Shape",blade_shapes)}
+                {this.attribute_selector("base_shape","Base Shape",base_shapes)}
+                {this.attribute_selector("hafting_shape","Hafting Shape",hafting_shapes)}
+                {this.attribute_selector("cross_section","Cross Section",cross_sections)}
             </Grid>
         )
     }
