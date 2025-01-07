@@ -56,10 +56,23 @@ class ProjectileModal extends EditCreateModal{
     }
 
     componentDidMount(){
-        super.componentDidMount();
+        //If we have need to append
+        if(this.props.append_new !== undefined){
+            this.append_new = this.props.append_new.bind(this);
+        }
 
-        //Set title
-        this.setState({title:`${this.props.site_name}/${this.state.entity._id ?? "*New*"}`})
+        let title_root = this.props.site_name;
+
+        if(this.props.adding_new){
+            this.handle_submit = this.add_entity.bind(this);
+            this.setState({title:`${title_root}/"*New*"`})
+        } else {
+            this.handle_submit = this.edit_entity.bind(this);
+            this.setState({title:`${title_root}/${this.props.entity._id}`,entity:{}});
+            console.log(`Props ENTITY IS: ${JSON.stringify(this.props.entity)}`);
+            console.log(`ENTITY IS: ${JSON.stringify(this.state.entity)}`);
+        }
+        //For image file path
         this.update_entity("site_id",this.props.site_id)
 
     }
@@ -149,7 +162,6 @@ class ProjectileModal extends EditCreateModal{
                 .then(resp => {
                     let new_point = resp.data.new_ent;
                     this.append_new(new_point);
-                    //TODO: UPLOAD THE PHOTO
                     this.upload_photo(this.props.site_id,new_point._id)
                         .finally(() => console.log("image added (allegedly)"))
 

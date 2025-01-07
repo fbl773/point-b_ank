@@ -59,9 +59,9 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 	 * Toggle view projectile modal visibility to true
 	 */
 	const handleClick2 = (item) => () => {
-		console.log(`ITEM IS ${item}`);
+		console.log(`ITEM IS ${JSON.stringify(item)}`);
 		setPoint(item)
-		setOpenView(true);
+		setOpenEdit(true);
 		log.info("Card clicked! ID:", item._id);
 	};
 
@@ -151,23 +151,16 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 				)}
 			</div>
 			<div>
-				{openView && (
-				<ProjectileModal
-					adding_new={false}
-					url={"projectile_point"}
-					entity={point}
-					open={openView}
-					on_close={() => setOpenView(false)}
-				/>
-				)}
-			</div>
-			<div>
 				{openEdit && (
 					<ProjectileModal
-						setOpenView={setOpenView}
-						openEdit={openEdit}
-						setOpenEdit={setOpenEdit}
-						projectilePointId={projectilePointId}
+						adding_new={false}
+						entity={point}
+						site_name={siteName}
+						site_id={siteId}
+						url={"points"}
+						send_alert={(msg) => console.warn(`TODO: ${JSON.stringify(msg)}`)}
+						open={openEdit}
+						on_close={() => setOpenEdit(false)}
 					/>
 				)}
 			</div>

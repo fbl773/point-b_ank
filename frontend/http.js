@@ -17,7 +17,6 @@ const http = axios.create({
 export const http_custom = (custom_headers) => {
 	custom_headers["Authorization"] = `Bearer ${localStorage.getItem("token") || "NONE"}`
 
-	console.log(`HEADERS ARE: ${JSON.stringify(custom_headers)}`)
 	return axios.create({
 		headers: custom_headers,
 		baseURL: baseURL,
