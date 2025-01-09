@@ -56,25 +56,17 @@ class ProjectileModal extends EditCreateModal{
     }
 
     componentDidMount(){
-        //If we have need to append
-        if(this.props.append_new !== undefined){
-            this.append_new = this.props.append_new.bind(this);
-        }
-
-        let title_root = this.props.site_name;
-
+        super.componentDidMount();
         if(this.props.adding_new){
-            this.handle_submit = this.add_entity.bind(this);
-            this.setState({title:`${title_root}/"*New*"`})
-        } else {
-            this.handle_submit = this.edit_entity.bind(this);
-            this.setState({title:`${title_root}/${this.props.entity._id}`,entity:{}});
-            console.log(`Props ENTITY IS: ${JSON.stringify(this.props.entity)}`);
-            console.log(`ENTITY IS: ${JSON.stringify(this.state.entity)}`);
-        }
-        //For image file path
-        this.update_entity("site_id",this.props.site_id)
+            this.update_entity("site_id",this.props.site_id)
+            this.setState({title:`${this.props.site_name}/**NEW**`});
+        }else{
+            this.setState({title:`${this.props.site_name}/${this.props.entity._id}`});
+            //we need to assign culture/period/material based on id's.
+            /* TODO: If we fetch these in the parent and pass as parameters we
+               bigtime save on reqs... but i see we have chosen the dark side...*/
 
+        }
     }
 
 
@@ -97,6 +89,7 @@ class ProjectileModal extends EditCreateModal{
 
 
     render_fields() {
+        console.log(`FYI State: ${JSON.stringify(this.state.entity)}`);
         return(
             <Grid container spacing={2}>
                 <ArtifactImage
@@ -118,7 +111,7 @@ class ProjectileModal extends EditCreateModal{
                     />
                 </Grid>
                 <BladeDetails
-                    base_shape={this.state.entity.base}
+                    base_shape={this.state.entity.base_shape}
                     blade_shape={this.state.entity.blade_shape}
                     hafting_shape={this.state.entity.hafting_shape}
                     cross_section={this.state.entity.cross_section}

@@ -333,7 +333,6 @@ export class SiteModal extends EditCreateModal{
     componentDidMount() {
         this.update_entity("catalogue_id",this.props.catalogue_id)
         super.componentDidMount();
-        console.log(this.state.entity);
 
         //Get region data if it exists
         if(this.props.adding_new === false){
@@ -349,27 +348,5 @@ export class SiteModal extends EditCreateModal{
                 this.setState({region_name:""});
             }
         }
-    }
-}
-
-export class ProjectileModal extends EditCreateModal{
-
-    get_periods(){
-        throw Error("Unimplemented")
-    }
-
-    get_cultures(){
-        throw Error("Unimplemented")
-    }
-
-    get_materials(){
-        throw Error("Unimplemented")
-    }
-
-
-    render_fields() {
-    }
-
-    validate() {
     }
 }
