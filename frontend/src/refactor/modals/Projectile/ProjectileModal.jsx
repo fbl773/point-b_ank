@@ -87,10 +87,6 @@ class ProjectileModal extends EditCreateModal{
             )
     }
 
-    get_material_id(){
-        return this.state.entity.material_id ?? "";
-    }
-
     render_fields() {
         console.log(`FYI State: ${JSON.stringify(this.state.entity)}`);
         return(
@@ -146,6 +142,16 @@ class ProjectileModal extends EditCreateModal{
             .catch(err => console.error("FAILEd TO ADD IMAGE",err))
     }
 
+    async edit_entity(){
+        let edit_me = this.state.entity;
+        if (edit_me.material_id === ""){
+            console.log("Deleted matid")
+            delete edit_me.material_id;
+        }
+        this.setState({entity:edit_me}, () => {
+            super.edit_entity();
+        })
+    }
     async add_entity() {
         //Then go in for the photo? Yep. We will need the ID from our new entity. this is a full override
         let add_me = this.state.entity;

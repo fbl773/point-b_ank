@@ -170,9 +170,7 @@ export class MaterialSelector extends Component{
         http.get("/materials")
             .then(mats => {
                 this.setState({materials: mats.data},() =>{
-                    console.log("state set, Fetched mats:",mats.data);
                     this.setState({loaded:true})
-                    console.log("base material...", this.props.value);
                     this.select_material(this.props.value);
                 });
             })
@@ -191,11 +189,9 @@ export class MaterialSelector extends Component{
         // Get the values if present
         let mat = this.state.materials.filter(m => m._id === mat_id)[0] ?? {};
         //Update the entity, and the user facing display
-        this.props.update_entity("material_id", mat?._id ?? "");
-        this.setState({selected_material: mat}, () => {
-            console.log("Mat is : ", mat);
-            console.log("Magterial is now: ", this.state.selected_material);
-        });
+        this.props.update_entity("material_id", mat._id ?? "");
+        console.log("Selected material.id:", mat._id);
+        this.setState({selected_material: mat});
 
     }
 
