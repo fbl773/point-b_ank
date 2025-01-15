@@ -5,6 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import {Button} from "@mui/material";
 import http from "../../../http.js"
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 class EditCreateModal extends Component {
@@ -31,6 +32,7 @@ class EditCreateModal extends Component {
             entity:{
                 _id:""
             },
+            loaded:false
         }
     }
 
@@ -123,6 +125,7 @@ class EditCreateModal extends Component {
     render() {
         return(
             <div>
+                {this.state.loaded ?
                 <Dialog open={this.props.open} onClose={this.props.on_close}>
                     <DialogTitle>{this.state.title} {this.props.subject}: {this.state.entity.name}</DialogTitle>
                     <DialogContent>
@@ -136,7 +139,7 @@ class EditCreateModal extends Component {
                             </Button>
                         </DialogActions>
                     </DialogContent>
-                </Dialog>
+                </Dialog>:<CircularProgress/>}
             </div>
         )
     }

@@ -181,30 +181,5 @@ class ProjectileModal extends EditCreateModal{
 
     }
 
-    render() {
-        return(
-            <div>
-                {this.state.loaded ?
-            <Dialog
-                open={this.props.open}
-                onClose={this.props.onClose}
-                maxWidth="md"
-                >
-                <DialogTitle>{this.state.title} {this.props.subject}: {this.state.entity.name}</DialogTitle>
-                <DialogContent>
-                    {this.render_fields()}
-                <DialogActions>
-                    <Button onClick={this.props.on_close} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={this.handle_submit} color="primary">
-                        Save
-                    </Button>
-                </DialogActions>
-            </DialogContent>
-            </Dialog>:<h1>Loading...</h1>}
-            </div>
-        )
-    }
 }
 export default ProjectileModal;
