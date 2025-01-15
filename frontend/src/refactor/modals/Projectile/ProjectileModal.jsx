@@ -53,6 +53,7 @@ class ProjectileModal extends EditCreateModal{
 
         //Image needs
         this.state.img_payload = {};
+        this.state.loaded = false;
     }
 
     componentDidMount(){
@@ -61,11 +62,10 @@ class ProjectileModal extends EditCreateModal{
             this.update_entity("site_id",this.props.site_id)
             this.setState({title:`${this.props.site_name}/**NEW**`});
         }else{
-            this.setState({title:`${this.props.site_name}/${this.props.entity._id}`});
+            this.setState({title:`${this.props.site_name}/${this.props.entity._id}`,loaded:true});
             //we need to assign culture/period/material based on id's.
             /* TODO: If we fetch these in the parent and pass as parameters we
                bigtime save on reqs... but i see we have chosen the dark side...*/
-
         }
     }
 
@@ -87,6 +87,9 @@ class ProjectileModal extends EditCreateModal{
             )
     }
 
+    get_material_id(){
+        return this.state.entity.material_id ?? "";
+    }
 
     render_fields() {
         console.log(`FYI State: ${JSON.stringify(this.state.entity)}`);
@@ -106,7 +109,7 @@ class ProjectileModal extends EditCreateModal{
                         update_entity={(k,v) => this.update_entity(k,v)}
                         value={this.state.entity.dimensions}/>
                     <MaterialSelector
-                        value = {this.state.selected_material}
+                        value = {this.state.entity.material_id ?? ""}
                         update_entity = {(k,v) => this.update_entity(k,v)}
                     />
                 </Grid>
@@ -175,6 +178,7 @@ class ProjectileModal extends EditCreateModal{
     render() {
         return(
             <div>
+                {this.state.loaded ?
             <Dialog
                 open={this.props.open}
                 onClose={this.props.onClose}
@@ -192,7 +196,7 @@ class ProjectileModal extends EditCreateModal{
                     </Button>
                 </DialogActions>
             </DialogContent>
-            </Dialog>
+            </Dialog>:<h1>Loading...</h1>}
             </div>
         )
     }

@@ -161,18 +161,23 @@ export class MaterialSelector extends Component{
         super();
         this.state={
             selected_material:"",
-            materials:[]
+            materials:[],
+            loaded:false
         }
     }
 
     componentDidMount() {
-        this.setState({selected_material:this.props.value});
-
         http.get("/materials")
             .then(mats => {
-                this.setState({materials: mats.data});
+                this.setState({materials: mats.data},() =>{
+                    console.log("state set, Fetched mats:",mats.data);
+                    this.setState({loaded:true})
+                    console.log("base material...", this.props.value);
+                    this.select_material(this.props.value);
+                });
             })
             .catch(err => console.error("Failed to fetch materials",err));
+
     }
 
 
@@ -180,28 +185,34 @@ export class MaterialSelector extends Component{
      * Selects the passed material and updates the PP entity accordingly
      * @param material:Material - the material we will be updating
      */
-    select_material(material){
+    select_material(mat_id){
+        console.log("Selecting material...", mat_id);
+        console.log("Materials are : ", this.state.materials);
         // Get the values if present
-        let mat_id = material._id ?? "";
-        let mat_name = material.name ?? "Indeterminate";
-
+        let mat = this.state.materials.filter(m => m._id === mat_id)[0] ?? {};
         //Update the entity, and the user facing display
-        this.props.update_entity("material_id",mat_id);
-        this.setState({selected_material:mat_name});
+        this.props.update_entity("material_id", mat?._id ?? "");
+        this.setState({selected_material: mat}, () => {
+            console.log("Mat is : ", mat);
+            console.log("Magterial is now: ", this.state.selected_material);
+        });
+
     }
 
     render() {
         //TODO: We _could_ generalize the entire selector like we did before. maybe we have a "general utils" for forms?
         return(
+            <>
+            {this.state.loaded ?
             <FormControl fullWidth>
                 <InputLabel id="material-label">Material</InputLabel>
                 <Select
                     labelId="material-label"
                     id="material_select"
                     label="Material"
-                    value={this.state.selected_material?? ""}
+                    value={this.state.selected_material.name ?? "Indeterminate"}
                     renderValue={(selected) => selected}
-                    onChange={(e) => this.select_material(e.target.value)}
+                    onChange={(e) => this.select_material(e.target.value._id)}
                 >
                     {this.state.materials.map((mat)=> (
                         <MenuItem
@@ -212,7 +223,8 @@ export class MaterialSelector extends Component{
                     ))}
                     <MenuItem key="none" value="">Indeterminate</MenuItem>
                 </Select>
-            </FormControl>
+            </FormControl>:<h1>Loading...</h1>}
+            </>
         )
     }
 }
