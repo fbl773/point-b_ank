@@ -119,7 +119,10 @@ class ProjectileModal extends EditCreateModal{
                 <NoteArea
                     update_entity={(k,v) => this.update_entity(k,v)}
                     value={this.state.entity.description}/>
-                <LocationDetails update_entity={(k,v) => this.update_entity(k,v)}/>
+                <LocationDetails
+                    location={this.state.entity.location}
+                    update_entity={(k,v) => this.update_entity(k,v)}
+                />
             </Grid>
         )
     }
