@@ -136,23 +136,31 @@ class ProjectileModal extends EditCreateModal{
     }
 
     async upload_photo(site_id,point_id){
-        let upload_url = `/sites/${site_id}/upload/${point_id}`
-        let payload = this.state.img_payload;
-        console.log(`FORM DATA IS:`,payload)
-        let headers = {'Content-Type':"multipart/form-data"}
+        if(this.state.img_payload !== undefined) {
+            let upload_url = `/sites/${site_id}/upload/${point_id}`
+            let payload = this.state.img_payload;
+            console.log(`FORM DATA IS:`, payload)
+            let headers = {'Content-Type': "multipart/form-data"}
 
-        return http_custom(headers).post(upload_url,payload)
-            .catch(err => console.error("FAILEd TO ADD IMAGE",err))
+            return http_custom(headers).post(upload_url, payload)
+                .catch(err => console.error("FAILEd TO ADD IMAGE", err))
+        } else {
+            return null;
+        }
+
     }
 
     async edit_entity(){
         let edit_me = this.state.entity;
         if (edit_me.material_id === ""){
-            console.log("Deleted matid")
             delete edit_me.material_id;
         }
         this.setState({entity:edit_me}, () => {
-            super.edit_entity();
+            super.edit_entity()
+                .then(() => {
+                    this.upload_photo(this.props.site_id,edit_me._id)
+                        .finally(() => console.log("editing added photo (allegedly)"))
+                });
         })
     }
     async add_entity() {

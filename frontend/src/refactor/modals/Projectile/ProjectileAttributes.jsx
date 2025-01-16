@@ -350,9 +350,7 @@ export class PeriodCultureSelector extends Component {
 
         //Set the parent and update state for selected
         this.props.update_entity("period_id",period_id);
-        this.setState({selected_period:period},() => {
-            console.log("period is:",this.state.selected_period);
-        });
+        this.setState({selected_period:period});
     }
 
     /**
@@ -375,9 +373,7 @@ export class PeriodCultureSelector extends Component {
 
         //update the parent artifact
         this.props.update_entity("culture_id",culture_id)
-        this.setState({selected_culture:culture},() => {
-            console.log("culture is:",this.state.selected_culture);
-        })
+        this.setState({selected_culture:culture})
     }
 
     componentDidMount() {
