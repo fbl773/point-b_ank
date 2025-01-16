@@ -4,6 +4,7 @@ import {base_shapes, blade_shapes, cross_sections, hafting_shapes} from "../../.
 import TextField from "@mui/material/TextField";
 import http from "../../../../http.js";
 import form from "jsdom/lib/jsdom/living/fetch/header-list.js";
+import CircularProgress from "@mui/material/CircularProgress";
 
 /**
  * Component responsible for handling the disply of artifact images and formating them as FormData to
@@ -184,8 +185,6 @@ export class MaterialSelector extends Component{
      * @param material:Material - the material we will be updating
      */
     select_material(mat_id){
-        console.log("Selecting material...", mat_id);
-        console.log("Materials are : ", this.state.materials);
         // Get the values if present
         let mat = this.state.materials.filter(m => m._id === mat_id)[0] ?? {};
         //Update the entity, and the user facing display
@@ -219,7 +218,7 @@ export class MaterialSelector extends Component{
                     ))}
                     <MenuItem key="none" value="">Indeterminate</MenuItem>
                 </Select>
-            </FormControl>:<h1>Loading...</h1>}
+            </FormControl>:<CircularProgress/>}
             </>
         )
     }
@@ -340,17 +339,20 @@ export class PeriodCultureSelector extends Component {
      * @param period._id mongo id of the period, used to filter cultures
      * @param period.name friendly name of the period
      */
-    select_period(period){
-        let period_id = period._id ?? "";
-        let period_name = period.name ?? "Indeterminate";
+    select_period(period_id){
 
         //UPDATE AVAIL CULTURES
-        let filtered_cultures = this.state.cultures.filter(culture => culture.period_id === period_id)
-        this.setState({display_cultures:filtered_cultures})
+        let period= this.state.periods.filter(p=> p._id === period_id)[0] ?? {};
+        let period_name = period.name ?? "Indeterminate";
+
+        let filtered_cultures = this.state.cultures.filter(culture => culture.period_id === period_id);
+        this.setState({display_cultures:filtered_cultures});
 
         //Set the parent and update state for selected
-        this.props.update_entity("period_id",period_id)
-        this.setState({selected_period:period_name})
+        this.props.update_entity("period_id",period_id);
+        this.setState({selected_period:period},() => {
+            console.log("period is:",this.state.selected_period);
+        });
     }
 
     /**
@@ -360,8 +362,8 @@ export class PeriodCultureSelector extends Component {
      * @param culture.name:string the friendly name of the culture we have selected
      * @param culture.period_id:string the mongoid of the period that this culture belongs to.
      */
-    select_culture(culture){
-        let culture_id = culture._id ?? "";
+    select_culture(culture_id){
+        let culture = this.state.cultures.filter(c => c._id === culture_id)[0] ?? {};
         let culture_name = culture.name ?? "Indeterminate";
 
         //Filter PERIODS to autoselect
@@ -373,7 +375,9 @@ export class PeriodCultureSelector extends Component {
 
         //update the parent artifact
         this.props.update_entity("culture_id",culture_id)
-        this.setState({selected_culture:culture_name})
+        this.setState({selected_culture:culture},() => {
+            console.log("culture is:",this.state.selected_culture);
+        })
     }
 
     componentDidMount() {
@@ -383,23 +387,30 @@ export class PeriodCultureSelector extends Component {
         // Go Get the periods/cultures
         http.get("/periods")
             .then(periods=> {
-                this.setState({periods: periods.data,display_periods:periods.data});
+                this.setState({periods: periods.data,display_periods:periods.data},() =>{
+                    this.select_culture(this.props.culture_id);
+                });
             })
             .catch(err => console.error("Failed to fetch periods",err));
 
         http.get("/cultures")
             .then(cultures=> {
-                this.setState({cultures: cultures.data,display_cultures:cultures.data});
+                this.setState({cultures: cultures.data,display_cultures:cultures.data}, () =>{
+                    this.select_period(this.props.period_id);
+                });
             })
             .catch(err => console.error("Failed to fetch periods",err));
 
         //Fetch period/culture if exists
+
+       /*
         let pre_culture = this.state.cultures.filter(culture => culture._id === this.props.culture_id)[0] ?? "Indeterminate";
         let pre_period = this.state.periods.filter(period => period._id === this.props.period_id)[0] ?? "Indeterminate";
 
         //Set them as default values
         this.setState({selected_period:pre_period});
         this.setState({selected_culture:pre_culture});
+        */
     }
 
     render() {
@@ -412,9 +423,9 @@ export class PeriodCultureSelector extends Component {
                        labelId="period-label"
                        id="period_select"
                        label="Period"
-                       value={this.state.selected_period ?? ""}
+                       value={this.state.selected_period.name?? "Indeterminate"}
                        renderValue={(selected) =>selected}
-                       onChange={(e) => this.select_period(e.target.value)}
+                       onChange={(e) => this.select_period(e.target.value._id)}
                    >
                        {this.state.display_periods.map((period)=> (
                            <MenuItem
@@ -435,9 +446,9 @@ export class PeriodCultureSelector extends Component {
                        labelId="culture-label"
                        id="culture_select"
                        label="culture"
-                       value={this.state.selected_culture ?? ""}
+                       value={this.state.selected_culture.name ?? "Indeterminate"}
                        renderValue={(selected) =>selected}
-                       onChange={(e) => this.select_culture(e.target.value)}
+                       onChange={(e) => this.select_culture(e.target.value._id)}
                    >
                        {this.state.display_cultures.map((culture)=> (
                            <MenuItem
