@@ -11,15 +11,23 @@ import CircularProgress from "@mui/material/CircularProgress";
  * be uploaded to the server
  */
 export class ArtifactImage extends Component{
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state={
-            img_preview:""
+            img_preview:"",
+            img_name:this.props.img_name,
         }
     }
 
     componentDidMount() {
         //TODO: Get the image (gulp)
+        if(this.props.img_name !== ""){
+            console.log("Image name",this.props.img_name);
+            let img_path = `${this.props.hostname}/uploads/sites/${this.props.site_id}/${this.props.artifact_id}/${this.props.img_name}`
+            this.setState({img_preview:img_path},() => {
+                console.log("Looking for img at:",img_path)
+            });
+        }
     }
 
     /**
@@ -36,6 +44,7 @@ export class ArtifactImage extends Component{
             console.log("uploading file...",form_data);
             this.props.update_image(form_data);
             this.setState({img_preview:URL.createObjectURL(file)});
+            this.props.update_entity("image",file.name);
         } else {
             //TODO:Implement actual error message
             alert("FAILED TO UPLOAD IMAGE")

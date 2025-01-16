@@ -53,7 +53,6 @@ class ProjectileModal extends EditCreateModal{
 
         //Image needs
         this.state.img_payload = {};
-        this.state.loaded = false;
     }
 
     componentDidMount(){
@@ -62,7 +61,8 @@ class ProjectileModal extends EditCreateModal{
             this.update_entity("site_id",this.props.site_id)
             this.setState({title:`${this.props.site_name}/**NEW**`});
         }else{
-            this.setState({title:`${this.props.site_name}/${this.props.entity._id}`,loaded:true});
+            this.setState({title:`${this.props.site_name}/${this.props.entity._id}`,loaded:true},() =>
+            {console.log("Well it says we loaded")});
             //we need to assign culture/period/material based on id's.
             /* TODO: If we fetch these in the parent and pass as parameters we
                bigtime save on reqs... but i see we have chosen the dark side...*/
@@ -93,6 +93,11 @@ class ProjectileModal extends EditCreateModal{
             <Grid container spacing={2}>
                 <ArtifactImage
                     update_image={(img) => this.setState({img_payload:img})}
+                    update_entity={(k,v) => this.update_entity(k,v)}
+                    artifact_id={this.state.entity._id}
+                    site_id={this.state.entity.site_id}
+                    hostname={"http://localhost:3000"}
+                    img_name={this.state.entity.image}
                 />
                 {/*{this.title_area()}*/}
                 <PeriodCultureSelector
@@ -188,7 +193,6 @@ class ProjectileModal extends EditCreateModal{
             console.error(`${this.props.subject} Invalid!: ${JSON.stringify(add_me)}`)
             this.props.send_alert({open: true, type: "error", message: `Failed to add new ${this.props.subject}.`})
         }
-
 
     }
 

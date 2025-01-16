@@ -69,7 +69,6 @@ app.use("/crosssections", unimplemented_router);
 app.use("/artifacttypes", unimplemented_router);
 app.use("/users/resetDefaultUser",unimplemented_router);
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 /** BASE*/
@@ -77,8 +76,12 @@ app.get('/', (req:Request,res:Response) => {
     res.send("Hello, this is api")
 })
 
+
+//app.use(express.static(path.join(__dirname,"public")));
+app.use("/uploads",express.static("uploads"));
+
 const pblank_api = app.listen(port, () => {
-    console.log(`listening on port: ${port},
+    console.log(`listening on port: ${port} in dir ${__dirname},
 mongo_url: ${connection_url}`);
 })
 

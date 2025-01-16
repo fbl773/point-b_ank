@@ -5,7 +5,7 @@ dotenv.config();
 
 //TODO: Comment & Cleanup
 
-export const upload_root = process.env.UPLOAD_ROOT ?? "/srv/point-b_ank/uploads";
+export const upload_root = process.env.UPLOAD_ROOT ?? "/srv/point-b_ank/backend/uploads";
 
 function upload_one(router: Router,
                     authenticate: (req: Request, res: Response, next: NextFunction) => Promise<any>,
