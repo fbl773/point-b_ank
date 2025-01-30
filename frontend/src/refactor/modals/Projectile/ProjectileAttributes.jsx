@@ -3,7 +3,6 @@ import {FormControl, FormLabel, Grid, InputLabel, MenuItem, Select, Typography} 
 import {base_shapes, blade_shapes, cross_sections, hafting_shapes} from "../../../entities/entities.js";
 import TextField from "@mui/material/TextField";
 import http from "../../../../http.js";
-import form from "jsdom/lib/jsdom/living/fetch/header-list.js";
 import CircularProgress from "@mui/material/CircularProgress";
 
 /**
@@ -20,7 +19,6 @@ export class ArtifactImage extends Component{
     }
 
     componentDidMount() {
-        //TODO: Get the image (gulp)
         if(this.props.img_name !== ""){
             console.log("Image name",this.props.img_name);
             let img_path = `${this.props.hostname}/uploads/sites/${this.props.site_id}/${this.props.artifact_id}/${this.props.img_name}`
@@ -41,12 +39,11 @@ export class ArtifactImage extends Component{
         if(file) {
             const form_data = new FormData()
             form_data.append("file", file);
-            console.log("uploading file...",form_data);
             this.props.update_image(form_data);
             this.setState({img_preview:URL.createObjectURL(file)});
             this.props.update_entity("image",file.name);
         } else {
-            //TODO:Implement actual error message
+            //TODO:Implement actual error message -- this should be an issue then
             alert("FAILED TO UPLOAD IMAGE")
         }
     }
@@ -176,6 +173,9 @@ export class MaterialSelector extends Component{
         }
     }
 
+    /**
+     * Fetches the materials from the database and assigns the selected material if present
+     */
     componentDidMount() {
         http.get("/materials")
             .then(mats => {
@@ -198,13 +198,12 @@ export class MaterialSelector extends Component{
         let mat = this.state.materials.filter(m => m._id === mat_id)[0] ?? {};
         //Update the entity, and the user facing display
         this.props.update_entity("material_id", mat._id ?? "");
-        console.log("Selected material.id:", mat._id);
         this.setState({selected_material: mat});
 
     }
 
     render() {
-        //TODO: We _could_ generalize the entire selector like we did before. maybe we have a "general utils" for forms?
+        //TODO: We _could_ generalize the entire selector like we did before. maybe we have a "general utils" for forms? --This is a good idea.
         return(
             <>
             {this.state.loaded ?
@@ -344,15 +343,13 @@ export class PeriodCultureSelector extends Component {
 
     /**
      * Sets the selected period and adjusts available cultures accordinglyk
-     * @param period the period object that has been selected
-     * @param period._id mongo id of the period, used to filter cultures
-     * @param period.name friendly name of the period
+     * @param period_id the id of the period we have selected
      */
     select_period(period_id){
 
         //UPDATE AVAIL CULTURES
         let period= this.state.periods.filter(p=> p._id === period_id)[0] ?? {};
-        let period_name = period.name ?? "Indeterminate";
+        let prev_id = this.state.period_id;
 
         let filtered_cultures = this.state.cultures.filter(culture => culture.period_id === period_id);
         this.setState({display_cultures:filtered_cultures});
@@ -360,14 +357,16 @@ export class PeriodCultureSelector extends Component {
         //Set the parent and update state for selected
         this.props.update_entity("period_id",period_id);
         this.setState({selected_period:period});
+
+        //reset culture if the period changed
+        if(prev_id !== period_id){
+            this.select_culture("");
+        }
     }
 
     /**
      * Updates the culture and selects the appropriate period
-     * @param culture - the culture object we will be selecting
-     * @param culture._id:string the mongo_id of the culture, used to select appt. period
-     * @param culture.name:string the friendly name of the culture we have selected
-     * @param culture.period_id:string the mongoid of the period that this culture belongs to.
+     * @param culture_id the ID of the culutre we have selected.
      */
     select_culture(culture_id){
         let culture = this.state.cultures.filter(c => c._id === culture_id)[0] ?? {};
@@ -376,7 +375,7 @@ export class PeriodCultureSelector extends Component {
         //Filter PERIODS to autoselect
         if (culture_name !== "Indeterminate") {
             let period = this.state.periods.filter(period => period._id === culture.period_id)[0] ?? "Indeterminate";
-            this.setState({selected_period: period.name})
+            this.setState({selected_period: period})
             this.props.update_entity("period_id", period._id)
         }
 
@@ -386,9 +385,6 @@ export class PeriodCultureSelector extends Component {
     }
 
     componentDidMount() {
-
-        //TODO: Again, we _could_ fetch these at a site level to save API calls, but separation of concerns is real...
-
         // Go Get the periods/cultures
         http.get("/periods")
             .then(periods=> {
