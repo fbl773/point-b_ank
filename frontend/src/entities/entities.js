@@ -56,7 +56,6 @@ export const Period = {
     end:0
 }
 
-//TODO: Use these in dropdowns for the point model
 export const blade_shapes = ["triangular","excurvate","incurvate","ovate","indeterminate"];
 export const base_shapes = ["straight","concave","convex","indeterminate"];
 export const hafting_shapes =["lanceolate","stemmed","basally concave","expanding","contracting",

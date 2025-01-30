@@ -9,7 +9,7 @@ import {
     MaterialSelector, NoteArea,
     PeriodCultureSelector
 } from "./ProjectileAttributes.jsx";
-import http, {http_custom} from "../../../../http.js";
+import http, {http_custom,baseURL} from "../../../../http.js";
 
 
 /**
@@ -37,10 +37,6 @@ class ProjectileModal extends EditCreateModal{
         //Prefilled values
         //this.state.periods = []; //TODO: investigate switching periods/cultures as a parameter to the relevant components
         //this.state.cultures = [];
-
-        //Selector Name holders TODO:Unused?
-        //this.state.selected_period = "";
-        //this.state.selected_culture = "";
 
         //Image needs
         this.state.img_payload = {};
@@ -71,7 +67,7 @@ class ProjectileModal extends EditCreateModal{
                     update_entity={(k,v) => this.update_entity(k,v)}
                     artifact_id={this.state.entity._id}
                     site_id={this.state.entity.site_id}
-                    hostname={"http://localhost:3000"}//TODO: figure out how to get this in config
+                    hostname={baseURL}
                     img_name={this.state.entity.image}
                 />
                 {/*{this.title_area()}*/}
