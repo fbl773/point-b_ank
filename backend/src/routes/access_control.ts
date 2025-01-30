@@ -21,7 +21,6 @@ export const access_control_router = Router();
  */
 async function init_login(req:Request,res:Response){
 
-    console.log("HITTING INTIAL LOGIN")
     //Check for default password
     let default_password = process.env.DEFAULT_PASSWORD || null;
 
@@ -59,7 +58,6 @@ async function login(req:Request,res:Response){
 
     // capture the json payload
     let {username,password} = req.body;
-    console.log("GOT REQ FOR LOGIN")
 
     //Check if user exists
     return await User.findOne({username:username})
@@ -105,7 +103,6 @@ login_router.post("/",
     (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE"); _next()},
     async (req: Request, res: Response) => {
         let has_admin = await User.findOne({role: 'admin'});
-        console.log(`Has Admin? ${has_admin}`)
         if(!has_admin)
             return init_login(req,res);
         else

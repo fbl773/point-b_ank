@@ -87,7 +87,6 @@ class RegionList extends Component{
     }
 
     append_region = (reg) => {
-        console.log("Appending: ",reg)
         let new_regions = this.state.regions;
         new_regions.push(reg);
         this.setState({regions:new_regions,selected_region:reg.name});

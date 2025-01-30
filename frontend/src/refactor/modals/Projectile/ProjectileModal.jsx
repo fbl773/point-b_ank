@@ -1,13 +1,5 @@
 import EditCreateModal from "../EditCreateModal.jsx";
-import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    Grid,
-    Typography
-} from "@mui/material";
+import { Grid, } from "@mui/material";
 import React from "react";
 import {
     ArtifactImage,
@@ -21,7 +13,7 @@ import http, {http_custom} from "../../../../http.js";
 
 
 /**
- * TODO: Comment & Cleanup
+ * The epic modal to edit/create a projectile point
  */
 class ProjectileModal extends EditCreateModal{
 
@@ -43,52 +35,35 @@ class ProjectileModal extends EditCreateModal{
         }
 
         //Prefilled values
-        this.state.periods = [];
-        this.state.cultures = [];
-        this.state.base_shapes = [];
+        //this.state.periods = []; //TODO: investigate switching periods/cultures as a parameter to the relevant components
+        //this.state.cultures = [];
 
-        //Selector Name holders
-        this.state.selected_period = "";
-        this.state.selected_culture = "";
+        //Selector Name holders TODO:Unused?
+        //this.state.selected_period = "";
+        //this.state.selected_culture = "";
 
         //Image needs
         this.state.img_payload = {};
     }
 
+    /**
+     * Additionally set the modal title and also site_id if adding new
+     */
     componentDidMount(){
         super.componentDidMount();
         if(this.props.adding_new){
             this.update_entity("site_id",this.props.site_id)
             this.setState({title:`${this.props.site_name}/**NEW**`});
         }else{
-            this.setState({title:`${this.props.site_name}/${this.props.entity._id}`,loaded:true},() =>
-            {console.log("Well it says we loaded")});
-            //we need to assign culture/period/material based on id's.
-            /* TODO: If we fetch these in the parent and pass as parameters we
-               bigtime save on reqs... but i see we have chosen the dark side...*/
+            this.setState({title:`${this.props.site_name}/${this.props.entity._id}`,loaded:true});
         }
     }
 
-
     /**
-     * Generates the region containing
-     * - Dimensions
-     * - Material
+     * Renders the modal with the appropriate sub-components
+     * @return {Element}
      */
-    specs_area(){
-        return(
-                <Grid item s={5}>
-                    <Typography sx={{mt: 2}} varient="h6">
-                        Dimensions: {this.state.entity.dimensions.filter(x => x > 0).join("mm X ")}
-                    </Typography>
-                    <Typography sx={{mt: 2}}
-                                varient="h6">Material: {this.state.entity.material_id}</Typography>
-                </Grid>
-            )
-    }
-
     render_fields() {
-        console.log(`FYI State: ${JSON.stringify(this.state.entity)}`);
         return(
             <Grid container spacing={2}>
                 <ArtifactImage
@@ -96,7 +71,7 @@ class ProjectileModal extends EditCreateModal{
                     update_entity={(k,v) => this.update_entity(k,v)}
                     artifact_id={this.state.entity._id}
                     site_id={this.state.entity.site_id}
-                    hostname={"http://localhost:3000"}
+                    hostname={"http://localhost:3000"}//TODO: figure out how to get this in config
                     img_name={this.state.entity.image}
                 />
                 {/*{this.title_area()}*/}
@@ -133,28 +108,39 @@ class ProjectileModal extends EditCreateModal{
     }
 
     /**
-     * TODO
+     * TODO:Gulp
      * @return {boolean}
      */
     validate() {
         return true;
     }
 
+    /**
+     * Uploads the photo assoicated with this artifact to the server.
+     * @param site_id - the ID of the site the point belongs to
+     * @param point_id - the points unique ID
+     * @return {Promise<axios.AxiosResponse<any>|void|null>}
+     */
     async upload_photo(site_id,point_id){
         if(this.state.img_payload !== undefined) {
             let upload_url = `/sites/${site_id}/upload/${point_id}`
             let payload = this.state.img_payload;
-            console.log(`FORM DATA IS:`, payload)
             let headers = {'Content-Type': "multipart/form-data"}
 
             return http_custom(headers).post(upload_url, payload)
-                .catch(err => console.error("FAILEd TO ADD IMAGE", err))
+                .catch(err => console.error("FAILED TO ADD IMAGE", err))
         } else {
             return null;
         }
 
     }
 
+    /**
+     * Edits the passed eintity as in the base class but additionally
+     * handles a photo upload request
+     * TODO: Add error message capabilities
+     * @return {Promise<void>}
+     */
     async edit_entity(){
         let edit_me = this.state.entity;
         if (edit_me.material_id === ""){
@@ -164,10 +150,16 @@ class ProjectileModal extends EditCreateModal{
             super.edit_entity()
                 .then(() => {
                     this.upload_photo(this.props.site_id,edit_me._id)
-                        .finally(() => console.log("editing added photo (allegedly)"))
                 });
         })
     }
+
+    /**
+     * Adds a new entity as in the base class but additionally
+     * handles photo upload by first creating the new entity, then using the
+     * resulting ID to build the photo's path.
+     * @return {Promise<void>}
+     */
     async add_entity() {
         //Then go in for the photo? Yep. We will need the ID from our new entity. this is a full override
         let add_me = this.state.entity;
@@ -181,8 +173,6 @@ class ProjectileModal extends EditCreateModal{
                     let new_point = resp.data.new_ent;
                     this.append_new(new_point);
                     this.upload_photo(this.props.site_id,new_point._id)
-                        .finally(() => console.log("image added (allegedly)"))
-
                 }).catch(err => {
                     console.error(`Failed to add point:`,err);
                     this.props.send_alert({open:true,type:"error",message:`Failed to add new Poit`})

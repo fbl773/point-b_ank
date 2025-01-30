@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {FormControl, FormLabel, Grid, InputLabel, MenuItem, Select, Typography} from "@mui/material";
-import {base_shapes, blade_shapes, cross_sections, hafting_shapes} from "../../../entities/entities.js";
+import {base_shapes, blade_shapes, cross_sections, hafting_shapes,Period} from "../../../entities/entities.js";
 import TextField from "@mui/material/TextField";
 import http from "../../../../http.js";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -401,19 +401,12 @@ export class PeriodCultureSelector extends Component {
                 });
             })
             .catch(err => console.error("Failed to fetch periods",err));
-
-        //Fetch period/culture if exists
-
-       /*
-        let pre_culture = this.state.cultures.filter(culture => culture._id === this.props.culture_id)[0] ?? "Indeterminate";
-        let pre_period = this.state.periods.filter(period => period._id === this.props.period_id)[0] ?? "Indeterminate";
-
-        //Set them as default values
-        this.setState({selected_period:pre_period});
-        this.setState({selected_culture:pre_culture});
-        */
     }
 
+    /**
+     * TODO: if we get a default "selector" class for materials and such, this could probably use it.
+     * @return {Element}
+     */
     render() {
        return(
            <Grid item xs={4}>

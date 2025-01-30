@@ -6,10 +6,6 @@ import RegionList from "../RegionList.jsx";
 
 //Validation Lists
 const artifact_types = ["lithic","faunal","ceramic","other"];
-const base_shapes= [];
-const blade_shapes = [];
-const cross_section_shapes = [];
-const hafting_shapes = [];
 
 /**
  * Create/Edit Modal configured for Materials

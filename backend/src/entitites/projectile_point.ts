@@ -3,7 +3,6 @@ import {IArtifact} from "./mongo_entity";
 
 export interface IProjectilePoint extends IArtifact{
     ///Basics
-    //name: string,
     description: string,
     //Shape Attributes
     blade_shape:string,

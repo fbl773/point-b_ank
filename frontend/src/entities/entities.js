@@ -50,6 +50,12 @@ export const Projectile_Point = {
     dimensions:[]
 }
 
+export const Period = {
+    name:"",
+    start:0,
+    end:0
+}
+
 //TODO: Use these in dropdowns for the point model
 export const blade_shapes = ["triangular","excurvate","incurvate","ovate","indeterminate"];
 export const base_shapes = ["straight","concave","convex","indeterminate"];
