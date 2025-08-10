@@ -298,15 +298,22 @@ export class DimensionDetails extends Component{
  * Pretty basic for right now, simply a text field to denote location
  */
 export class LocationDetails extends Component{
-    constructor() {
-        super();
+
+    constructor(props) {
+        super(props);
         this.state = {
             location:""
         }
     }
 
+
     componentDidMount() {
         this.setState({location:this.props.location})
+    }
+
+    handleChangeLocation(e) {
+        this.setState({location:e.target.value});
+        this.props.update_entity("location",e.target.value)
     }
 
     //TODO: This could also be a general textfield updater
@@ -318,7 +325,7 @@ export class LocationDetails extends Component{
             style={{paddingTop:"8px",paddingBottom:"8px"}}
             fullWidth
             value={this.state.location}
-            onChange={e => this.props.update_entity("location",e.target.value)}
+            onChange={(e) => this.handleChangeLocation(e)}
         />
         )
     }
