@@ -419,10 +419,10 @@ export class PeriodCultureSelector extends Component {
      */
     render() {
        return(
-           <Grid xs={4}>
+           <Stack>
                {/*PERIOD SELECTOR*/}
-               <InputLabel id="period-label">Period</InputLabel>
-               <FormControl >
+               <InputLabel shrink id="period-label" variant={'filled'}>Period</InputLabel>
+               <FormControl fullWidth>
                    <Select
                        labelId="period-label"
                        id="period_select"
@@ -442,9 +442,8 @@ export class PeriodCultureSelector extends Component {
                        <MenuItem key="none" value="Indeterminate">Indeterminate</MenuItem>
                    </Select>
                </FormControl>
-
                {/*CULTURE SELECTOR*/}
-               <InputLabel id="culture-label">Culture</InputLabel>
+               <InputLabel shrink variant='filled' id="culture-label">Culture</InputLabel>
                <FormControl fullWidth>
                    <Select
                        labelId="culture-label"
@@ -464,7 +463,7 @@ export class PeriodCultureSelector extends Component {
                        <MenuItem key="none" value="Indeterminate">Indeterminate</MenuItem>
                    </Select>
                </FormControl>
-           </Grid>
+           </Stack>
        )
     }
 
