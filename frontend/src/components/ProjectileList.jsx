@@ -155,6 +155,7 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 					<ProjectileModal
 						adding_new={false}
 						entity={point}
+						subject={"projectile point"}
 						site_name={siteName}
 						site_id={siteId}
 						url={"points"}

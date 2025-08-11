@@ -484,23 +484,24 @@ export class NoteArea extends Component{
 
     update_note(e){
         let note = e.target.value;
-        this.setState({description:note});
-        this.props.update_entity("description",note)
+        this.setState({description:note},() =>{
+                this.props.update_entity("description",note)
+        });
     }
 
     render(){
         return(
-            <Stack spacing={2} justifyContent={'space-between'}>
-                {/*<Typography varient="strong">Notes:</Typography>*/}
-                <Typography varient="body1">{"Notes: " + this.state.description}</Typography>
-
+            <Stack spacing={2} justifyContent={'space-between'} width='50%'>
+                <>
+                    <Typography varient="h6">Notes:</Typography>
+                    <Typography varient="body1">{this.state.description}</Typography>
+                </>
                 <TextField
                     minRows={5}
                     maxRows={5}
                     multiline={true}
                     id="notes"
                     label="Notes"
-                    fullWidth
                     value={this.state.description}
                     onChange={(e) => this.update_note(e)}
                 />
