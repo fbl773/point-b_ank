@@ -1,5 +1,5 @@
 import EditCreateModal from "../EditCreateModal.jsx";
-import { Grid, } from "@mui/material";
+import { Grid, Typography, } from "@mui/material";
 import React from "react";
 import {
     ArtifactImage,
@@ -62,7 +62,7 @@ class ProjectileModal extends EditCreateModal{
      */
     render_fields() {
         return(
-            <Grid container spacing={2}>
+            <Stack spacing={2}>
                 <ArtifactImage
                     update_image={(img) => this.setState({img_payload:img})}
                     update_entity={(k,v) => this.update_entity(k,v)}
@@ -72,11 +72,17 @@ class ProjectileModal extends EditCreateModal{
                     img_name={this.state.entity.image}
                 />
                 {/*{this.title_area()}*/}
-                <PeriodCultureSelector
-                    update_entity={(k,v) => this.update_entity(k,v)}
-                    culture_id={this.state.entity.culture_id}
-                    period_id={this.state.entity.period_id}
-                />
+                <Stack direction='row' width='100%' spacing={2} justifyContent='space-between'>
+                    <PeriodCultureSelector
+                        update_entity={(k,v) => this.update_entity(k,v)}
+                        culture_id={this.state.entity.culture_id}
+                        period_id={this.state.entity.period_id}
+                    />
+                    <NoteArea
+                        update_entity={(k,v) => this.update_entity(k,v)}
+                        value={this.state.entity.description}/>
+                </Stack>
+
                 <Stack width='100%' spacing={2}>
                     <DimensionDetails
                         update_entity={(k,v) => this.update_entity(k,v)}
@@ -93,9 +99,6 @@ class ProjectileModal extends EditCreateModal{
                             cross_section={this.state.entity.cross_section}
                             update_entity = {(k,v) => this.update_entity(k,v)}
                         />
-                        <NoteArea
-                            update_entity={(k,v) => this.update_entity(k,v)}
-                            value={this.state.entity.description}/>
                     </Stack>
                     <LocationDetails
                         location={this.state.entity.location}
@@ -103,7 +106,7 @@ class ProjectileModal extends EditCreateModal{
                     />
                 </Stack>
 
-            </Grid>
+            </Stack>
         )
     }
 

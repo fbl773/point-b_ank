@@ -116,7 +116,6 @@ class EditCreateModal extends Component {
             this.handle_submit = this.add_entity.bind(this);
             this.setState({title:"Add"});
         } else {
-            console.log("And we are trying to edit it...");
             this.handle_submit = this.edit_entity.bind(this);
             this.setState({title:"Edit",entity:this.props.entity});
         }

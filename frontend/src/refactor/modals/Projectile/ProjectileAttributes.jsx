@@ -419,10 +419,10 @@ export class PeriodCultureSelector extends Component {
      */
     render() {
        return(
-           <Grid item xs={4}>
+           <Grid xs={4}>
                {/*PERIOD SELECTOR*/}
                <InputLabel id="period-label">Period</InputLabel>
-               <FormControl fullWidth>
+               <FormControl >
                    <Select
                        labelId="period-label"
                        id="period_select"
@@ -491,12 +491,9 @@ export class NoteArea extends Component{
 
     render(){
         return(
-            <Stack spacing={2} justifyContent={'space-between'} width='50%'>
-                <>
-                    <Typography varient="h6">Notes:</Typography>
-                    <Typography varient="body1">{this.state.description}</Typography>
-                </>
                 <TextField
+                    sx={{height:'100%'}}
+                    fullWidth
                     minRows={5}
                     maxRows={5}
                     multiline={true}
@@ -505,7 +502,6 @@ export class NoteArea extends Component{
                     value={this.state.description}
                     onChange={(e) => this.update_note(e)}
                 />
-            </Stack>
         )
     }
 }
