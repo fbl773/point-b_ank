@@ -10,6 +10,7 @@ import {
     PeriodCultureSelector
 } from "./ProjectileAttributes.jsx";
 import http, {http_custom,baseURL} from "../../../../http.js";
+import { Stack } from "@mui/system";
 
 
 /**
@@ -76,7 +77,7 @@ class ProjectileModal extends EditCreateModal{
                     culture_id={this.state.entity.culture_id}
                     period_id={this.state.entity.period_id}
                 />
-                <Grid item s={5}>
+                <Stack width='100%' spacing={2}>
                     <DimensionDetails
                         update_entity={(k,v) => this.update_entity(k,v)}
                         value={this.state.entity.dimensions}/>
@@ -84,21 +85,24 @@ class ProjectileModal extends EditCreateModal{
                         value = {this.state.entity.material_id ?? ""}
                         update_entity = {(k,v) => this.update_entity(k,v)}
                     />
-                </Grid>
-                <BladeDetails
-                    base_shape={this.state.entity.base_shape}
-                    blade_shape={this.state.entity.blade_shape}
-                    hafting_shape={this.state.entity.hafting_shape}
-                    cross_section={this.state.entity.cross_section}
-                    update_entity = {(k,v) => this.update_entity(k,v)}
-                />
-                <NoteArea
-                    update_entity={(k,v) => this.update_entity(k,v)}
-                    value={this.state.entity.description}/>
-                <LocationDetails
-                    location={this.state.entity.location}
-                    update_entity={(k,v) => this.update_entity(k,v)}
-                />
+                    <Stack direction='row' spacing={2}>
+                        <BladeDetails
+                            base_shape={this.state.entity.base_shape}
+                            blade_shape={this.state.entity.blade_shape}
+                            hafting_shape={this.state.entity.hafting_shape}
+                            cross_section={this.state.entity.cross_section}
+                            update_entity = {(k,v) => this.update_entity(k,v)}
+                        />
+                        <NoteArea
+                            update_entity={(k,v) => this.update_entity(k,v)}
+                            value={this.state.entity.description}/>
+                    </Stack>
+                    <LocationDetails
+                        location={this.state.entity.location}
+                        update_entity={(k,v) => this.update_entity(k,v)}
+                    />
+                </Stack>
+
             </Grid>
         )
     }

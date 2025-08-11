@@ -4,6 +4,7 @@ import {base_shapes, blade_shapes, cross_sections, hafting_shapes,Period} from "
 import TextField from "@mui/material/TextField";
 import http from "../../../../http.js";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Stack } from "@mui/system";
 
 /**
  * Component responsible for handling the disply of artifact images and formating them as FormData to
@@ -64,7 +65,7 @@ export class ArtifactImage extends Component{
 
     render() {
         return(
-            <Grid item xs={7} >
+            <Stack width='100%'>
                 {this.preview()}
                 <FormControl sx={{ my: 3.4 }}>
                     <FormLabel sx={{ mb: 1.5 }}>
@@ -72,7 +73,7 @@ export class ArtifactImage extends Component{
                     </FormLabel>
                     <input type="file" onChange={(e => this.update_photo(e))} accept="image/*" />
                 </FormControl>
-            </Grid>
+            </Stack>
         )
     }
 
@@ -106,7 +107,7 @@ export class BladeDetails extends Component {
     /**
      * Helper to update _this_ component's state & the parent's as they are changed.
      * @param k - the blade attribute to edit
-     * @param v - the value to set the blade attribute to
+     * @param v - the value to set the blade attribute to>
      */
     update_details(k, v){
         let update_me = this.state;
@@ -124,7 +125,7 @@ export class BladeDetails extends Component {
      */
     attribute_selector(prop_name,label,values){
         return(
-            <FormControl fullWidth>
+                <FormControl>
                 <InputLabel id={`${prop_name}-label`}>{label}</InputLabel>
                 <Select
                     labelId={`${prop_name}-label`}
@@ -142,20 +143,21 @@ export class BladeDetails extends Component {
                         >{opt}</MenuItem>
                     ))}
                 </Select>
-            </FormControl>
+                </FormControl>
         )
     }
 
     render() {
         return(
-            <Grid item s={8}>
+            <Stack width="50%" spacing={2}>
                 <Typography varient="h3">Blade Details:</Typography>
+
                 {/*Point Attributes*/}
                 {this.attribute_selector("blade_shape","Blade Shape",blade_shapes)}
                 {this.attribute_selector("base_shape","Base Shape",base_shapes)}
                 {this.attribute_selector("hafting_shape","Hafting Shape",hafting_shapes)}
                 {this.attribute_selector("cross_section","Cross Section",cross_sections)}
-            </Grid>
+            </Stack>
         )
     }
 }
@@ -236,8 +238,8 @@ export class MaterialSelector extends Component{
  * The Lenght, width, and height configuration for an artifact.
  */
 export class DimensionDetails extends Component{
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         //TODO: Do we _need_ a height?
         this.state = {
             dimensions:[0,0,0]
@@ -286,9 +288,11 @@ export class DimensionDetails extends Component{
         return (
             <div>
                 <Typography varient="h3" style={{paddingBottom: "8px"}}>Dimensions (mm): </Typography>
+                <Stack spacing={2}>
                 {this.edit_dimension('length',0,"Length")}
                 {this.edit_dimension('width',1,"Width")}
                 {this.edit_dimension('height',2,"Height")}
+                </Stack>
             </div>
         )
     }
@@ -322,7 +326,6 @@ export class LocationDetails extends Component{
         <TextField
             id={"location"}
             label="Location"
-            style={{paddingTop:"8px",paddingBottom:"8px"}}
             fullWidth
             value={this.state.location}
             onChange={(e) => this.handleChangeLocation(e)}
@@ -470,8 +473,8 @@ export class PeriodCultureSelector extends Component {
 
 export class NoteArea extends Component{
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state={description:"wat"};
     }
 
@@ -487,7 +490,10 @@ export class NoteArea extends Component{
 
     render(){
         return(
-            <Grid item s={5}>
+            <Stack spacing={2} justifyContent={'space-between'}>
+                {/*<Typography varient="strong">Notes:</Typography>*/}
+                <Typography varient="body1">{"Notes: " + this.state.description}</Typography>
+
                 <TextField
                     minRows={5}
                     maxRows={5}
@@ -498,10 +504,7 @@ export class NoteArea extends Component{
                     value={this.state.description}
                     onChange={(e) => this.update_note(e)}
                 />
-
-                <Typography sx={{mt:2}} varient="h6">Notes:</Typography>
-                <Typography varient="body1">{this.state.description}</Typography>
-            </Grid>
+            </Stack>
         )
     }
 }
