@@ -46,7 +46,11 @@ function delete_one(router: Router,
         authenticate,
         do_delete,
         (req:Request, res:Response)=>{
-            console.log(`Would delete at ${upload_root}/${req.params['file_name']}`);
+        console.log('returning...')
+            res.status(200).send({
+                message:`successfully deleted ${req.params.file_name}`,
+                filename:req.params.file_name
+            });
         })
 
 }

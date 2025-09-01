@@ -57,10 +57,7 @@ export class MulterFactory {
              fs.unlink(file_path, (err) => {
                  reject(err)
              })
-            resolve(next)
-            // return fs.unlink(file_path,err => {
-            //      console.error(err)
-            //  });
+            resolve(next())
         })
 
    }

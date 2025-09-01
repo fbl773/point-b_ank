@@ -36,6 +36,13 @@ export class ArtifactImage extends Component{
 
         let img_path = `sites/${this.props.site_id}/upload/${this.props.artifact_id}/${img_id}`
         return http.delete(img_path)
+            .then(resp => {
+                console.log('got response',resp.data)
+                if(resp.data.filename){
+                    this.props.update_entity('image','')
+                    this.setState({img_preview:''})
+                }
+            })
             .catch(err => console.error("FAILED TO REMOVE IMAGE", err))
     }
 
