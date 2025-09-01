@@ -38,14 +38,15 @@ function get_img(router: Router,
 }
 
 function delete_one(router: Router,
-                      authenticate: (req: Request, res: Response, next: NextFunction) => Promise<any>,
-                      endpoint: string,
-                    ){
+                    authenticate: (req: Request, res: Response, next: NextFunction) => Promise<any>,
+                    do_delete: (req: Request, res: Response,next:NextFunction) => Promise<any>,
+                    endpoint: string,
+){
     router.delete(endpoint,
         authenticate,
+        do_delete,
         (req:Request, res:Response)=>{
             console.log(`Would delete at ${upload_root}/${req.params['file_name']}`);
-
         })
 
 }
