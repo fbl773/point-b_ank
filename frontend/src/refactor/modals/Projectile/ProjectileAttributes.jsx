@@ -32,6 +32,13 @@ export class ArtifactImage extends Component{
     }
 
 
+    /**
+     * Deletes an image... but probably shouldn't .
+     * What _should_ happen is that when a point is _saved_ any 'images' that are not in the original set (i.e.
+     * before the update) then they should be deleted... THIS IS A TRIGGER RESPONSIBILITY.
+     * @param img_id
+     * @returns {Promise<T | void>}
+     */
     async delete_image(img_id){
 
         let img_path = `sites/${this.props.site_id}/upload/${this.props.artifact_id}/${img_id}`
