@@ -22,7 +22,7 @@ crud_factory.find_related<IProjectilePoint>("/:id/points",ProjectilePoint,site_r
     "site_id",authenticate,"site");
 
 
-file_utils.delete_one(site_router,authenticate,"/:site_id/upload/:point_id","sites","site_id","point_id");
+file_utils.delete_one(site_router,authenticate,"/:site_id/upload/:point_id/:file_name");
 file_utils.upload_one(site_router,authenticate,site_multer.create_single(),"/:site_id/upload/:point_id","site-point");
 file_utils.get_img(site_router,authenticate,"/:site_id/:point_id","sites","site_id","point_id")
 

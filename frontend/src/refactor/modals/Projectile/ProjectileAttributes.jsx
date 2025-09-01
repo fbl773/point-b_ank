@@ -5,7 +5,6 @@ import TextField from "@mui/material/TextField";
 import http from "../../../../http.js";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Stack } from "@mui/system";
-import CloseIcon from "@mui/icons-material/Close";
 import {ChevronLeft, ChevronRight} from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 
@@ -30,6 +29,14 @@ export class ArtifactImage extends Component{
                 console.log("Looking for img at:",img_path)
             });
         }
+    }
+
+
+    async delete_image(img_id){
+
+        let img_path = `sites/${this.props.site_id}/upload/${this.props.artifact_id}/${img_id}`
+        return http.delete(img_path)
+            .catch(err => console.error("FAILED TO REMOVE IMAGE", err))
     }
 
     /**
@@ -73,7 +80,8 @@ export class ArtifactImage extends Component{
                         disabled={!this.state.img_preview}
                         color='error'
                         onClick={() => {
-                            console.log('deleting image')
+                            console.log('deleting image:',this.state.img_preview)
+                            this.delete_image(this.state.img_name);
                         }}> <DeleteIcon/> </IconButton>
                     <IconButton>
                         <ChevronRight/>

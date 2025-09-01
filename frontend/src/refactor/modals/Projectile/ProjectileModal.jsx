@@ -135,7 +135,6 @@ class ProjectileModal extends EditCreateModal{
         } else {
             return null;
         }
-
     }
 
     /**
