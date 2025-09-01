@@ -37,4 +37,20 @@ function get_img(router: Router,
     })
 }
 
-export default{upload_one,get_img}
+function delete_one(router: Router,
+                      authenticate: (req: Request, res: Response, next: NextFunction) => Promise<any>,
+                      endpoint: string,
+                      host_dir: string,
+                      primary_id:string,
+                      secondary_id:string){
+    router.delete(endpoint,
+        authenticate,
+        (req:Request, res:Response)=>{
+            let file_name = `${host_dir}/${req.params[primary_id]}/${req.params[secondary_id]}`;
+            console.log(`Would delete at ${upload_root}-${file_name})`);
+
+        })
+
+}
+
+export default{upload_one,get_img,delete_one}

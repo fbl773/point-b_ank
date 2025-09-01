@@ -1,10 +1,13 @@
 import React, {Component} from "react";
-import {FormControl, FormLabel, Grid, InputLabel, MenuItem, Select, Typography} from "@mui/material";
+import {FormControl, FormLabel, Grid, IconButton, InputLabel, MenuItem, Select, Typography} from "@mui/material";
 import {base_shapes, blade_shapes, cross_sections, hafting_shapes,Period} from "../../../entities/entities.js";
 import TextField from "@mui/material/TextField";
 import http from "../../../../http.js";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Stack } from "@mui/system";
+import CloseIcon from "@mui/icons-material/Close";
+import {ChevronLeft, ChevronRight} from "@mui/icons-material";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 
 /**
  * Component responsible for handling the disply of artifact images and formating them as FormData to
@@ -55,23 +58,44 @@ export class ArtifactImage extends Component{
      */
     preview(){
         return(
+            <Stack>
                 <img
                     id="artifact_img"
                     src={this.state.img_preview ?? ""}
                     style={{maxWidth: "100%"}}
                     alt="Add a photo..."/>
+                {this.state.img_preview &&
+                <Stack direction='row' spacing='2' justifyContent='space-between'>
+                    <IconButton>
+                        <ChevronLeft/>
+                    </IconButton>
+                    <IconButton
+                        disabled={!this.state.img_preview}
+                        color='error'
+                        onClick={() => {
+                            console.log('deleting image')
+                        }}> <DeleteIcon/> </IconButton>
+                    <IconButton>
+                        <ChevronRight/>
+                    </IconButton>
+                </Stack>
+                }
+            </Stack>
+
         )
     }
 
     render() {
-        return(
+        return (
             <Stack width='100%'>
                 {this.preview()}
-                <FormControl sx={{ my: 3.4 }}>
-                    <FormLabel sx={{ mb: 1.5 }}>
+                <FormControl sx={{my: 3.4}}>
+
+                <FormLabel sx={{ mb: 1.5 }}>
                         Upload New Photo
                     </FormLabel>
-                    <input type="file" onChange={(e => this.update_photo(e))} accept="image/*" />
+                    <input type="file" onChange={(e => this.update_photo(e))} accept="image/*"/>
+
                 </FormControl>
             </Stack>
         )
