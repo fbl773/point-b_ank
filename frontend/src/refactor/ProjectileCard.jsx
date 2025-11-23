@@ -28,7 +28,7 @@ class ProjectileCard extends Component {
             >
                 <CardContent>
                     <Typography variant="h5" component="h3">
-                        {this.props.site_name + "-" + this.props.item._id}
+                        {this.props.site_name + "-" + this.props.item.location}
                     </Typography>
                     <Typography variant="body2" component="p">
                         {/* Limit description characters to prevent text overflow */}

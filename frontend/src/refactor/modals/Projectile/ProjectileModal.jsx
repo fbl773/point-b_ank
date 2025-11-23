@@ -112,6 +112,8 @@ class ProjectileModal extends EditCreateModal{
 
     /**
      * TODO:Gulp
+     * Ensures that a projectile point meets the minimum definition of:
+     * *
      * @return {boolean}
      */
     validate() {
