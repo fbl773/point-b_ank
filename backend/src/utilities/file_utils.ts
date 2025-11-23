@@ -32,9 +32,27 @@ function get_img(router: Router,
         authenticate,
         (req:Request, res:Response)=>{
         let file_name = `${host_dir}/${req.params[primary_id]}/${req.params[secondary_id]}`;
-        console.log(`Would upload to ${upload_root}-${file_name})`);
+        console.log(`Would fetch from to ${upload_root}-${file_name})`);
         res.sendFile(path.join(upload_root,file_name));
     })
 }
 
-export default{upload_one,get_img}
+function delete_one(router: Router,
+                    authenticate: (req: Request, res: Response, next: NextFunction) => Promise<any>,
+                    do_delete: (req: Request, res: Response,next:NextFunction) => Promise<any>,
+                    endpoint: string,
+){
+    router.delete(endpoint,
+        authenticate,
+        do_delete,
+        (req:Request, res:Response)=>{
+        console.log('returning...')
+            res.status(200).send({
+                message:`successfully deleted ${req.params.file_name}`,
+                filename:req.params.file_name
+            });
+        })
+
+}
+
+export default{upload_one,get_img,delete_one}

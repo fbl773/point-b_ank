@@ -1,10 +1,12 @@
 import React, {Component} from "react";
-import {FormControl, FormLabel, Grid, InputLabel, MenuItem, Select, Typography} from "@mui/material";
+import {FormControl, FormLabel, Grid, IconButton, InputLabel, MenuItem, Select, Typography} from "@mui/material";
 import {base_shapes, blade_shapes, cross_sections, hafting_shapes,Period} from "../../../entities/entities.js";
 import TextField from "@mui/material/TextField";
 import http from "../../../../http.js";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Stack } from "@mui/system";
+import {ChevronLeft, ChevronRight} from "@mui/icons-material";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 
 /**
  * Component responsible for handling the disply of artifact images and formating them as FormData to
@@ -27,6 +29,28 @@ export class ArtifactImage extends Component{
                 console.log("Looking for img at:",img_path)
             });
         }
+    }
+
+
+    /**
+     * Deletes an image... but probably shouldn't .
+     * What _should_ happen is that when a point is _saved_ any 'images' that are not in the original set (i.e.
+     * before the update) then they should be deleted... THIS IS A TRIGGER RESPONSIBILITY.
+     * @param img_id
+     * @returns {Promise<T | void>}
+     */
+    async delete_image(img_id){
+
+        let img_path = `sites/${this.props.site_id}/upload/${this.props.artifact_id}/${img_id}`
+        return http.delete(img_path)
+            .then(resp => {
+                console.log('got response',resp.data)
+                if(resp.data.filename){
+                    this.props.update_entity('image','')
+                    this.setState({img_preview:''})
+                }
+            })
+            .catch(err => console.error("FAILED TO REMOVE IMAGE", err))
     }
 
     /**
@@ -55,23 +79,45 @@ export class ArtifactImage extends Component{
      */
     preview(){
         return(
+            <Stack>
                 <img
                     id="artifact_img"
                     src={this.state.img_preview ?? ""}
                     style={{maxWidth: "100%"}}
                     alt="Add a photo..."/>
+                {this.state.img_preview &&
+                <Stack direction='row' spacing='2' justifyContent='space-between'>
+                    <IconButton>
+                        <ChevronLeft/>
+                    </IconButton>
+                    <IconButton
+                        disabled={!this.state.img_preview}
+                        color='error'
+                        onClick={() => {
+                            console.log('deleting image:',this.state.img_preview)
+                            this.delete_image(this.state.img_name);
+                        }}> <DeleteIcon/> </IconButton>
+                    <IconButton>
+                        <ChevronRight/>
+                    </IconButton>
+                </Stack>
+                }
+            </Stack>
+
         )
     }
 
     render() {
-        return(
+        return (
             <Stack width='100%'>
                 {this.preview()}
-                <FormControl sx={{ my: 3.4 }}>
-                    <FormLabel sx={{ mb: 1.5 }}>
+                <FormControl sx={{my: 3.4}}>
+
+                <FormLabel sx={{ mb: 1.5 }}>
                         Upload New Photo
                     </FormLabel>
-                    <input type="file" onChange={(e => this.update_photo(e))} accept="image/*" />
+                    <input type="file" onChange={(e => this.update_photo(e))} accept="image/*"/>
+
                 </FormControl>
             </Stack>
         )
