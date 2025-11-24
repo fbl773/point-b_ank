@@ -1,5 +1,6 @@
 import {Schema,Model,model} from "mongoose"
 import {IArtifact} from "./mongo_entity";
+import {remove_images} from "../utilities/trigger_factory";
 
 export interface IProjectilePoint extends IArtifact{
     ///Basics
@@ -37,9 +38,13 @@ const projectile_pointSchema = new Schema<IProjectilePoint,ProjectilePointModal>
     cross_section:{type:String,required:false,enum:cross_section,default:"indeterminate"},
     location:{type:String,required:false},
     dimensions:{type:[Number],required:false},
-
-
 });
+
+projectile_pointSchema.pre("findOneAndUpdate", async function(next){
+  await remove_images<IProjectilePoint>(this.getUpdate(),this.model,this.getFilter())
+    next();
+});
+
 
 const ProjectilePoint:ProjectilePointModal = model<IProjectilePoint,ProjectilePointModal>('ProjectilePoint',projectile_pointSchema);
 

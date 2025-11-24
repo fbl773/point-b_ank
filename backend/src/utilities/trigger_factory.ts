@@ -1,5 +1,5 @@
 import {Model, FilterQuery} from "mongoose";
-import {IMongo_Entity} from "../entitites/mongo_entity";
+import {IHas_Image, IMongo_Entity} from "../entitites/mongo_entity";
 
 /**
  * Builds a filter object for mongo queries/updates of the type {field_name:field_value}
@@ -55,4 +55,33 @@ export async function update_related<T extends IMongo_Entity,
     //Find and update those Gs
     await target_model.updateMany(update_filter,update)
         .catch(err => {console.error(`Failed to update ${target_field}s for ${self._id}`,err)});
+}
+
+export async function remove_images<T extends IHas_Image>(update:any, src_model:Model<T>,find_filter: FilterQuery<T>){
+
+    console.log("Made it to trigger with", update, src_model)
+
+    //If we have no image
+    if (!update.image){
+        let old:T|null = await src_model.findOne(find_filter);
+
+        //And we originally did have one
+        if(old && old.image){
+            console.log(`Would run deletion for ${update._id} -- ${old.image}`)
+        }
+
+            // let img_path = `sites/${this.props.site_id}/upload/${this.props.artifact_id}/${img_id}`
+            // return http.delete(img_path)
+            //     .then(resp => {
+            //         console.log('got response',resp.data)
+            //         if(resp.data.filename){
+            //             this.props.update_entity('image','')
+            //             this.setState({img_preview:''})
+            //         }
+            //     })
+            //     .catch(err => console.error("FAILED TO REMOVE IMAGE", err))        }
+    }
+
+
+
 }
