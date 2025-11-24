@@ -39,18 +39,9 @@ export class ArtifactImage extends Component{
      * @param img_id
      * @returns {Promise<T | void>}
      */
-    async delete_image(img_id){
-
-        let img_path = `sites/${this.props.site_id}/upload/${this.props.artifact_id}/${img_id}`
-        return http.delete(img_path)
-            .then(resp => {
-                console.log('got response',resp.data)
-                if(resp.data.filename){
-                    this.props.update_entity('image','')
-                    this.setState({img_preview:''})
-                }
-            })
-            .catch(err => console.error("FAILED TO REMOVE IMAGE", err))
+    delete_image(img_id){
+        this.setState({img_preview:""})
+        this.props.update_image(null);
     }
 
     /**

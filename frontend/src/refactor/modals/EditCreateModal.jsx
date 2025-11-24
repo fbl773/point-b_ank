@@ -88,6 +88,8 @@ class EditCreateModal extends Component {
 
     async edit_entity(){
         let edit_me = this.state.entity;
+        console.log("Sending edit of: ",edit_me)
+        console.log("to: ", this.props.url)
         if (this.validate()) {
             await http.put(`${this.props.url}/${edit_me._id}`, edit_me)
                 .then(edited_ent => this.setState({entity: edited_ent}))

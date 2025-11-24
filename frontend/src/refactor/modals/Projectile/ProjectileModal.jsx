@@ -148,10 +148,15 @@ class ProjectileModal extends EditCreateModal{
         if (edit_me.material_id === ""){
             delete edit_me.material_id;
         }
+
+        edit_me.image = this.state.img_payload == null ? "": this.state.entity.image;
+
         this.setState({entity:edit_me}, () => {
             super.edit_entity()
                 .then(() => {
-                    this.upload_photo(this.props.site_id,edit_me._id)
+                    console.log("Uppdating with: ",edit_me)
+                    if(edit_me.image)
+                        this.upload_photo(this.props.site_id,edit_me._id)
                 });
         })
     }
