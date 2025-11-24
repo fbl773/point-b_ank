@@ -100,7 +100,6 @@ function update_one<T>(model:Model<T>,
         (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
         (_req:Request,_res:Response,_next:Function) => {console.log(`TODO: VALIDATE ${entity_name}`); _next()},
         (req: Request, res: Response) => {
-        console.log("Ok so we are atthe hard part... with: ",req.params)
             let new_ent = req.body;
             model.findOneAndUpdate({_id:req.params.id},new_ent,{new:true,runValidators:true})
                 .then((updated) => updated ?

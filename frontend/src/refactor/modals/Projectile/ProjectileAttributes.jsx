@@ -85,7 +85,6 @@ export class ArtifactImage extends Component{
                         disabled={!this.state.img_preview}
                         color='error'
                         onClick={() => {
-                            console.log('deleting image:',this.state.img_preview)
                             this.delete_image(this.state.img_name);
                         }}> <DeleteIcon/> </IconButton>
                     <IconButton>

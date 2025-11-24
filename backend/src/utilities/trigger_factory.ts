@@ -1,5 +1,7 @@
 import {Model, FilterQuery} from "mongoose";
-import {IHas_Image, IMongo_Entity} from "../entitites/mongo_entity";
+import {IArtifact, IMongo_Entity} from "../entitites/mongo_entity";
+import {upload_root} from "./file_utils";
+import * as fs from "node:fs";
 
 /**
  * Builds a filter object for mongo queries/updates of the type {field_name:field_value}
@@ -57,9 +59,13 @@ export async function update_related<T extends IMongo_Entity,
         .catch(err => {console.error(`Failed to update ${target_field}s for ${self._id}`,err)});
 }
 
-export async function remove_images<T extends IHas_Image>(update:any, src_model:Model<T>,find_filter: FilterQuery<T>){
-
-    console.log("Made it to trigger with", update, src_model)
+/**
+ * A smooth brained deletion for a single image for an artifact.
+ * @param update
+ * @param src_model
+ * @param find_filter
+ */
+export async function remove_artifact_images<T extends IArtifact>(update:any, src_model:Model<T>, find_filter: FilterQuery<T>){
 
     //If we have no image
     if (!update.image){
@@ -67,19 +73,12 @@ export async function remove_images<T extends IHas_Image>(update:any, src_model:
 
         //And we originally did have one
         if(old && old.image){
-            console.log(`Would run deletion for ${update._id} -- ${old.image}`)
+            let file_path = `${upload_root}/sites/${old.site_id}/${old._id}/${old.image}`
+            fs.unlink(file_path, (err )=> {
+                if(err)
+                    throw Error(`Failed to remove Photo at ${file_path}: ${err}`)
+            })
         }
-
-            // let img_path = `sites/${this.props.site_id}/upload/${this.props.artifact_id}/${img_id}`
-            // return http.delete(img_path)
-            //     .then(resp => {
-            //         console.log('got response',resp.data)
-            //         if(resp.data.filename){
-            //             this.props.update_entity('image','')
-            //             this.setState({img_preview:''})
-            //         }
-            //     })
-            //     .catch(err => console.error("FAILED TO REMOVE IMAGE", err))        }
     }
 
 

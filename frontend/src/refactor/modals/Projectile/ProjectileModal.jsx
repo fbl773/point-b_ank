@@ -154,7 +154,6 @@ class ProjectileModal extends EditCreateModal{
         this.setState({entity:edit_me}, () => {
             super.edit_entity()
                 .then(() => {
-                    console.log("Uppdating with: ",edit_me)
                     if(edit_me.image)
                         this.upload_photo(this.props.site_id,edit_me._id)
                 });
