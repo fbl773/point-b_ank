@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useEffect, useState, useContext } from "react";
-import ProjectileList from "./ProjectileList";
+import ProjectileList from "../refactor/list_pages/ProjectileList";
 import BaseLayout from "./BaseLayout";
 import http from "../../http.js";
 import SearchIcon from "@mui/icons-material/Search";

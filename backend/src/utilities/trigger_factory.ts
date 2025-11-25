@@ -73,6 +73,7 @@ export async function remove_artifact_images<T extends IArtifact>(update:any, sr
 
         //And we originally did have one
         if(old && old.image){
+            //Go delete it.
             let file_path = `${upload_root}/sites/${old.site_id}/${old._id}/${old.image}`
             fs.unlink(file_path, (err )=> {
                 if(err)

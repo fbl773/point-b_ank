@@ -78,13 +78,15 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 				// Sort JSON
 				const sortedData = sortData(response.data, sortValue);
 				setData(sortedData);
+				console.log("Data from the server: ",data[0].culture_id)
+				console.log("sortedData",sortedData[0].culture_id)
 			} catch (error) {
 				log.error("Error fetching projectile points:", error);
 			}
 		}
 
 		fetchprojectilePoints();
-	}, [openAdd, openView, sortValue]);
+	}, [openAdd, openView, sortValue,point]);
 
 	// Filter data based on search query (mock)
 	const filteredData = data?.filter((item) =>
