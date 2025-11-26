@@ -18,22 +18,24 @@ import { Stack } from "@mui/system";
 class ProjectileModal extends EditCreateModal{
 
     constructor(props) {
-        console.log("Look, I got some Props", props)
         super(props);
-        this.state.entity = {
-            image:"",
-            description:"",
-            culture_id:"",
-            period_id:"",
-            material_id:"",
-            site_id:"",
-            blade_shape:"",
-            base_shape:"",
-            hafting_shape:"",
-            cross_section:"",
-            location:"",
-            dimensions:[0,0,0]
+        this.state = {
+            ...this.state,
+            entity: {
+                image:"",
+                description:"",
+                culture_id:"",
+                period_id:"",
+                material_id:"",
+                site_id:"",
+                blade_shape:"",
+                base_shape:"",
+                hafting_shape:"",
+                cross_section:"",
+                location:"",
+                dimensions:[0,0,0]
         }
+    }
 
         //Prefilled values
         //this.state.periods = []; //TODO: investigate switching periods/cultures as a parameter to the relevant components
@@ -41,6 +43,7 @@ class ProjectileModal extends EditCreateModal{
 
         //Image needs
         this.state.img_payload = {};
+
     }
 
     /**

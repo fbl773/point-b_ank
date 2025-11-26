@@ -395,7 +395,7 @@ export class PeriodCultureSelector extends Component {
 
         //UPDATE AVAIL CULTURES
         let period= this.state.periods.filter(p=> p._id === period_id)[0] ?? {};
-        let prev_id = this.state.period_id;
+        let prev_id = this.props.period_id;
 
         let filtered_cultures = this.state.cultures.filter(culture => culture.period_id === period_id);
         this.setState({display_cultures:filtered_cultures});
@@ -405,8 +405,10 @@ export class PeriodCultureSelector extends Component {
         this.setState({selected_period:period});
 
         //reset culture if the period changed
+        console.log("prev,passed: OUTER ",prev_id, period_id);
         if(prev_id !== period_id){
-            this.select_culture("");
+            console.log("prev,passed: ",prev_id, period_id);
+            this.setState({selected_culture:""})
         }
     }
 
@@ -431,6 +433,7 @@ export class PeriodCultureSelector extends Component {
     }
 
     componentDidMount() {
+
         // Go Get the periods/cultures
         http.get("/periods")
             .then(periods=> {
@@ -446,7 +449,7 @@ export class PeriodCultureSelector extends Component {
                     this.select_period(this.props.period_id);
                 });
             })
-            .catch(err => console.error("Failed to fetch periods",err));
+            .catch(err => console.error("Failed to fetch culture",err));
     }
 
     /**
@@ -463,7 +466,7 @@ export class PeriodCultureSelector extends Component {
                        labelId="period-label"
                        id="period_select"
                        label="Period"
-                       value={this.state.selected_period.name?? "Indeterminate"}
+                       value={this.state.selected_period.name ?? "Indeterminate"}
                        renderValue={(selected) =>selected}
                        onChange={(e) => this.select_period(e.target.value._id)}
                    >
