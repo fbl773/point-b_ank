@@ -1,5 +1,4 @@
 import EditCreateModal from "../EditCreateModal.jsx";
-import { Grid, Typography, } from "@mui/material";
 import React from "react";
 import {
     ArtifactImage,
@@ -19,6 +18,7 @@ import { Stack } from "@mui/system";
 class ProjectileModal extends EditCreateModal{
 
     constructor(props) {
+        console.log("Look, I got some Props", props)
         super(props);
         this.state.entity = {
             image:"",

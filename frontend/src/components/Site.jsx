@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useEffect, useState, useContext } from "react";
-import ProjectileList from "../refactor/list_pages/ProjectileList";
+import ProjectileList from "./ProjectileList";
 import BaseLayout from "./BaseLayout";
 import http from "../../http.js";
 import SearchIcon from "@mui/icons-material/Search";
@@ -19,6 +19,8 @@ import { UserContext } from "../context/userContext.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import DeleteConfirmDialog from "../refactor/modals/DeleteConfirmDialog.jsx"
 import {SiteModal} from "../refactor/modals/Modals.jsx";
+
+
 
 /**
  * Site component displays detailed information about a site and allows searching, sorting,

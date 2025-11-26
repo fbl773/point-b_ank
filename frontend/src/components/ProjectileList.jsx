@@ -30,6 +30,33 @@ const Item = styled(Paper)(({ theme }) => ({
 	minHeight: "700px !important",
 }));
 
+const ArtifactCard = (props) => (
+	<Grid item xl={2}>
+		{/*This section is for displaying all the found artifacts*/}
+		<ProjectileCard
+			item={props.item}
+			site_name={props.siteName}
+		/>
+	</Grid>
+)
+
+const ArtifactList = (props) => {
+	console.log("generating an artifact list")
+	// Filter data based on search query (mock)
+	const filteredData = props.data?.filter((item) =>
+		// eslint-disable-next-line react/prop-types
+		item._id.toLowerCase().includes(props.query.toLowerCase()),
+	);
+	return (
+	<>
+	{filteredData.map((item) => (
+			<ArtifactCard item={item} siteName={props.siteName} key={item._id}/>
+		))
+	}
+	</>
+)}
+
+
 /**
  * Displays all projectiles for a selected site
  * @param {string} query projectile name for searching
@@ -65,34 +92,46 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 		log.info("Card clicked! ID:", item._id);
 	};
 
-	/**
-	 * Fetch and update projectile points list/cards with latest list of projectile points
-	 * every state change of add the edit proejctile point modals
-	 */
+	// /**
+	//  * Fetch and update projectile points list/cards with latest list of projectile points
+	//  * every state change of add the edit proejctile point modals
+	//  */
+	// useEffect(() => {
+	// 	async function fetchprojectilePoints() {
+	// 		try {
+	// 			const response = await http.get(`sites/${siteId}/points`);
+	// 			log.info("Projectile points: ", response.data);
+	//
+	// 			// Sort JSON
+	// 			const sortedData = sortData(response.data, sortValue);
+	// 			setData(sortedData);
+	// 			console.log("Data from the server: ",data[0].culture_id)
+	// 			console.log("sortedData",sortedData[0].culture_id)
+	// 		} catch (error) {
+	// 			log.error("Error fetching projectile points:", error);
+	// 		}
+	// 	}
+	//
+	// 	fetchprojectilePoints();
+	// }, [openAdd, openView, sortValue,point]);
+
 	useEffect(() => {
-		async function fetchprojectilePoints() {
-			try {
-				const response = await http.get(`sites/${siteId}/points`);
-				log.info("Projectile points: ", response.data);
-
-				// Sort JSON
-				const sortedData = sortData(response.data, sortValue);
-				setData(sortedData);
-				console.log("Data from the server: ",data[0].culture_id)
-				console.log("sortedData",sortedData[0].culture_id)
-			} catch (error) {
-				log.error("Error fetching projectile points:", error);
-			}
+		if(data.length <= 0) {
+			console.log("Getting the data...")
+			http.get(`sites/${siteId}/points`).then((res) => {
+				console.log("Got points again :)", res.data);
+				setData(res.data);
+			}).catch(err => {
+				console.error(err);
+				setData([])
+			});
+		} else {
+			console.log("Did not get the data...",data.length);
 		}
+		const sortedData = sortData(data, sortValue);
+		setData(sortedData);
 
-		fetchprojectilePoints();
-	}, [openAdd, openView, sortValue,point]);
-
-	// Filter data based on search query (mock)
-	const filteredData = data?.filter((item) =>
-		// eslint-disable-next-line react/prop-types
-		item._id.toLowerCase().includes(query.toLowerCase()),
-	);
+	},[sortValue]);
 
 	return (
 		<div>
@@ -121,18 +160,9 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 									</ButtonBase>
 								</Grid>
 							)}
-							{filteredData &&
-								filteredData.map((item) => (
-									<Grid item xl={2} key={item._id}>
-										{/*This section is for displaying all the found artifacts*/}
-										<ButtonBase onClick={handleClick2(item)}>
-											<ProjectileCard
-												item={item}
-												site_name={siteName}
-											/>
-										</ButtonBase>
-									</Grid>
-								))}
+							{data?.length &&
+								<ArtifactList query={query} data={data} siteName={siteName} onClick={(p) => setPoint(p)} />
+							}
 						</Grid>
 					</Box>
 				</Grid>
@@ -149,21 +179,6 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 						append_new={(ent) => console.warn(`TODO: Would append ${JSON.stringify(ent)}`)}
 						open={openAdd}
 						on_close={() => setOpenAdd(false)}
-					/>
-				)}
-			</div>
-			<div>
-				{openEdit && (
-					<ProjectileModal
-						adding_new={false}
-						entity={point}
-						subject={"projectile point"}
-						site_name={siteName}
-						site_id={siteId}
-						url={"points"}
-						send_alert={(msg) => console.warn(`TODO: ${JSON.stringify(msg)}`)}
-						open={openEdit}
-						on_close={() => setOpenEdit(false)}
 					/>
 				)}
 			</div>
