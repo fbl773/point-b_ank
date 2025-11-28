@@ -55,7 +55,8 @@ class EditCreateModal extends Component {
      * @param key {string} the name of the field to update on the entity
      * @param value {any} the value to update it to
      */
-    update_entity(key,value){
+    update_entity(key,_value){
+        let value = _value ?? "";
         let updated_entity= this.state.entity;
         updated_entity[key] = value;
         this.setState({entity:updated_entity});
@@ -89,6 +90,7 @@ class EditCreateModal extends Component {
     async edit_entity(){
         let edit_me = this.state.entity;
         if (this.validate()) {
+            console.log("Shipping: ", edit_me)
             await http.put(`${this.props.url}/${edit_me._id}`, edit_me)
                 .then(edited_ent => this.setState({entity: edited_ent}))
                 .then(this.props.send_alert({open: true, type: "success", message: `${this.props.subject} successfully edited.`}))

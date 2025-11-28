@@ -17,9 +17,11 @@ function create<T extends IMongo_Entity>(model:Model<T>,
     router.post("/",
         authenticate,
         (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
-        (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE",entity_name); _next()},
+        (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE",entity_name,_req.body); _next()},
         (req: Request, res: Response) => {
+            console.log("in the body")
             let new_entity: T = req.body;
+            console.log("assigned the req to new_entity")
             model.create(new_entity)
                 .then((new_ent) => res.status(201).send(
                     {
@@ -27,6 +29,7 @@ function create<T extends IMongo_Entity>(model:Model<T>,
                         new_ent
                     }))
                 .catch(err => res.status(404).send({message:`Failed to create ${entity_name}`,err}))
+                .finally(() => console.log("We didn't throw... right?"))
         }
     );
 }
@@ -101,6 +104,13 @@ function update_one<T>(model:Model<T>,
         (_req:Request,_res:Response,_next:Function) => {console.log(`TODO: VALIDATE ${entity_name}`); _next()},
         (req: Request, res: Response) => {
             let new_ent = req.body;
+            let toUnset = Object.entries(new_ent).filter(([_k,v]) => v === "" || v === null);
+            toUnset.forEach(([k,_v])=>{
+                delete new_ent[k];
+            })
+            let unset = Object.fromEntries(toUnset);
+            new_ent.$unset=unset;
+            console.log("Passing in: ",new_ent);
             model.findOneAndUpdate({_id:req.params.id},new_ent,{new:true,runValidators:true})
                 .then((updated) => updated ?
                     res.status(200).send( { message:`Successfully updated ${entity_name} ${req.params.id}`, updated}):
