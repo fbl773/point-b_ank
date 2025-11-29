@@ -113,7 +113,6 @@ export class ArtifactImage extends Component{
         )
     }
 
-
 }
 
 /**

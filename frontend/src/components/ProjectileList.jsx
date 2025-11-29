@@ -40,11 +40,21 @@ const ArtifactCard = (props) => (
 	</Grid>
 )
 
+/**
+ * @example
+ * ```
+ * {"image":"JSC_PP-3.JPG","description":"NOw what would we append exactly?","culture_id":"678e8aea9990332097d997e5","period_id":"678e8acc9990332097d997dd","material_id":"6923b4ff6240e13b50634d7c","site_id":"66e3213493f279d8e11c34e2","blade_shape":"excurvate","base_shape":"straight","hafting_shape":"basal-notched","cross_section":"fluted","location":"wat","dimensions":[2,2,2],"_id":"692b0cd875e0630994d78dac","__v":0}
+ * ```
+ * @param props
+ * @return {JSX.Element}
+ * @constructor
+ */
 const ArtifactList = (props) => {
 	console.log("generating an artifact list")
 	// Filter data based on search query (mock)
 	const filteredData = props.data?.filter((item) =>
 		// eslint-disable-next-line react/prop-types
+		//TODO: This line VVV makes no sense m8.
 		item._id.toLowerCase().includes(props.query.toLowerCase()),
 	);
 	return (
@@ -176,7 +186,7 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 						site_id={siteId}
 						url={"points"}
 						send_alert={(msg) => console.warn(`TODO: ${JSON.stringify(msg)}`)}
-						append_new={(ent) => console.warn(`TODO: Would append ${JSON.stringify(ent)}`)}
+						append_new={(ent) => data.push(ent)}
 						open={openAdd}
 						on_close={() => setOpenAdd(false)}
 					/>

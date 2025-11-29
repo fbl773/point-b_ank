@@ -74,7 +74,6 @@ class ProjectileModal extends EditCreateModal{
                     hostname={baseURL}
                     img_name={this.state.entity.image}
                 />
-                {/*{this.title_area()}*/}
                 <Stack direction='row' width='100%' spacing={2} justifyContent='space-between'>
                     <PeriodCultureSelector
                         update_entity={(k,v) => this.update_entity(k,v)}
@@ -150,10 +149,6 @@ class ProjectileModal extends EditCreateModal{
      */
     async edit_entity(){
         let edit_me = this.state.entity;
-        if (edit_me.material_id === ""){
-            delete edit_me.material_id;
-        }
-
         edit_me.image = this.state.img_payload == null ? "": this.state.entity.image;
 
         this.setState({entity:edit_me}, () => {
