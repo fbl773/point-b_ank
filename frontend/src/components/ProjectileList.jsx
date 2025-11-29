@@ -80,6 +80,7 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 	const [openAdd, setOpenAdd] = useState(false);
 	const [openView, setOpenView] = useState(false);
 	const [openEdit, setOpenEdit] = useState(false);
+	const [openError, setOpenError] = useState(false);
 	const [projectilePointId, setProjectilePointId] = useState("");
 	const [point,setPoint] = useState(undefined)
 	const [data, setData] = useState([]);

@@ -37,10 +37,6 @@ class ProjectileModal extends EditCreateModal{
         }
     }
 
-        //Prefilled values
-        //this.state.periods = []; //TODO: investigate switching periods/cultures as a parameter to the relevant components
-        //this.state.cultures = [];
-
         //Image needs
         this.state.img_payload = {};
 

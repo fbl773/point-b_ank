@@ -1,6 +1,7 @@
 import React, {Component} from "react";
-import { ButtonBase, Card, CardContent, Grid, Typography } from "@mui/material";
+import { ButtonBase, Card, CardContent, Checkbox, Grid, Typography } from "@mui/material";
 import ProjectileModal from "./modals/Projectile/ProjectileModal.jsx";
+import { Stack } from "@mui/system";
 
 class ProjectileCard extends Component {
 

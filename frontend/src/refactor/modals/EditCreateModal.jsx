@@ -6,6 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import {Button} from "@mui/material";
 import http from "../../../http.js"
 import CircularProgress from '@mui/material/CircularProgress';
+import Box from "@mui/material/Box";
 
 
 class EditCreateModal extends Component {
@@ -133,6 +134,11 @@ class EditCreateModal extends Component {
                     <DialogContent>
                         {this.render_fields()}
                         <DialogActions>
+                            <Box sx={{flex:1}}>
+                                <Button color='error' onClick={() => console.error("DELETE")}>
+                                    Delete
+                                </Button>
+                            </Box>
                             <Button onClick={this.props.on_close} color="primary">
                                 Cancel
                             </Button>
