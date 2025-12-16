@@ -1,6 +1,6 @@
 # 60 - sEARCH Extension for point b_ank
 
-[[_TOC_]]
+[_TOC_]
 
 ### Synopsis
 The sEARCH project is a project run by the UofS Archaeology Department that aims to provide data, analysis, and
@@ -10,17 +10,17 @@ as a research tool for the Archaeologists conducting these excavations and as su
 This includes:
 * CRUD functionality for new Entities such as:
     * Sites
+    * Areas
     * Units
     * Levels
 
-Using the paradigms outlined in `/backend/app.ts` and `/backend/routes` developers have
-extended the existing API to meet these needs. Below are the stubs/pseudocode for the new
-methods. Your task is to document the functionality, paramaters, and nuances of the added
-calls. Each piece of documentation should be added on its own branch, named after a related
-task to [#60](https://github.com/fbl773/point-b_ank/issues/60) (i.e. the branch for the
-new `unit` routes could be named `N-UnitDocumentation`). These branches should be merged back
-into this branch, and on completion of all new route documentation, a merge request submitted
-into branch `53-validateProjectiles`.
+Using the paradigms outlined in `/backend/app.ts` and `/backend/routes` developers have extended the existing API to 
+meet these needs. Below are the stubs/pseudocode for the new methods. Your task is to document the functionality, 
+paramaters, return values (response code/value), and any other relevant information regarding the added calls. Each 
+piece of documentation should be added on its own branch, named after a related task 
+to [#60](https://github.com/fbl773/point-b_ank/issues/60) (i.e. the branch for the new `unit` routes could be named 
+`N-UnitDocumentation`). These branches should be merged back into this branch, and on completion of all new route 
+documentation, a merge request submitted into branch `53-validateProjectiles`.
 
 # New Routes
 From this point on, consider everything you read as developer notes. All instructions are above
@@ -29,7 +29,7 @@ From this point on, consider everything you read as developer notes. All instruc
 Sites already exist but will need to be modified to relate to `units` and 
 support borden#'s
 
-### Schema
+### Schema (NEW)
 | id | borden  | name |
 |----|---------|------|
 | 1  | DiRw-28 | ?    |
@@ -37,7 +37,35 @@ support borden#'s
 | 3  | DiRx-7  |      |
 | 4  | DjRx-34 |      |
 
+### Schema (Existing)
+```ts
+interface ISite {
+  id:number
+  name:string,
+  description:string,
+  catalogue_id: ForeignKey(Catalogue)
+  region_id: ForeignKey(Region)
+  //Added
+  borden:string
+}
+```
 
+### API
+**Root**: `<HOST>/sites`
+
+#### `GET <HOST>/sites` - gets all sites
+* On success, returns `[ISite]`,200
+* On failure, returns error message, 404
+
+#### `GET <HOST>/sites/:id` - gets a single site by id
+
+#### `PUT <HOST>/sites/:id` - updates a single site by id
+* body
+  * a `Site` with updated data
+
+#### `DELETE <HOST>/sites/:id` - deletes a single site by id
+
+#### `GET <HOST>/sites/:id/points` - gets all projectile points related to this site
 
 ## Units
 * a `unit` is just a part of a site, each site is a grid, each grid-square is a unit.
