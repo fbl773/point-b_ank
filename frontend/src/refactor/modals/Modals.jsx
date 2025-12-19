@@ -121,12 +121,6 @@ export class PeriodModal extends EditCreateModal{
 
 export class CultureModal extends EditCreateModal{
 
-    //Specialty
-
-    constructor(props) {
-        super(props);
-    }
-
     /**
      * Wraps the call to append_new such that it can modify the object before sending
      * it back to the host element
@@ -173,6 +167,11 @@ export class CultureModal extends EditCreateModal{
     componentDidMount() {
         super.componentDidMount();
 
+        console.log("Lets recap...");
+      console.log("Adding NEW: ",this.props.adding_new);
+      console.log("Entity: (In props) ",this.props.entity);
+      console.log("Entity: (In state)", this.state.entity)
+
         //add additional state items
         this.setState({periods:[],selected_period:{}})
         this.update_entity("period_id","");
@@ -186,7 +185,6 @@ export class CultureModal extends EditCreateModal{
 
     }
 
-
     render_fields() {
         return(
             <DialogContent>
@@ -195,7 +193,7 @@ export class CultureModal extends EditCreateModal{
                     label="Name"
                     variant="outlined"
                     fullWidth
-                    value={this.state.entity.name}
+                    value={this.props.entity.name}
                     onChange={(e) => this.update_entity("name",e.target.value)}
                     margin="normal"
                 />
@@ -205,7 +203,7 @@ export class CultureModal extends EditCreateModal{
                     variant="outlined"
                     type="number"
                     fullWidth
-                    value={this.state.entity.start}
+                    value={this.props.entity.start}
                     onChange={(e) => this.update_entity("start",e.target.value)}
                     margin="normal"
                 />
@@ -215,19 +213,19 @@ export class CultureModal extends EditCreateModal{
                     variant="outlined"
                     type="number"
                     fullWidth
-                    value={this.state.entity.end}
+                    value={this.props.entity.end}
                     onChange={(e) => this.update_entity("end",e.target.value)}
                 />
                 <TextField
                     select
                     label="Associated Period"
-                    value={this.state.entity.period_id}
+                    value={this.props.period_id}
                     onChange={(e) => this.set_selected_period(e.target.value)}
                     fullWidth
                     margin="dense"
                 >
-                    {this.state.periods !== undefined ? (
-                        this.state.periods.map((period) => (
+                    {this.props.periods !== undefined ? (
+                        this.props.periods.map((period) => (
                             <MenuItem key={period._id} value={period._id}>
                                 {period.name} ({period.start} - {period.end})
                             </MenuItem>
