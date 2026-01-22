@@ -193,7 +193,7 @@ export class CultureModal extends EditCreateModal{
                     label="Name"
                     variant="outlined"
                     fullWidth
-                    value={this.props.entity.name}
+                    placeholder={this.props.entity.name}
                     onChange={(e) => this.update_entity("name",e.target.value)}
                     margin="normal"
                 />
@@ -262,6 +262,7 @@ export class CultureModal extends EditCreateModal{
     }
 
     update_entity(key,value){
+      console.log("Calling to update key: ",key)
         if(key === "start" || key === "end"){
             let as_num = parseInt(value,10)
             value = isNaN(as_num) ? null:as_num
