@@ -138,7 +138,6 @@ export class CultureModal extends EditCreateModal{
      */
     set_selected_period(period_id) {
         let period = this.state.periods.find(period => period._id === period_id);
-        console.log(`Setting selected to :${JSON.stringify(period)}`)
         this.setState({selected_period:period});
         this.update_entity('period_id',period_id)
         this.update_entity('period_name',period.name)
@@ -151,7 +150,12 @@ export class CultureModal extends EditCreateModal{
         http.get('/periods')
             .then(resp => {
                 let periods = resp.data;
-                this.setState({periods:periods})
+                this.setState({periods:periods},() => {
+                  if(!this.props.adding_new) {
+                    let period = periods.find(period => period._id === this.props.entity.period_id);
+                    this.setState({selected_period: period});
+                  }
+                })
             })
             .catch(err => console.log(`Failed to fetch periods`,err));
     }
@@ -167,14 +171,8 @@ export class CultureModal extends EditCreateModal{
     componentDidMount() {
         super.componentDidMount();
 
-        console.log("Lets recap...");
-      console.log("Adding NEW: ",this.props.adding_new);
-      console.log("Entity: (In props) ",this.props.entity);
-      console.log("Entity: (In state)", this.state.entity)
-
         //add additional state items
         this.setState({periods:[],selected_period:{}})
-        this.update_entity("period_id","");
 
         //setup special append
         this.append_new = this.modify_and_append.bind(this);
@@ -193,7 +191,7 @@ export class CultureModal extends EditCreateModal{
                     label="Name"
                     variant="outlined"
                     fullWidth
-                    placeholder={this.props.entity.name}
+                    value={this.state.entity.name ?? this.props.entity.name}
                     onChange={(e) => this.update_entity("name",e.target.value)}
                     margin="normal"
                 />
@@ -203,7 +201,7 @@ export class CultureModal extends EditCreateModal{
                     variant="outlined"
                     type="number"
                     fullWidth
-                    value={this.props.entity.start}
+                    value={this.state.entity.start ?? this.props.entity.start}
                     onChange={(e) => this.update_entity("start",e.target.value)}
                     margin="normal"
                 />
@@ -213,19 +211,19 @@ export class CultureModal extends EditCreateModal{
                     variant="outlined"
                     type="number"
                     fullWidth
-                    value={this.props.entity.end}
+                    value={this.state.entity.end ?? this.props.entity.end}
                     onChange={(e) => this.update_entity("end",e.target.value)}
                 />
                 <TextField
                     select
                     label="Associated Period"
-                    value={this.props.period_id}
+                    value={this.state.entity.period_id ?? this.props.entity.period_id}
                     onChange={(e) => this.set_selected_period(e.target.value)}
                     fullWidth
                     margin="dense"
                 >
-                    {this.props.periods !== undefined ? (
-                        this.props.periods.map((period) => (
+                    {this.state.periods !== undefined ? (
+                        this.state.periods.map((period) => (
                             <MenuItem key={period._id} value={period._id}>
                                 {period.name} ({period.start} - {period.end})
                             </MenuItem>
@@ -262,7 +260,6 @@ export class CultureModal extends EditCreateModal{
     }
 
     update_entity(key,value){
-      console.log("Calling to update key: ",key)
         if(key === "start" || key === "end"){
             let as_num = parseInt(value,10)
             value = isNaN(as_num) ? null:as_num
