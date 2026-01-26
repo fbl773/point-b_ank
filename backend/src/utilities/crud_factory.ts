@@ -19,10 +19,12 @@ function create<T extends IMongo_Entity>(model:Model<T>,
         (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
         (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE",entity_name,_req.body); _next()},
         (req: Request, res: Response) => {
-            console.log("in the body")
-            let new_entity: T = req.body;
-            console.log("assigned the req to new_entity")
-            model.create(new_entity)
+            let new_ent = req.body;
+            let toUnset = Object.entries(new_ent).filter(([_k,v]) => v === "" || v === null);
+            toUnset.forEach(([k,_v])=>{
+                delete new_ent[k];
+            })
+            model.create(new_ent)
                 .then((new_ent) => res.status(201).send(
                     {
                         message:`Created new ${entity_name}`,
