@@ -56,6 +56,14 @@ export const Period = {
     end:0
 }
 
+export const Culture = {
+  _id:"",
+  name:"",
+  start:0,
+  end:0,
+  period_id:""
+}
+
 export const blade_shapes = ["triangular","excurvate","incurvate","ovate","indeterminate"];
 export const base_shapes = ["straight","concave","convex","indeterminate"];
 export const hafting_shapes =["lanceolate","stemmed","basally concave","expanding","contracting",

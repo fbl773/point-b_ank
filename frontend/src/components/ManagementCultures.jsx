@@ -20,7 +20,7 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import log from "../logger.js";
 import Sidebar from "./Sidebar";
 import RelationsCultureDialog from "./RelationsCultureDialog.jsx";
-import CultureModal from "../refactor/modals/CultureModal.jsx";
+import CultureModal from "./CultureModal.jsx";
 
 const apiUrlCultures = "/cultures"; // API endpoint for fetching and deleting cultures
 

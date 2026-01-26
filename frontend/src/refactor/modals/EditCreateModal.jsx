@@ -115,14 +115,16 @@ class EditCreateModal extends Component {
         }
 
         //Dynamically configure functionality to fit configured option
+        let setLoaded = () => {
+          this.setState({ loaded: true });
+        }
         if(this.props.adding_new){
             this.handle_submit = this.add_entity.bind(this);
-            this.setState({title:"Add"});
+            this.setState({title:"Add"},setLoaded);
         } else {
             this.handle_submit = this.edit_entity.bind(this);
-            this.setState({title:"Edit",entity:this.props.entity});
+            this.setState({title:"Edit",entity:this.props.entity},setLoaded);
         }
-        this.setState({loaded:true});
     }
 
     render() {
@@ -130,7 +132,7 @@ class EditCreateModal extends Component {
             <div>
                 {this.state.loaded ?
                 <Dialog open={this.props.open} onClose={this.props.on_close}>
-                    <DialogTitle>{this.state.title} {this.props.subject}: {this.state.entity.name}</DialogTitle>
+                    <DialogTitle>{this.state.title} {this.props.subject}: {this.props.entity.name}</DialogTitle>
                     <DialogContent>
                         {this.render_fields()}
                         <DialogActions>

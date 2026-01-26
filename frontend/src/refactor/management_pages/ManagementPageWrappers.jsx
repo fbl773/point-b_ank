@@ -6,6 +6,7 @@ import ManageMaterials from "./ManageMaterials.jsx";
 
 export function ManagePeriodWrapper() {
     const { user } = useContext(UserContext);
+
     return(
         <ManagePeriod
             url={"/periods"}
@@ -17,6 +18,7 @@ export function ManagePeriodWrapper() {
 
 export function ManageCultureWrapper(){
     const { user } = useContext(UserContext);
+
     return(
         <ManageCulture
             url={"/cultures"}

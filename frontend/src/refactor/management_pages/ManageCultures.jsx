@@ -4,6 +4,7 @@ import {GridActionsCellItem} from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import {CultureModal} from "../modals/Modals.jsx";
+import {Culture} from "../../entities/entities.js";
 
 class ManageCulture extends ManagementPage{
     constructor(props) {
@@ -43,10 +44,10 @@ class ManageCulture extends ManagementPage{
                 open={this.state.dialog}
                 subject={"culture"}
                 url={"cultures"}
-                entity={this.state.selected}
+                entity={this.state.selected ?? Culture}
                 adding_new={this.state.adding_new}
                 append_new={(new_culture) => this.append_new(new_culture)}
-                on_close={() => this.setState({dialog:false})}
+                on_close={() => this.setState({dialog:false,selected:null})}
                 send_alert={(props) => this.build_alert(props)}
             />
         )
