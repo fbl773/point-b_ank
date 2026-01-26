@@ -49,7 +49,7 @@ class ProjectileModal extends EditCreateModal{
         super.componentDidMount();
         if(this.props.adding_new){
             this.update_entity("site_id",this.props.site_id)
-            this.setState({title:`${this.props.site_name}/**NEW**`});
+            this.setState({title:`${this.props.site_name}/NEW`});
         }else{
             this.setState({title:`${this.props.site_name}/${this.props.entity._id}`,loaded:true});
         }

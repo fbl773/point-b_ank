@@ -132,7 +132,7 @@ class EditCreateModal extends Component {
             <div>
                 {this.state.loaded ?
                 <Dialog open={this.props.open} onClose={this.props.on_close}>
-                    <DialogTitle>{this.state.title} {this.props.subject}: {this.props.entity.name}</DialogTitle>
+                    <DialogTitle>{this.state.title} {this.props.subject}: {this.props.entity?.name ?? ""}</DialogTitle>
                     <DialogContent>
                         {this.render_fields()}
                         <DialogActions>

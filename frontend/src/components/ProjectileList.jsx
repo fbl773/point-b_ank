@@ -182,6 +182,7 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 				{openAdd && (
 					// <ProjectileModal openAdd={openAdd} setOpenAdd={setOpenAdd} />
 					<ProjectileModal
+            subject={"Point"}
 						adding_new={true}
 						site_name={siteName}
 						site_id={siteId}
