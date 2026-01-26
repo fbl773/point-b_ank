@@ -3,7 +3,6 @@ import {UserContext} from "../../context/userContext.jsx";
 import ManagePeriod from "./ManagePeriod.jsx";
 import ManageCulture from "./ManageCultures.jsx";
 import ManageMaterials from "./ManageMaterials.jsx";
-import http from "../../../http.js";
 
 export function ManagePeriodWrapper() {
     const { user } = useContext(UserContext);
