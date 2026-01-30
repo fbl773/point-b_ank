@@ -62,6 +62,7 @@ class ProjectileCard extends Component {
                         send_alert={(msg) => console.warn(`TODO: ${JSON.stringify(msg)}`)}
                         open={this.state.showPoint}
                         on_close={() => this.setState({showPoint: false})}
+                        on_delete={this.props.onDelete}
                     />
                 )}
             </>

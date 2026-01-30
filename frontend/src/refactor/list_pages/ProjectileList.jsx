@@ -32,7 +32,6 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const DisplayData = (props) =>  {
-    console.log("Mapping: ", props.data)
     return(
         <>
         {props.data.map((item) => (
@@ -40,7 +39,9 @@ const DisplayData = (props) =>  {
                 <ButtonBase onClick={props.onClick}>
                     <ProjectileCard
                         item={item}
-                        site_name={props.site_name}/>
+                        site_name={props.site_name}
+                        onDelete={props.onDelete}
+                    />
                 </ButtonBase>
             </Grid> ))}
         </>)
@@ -64,7 +65,13 @@ class ProjectileList extends Component {
         }
     }
 
+    handleDelete(id) {
+      let updated = this.state.points.filter((item) => item._id !== id);
+      this.setState({points: updated});
+    }
+
     componentDidMount(){
+      this.handleDelete = this.handleDelete.bind(this);
         http.get(`sites/${this.state.site_id}/points`)
             .then(points => {
                 console.log("Allegedly got points", points.data)
@@ -106,13 +113,13 @@ class ProjectileList extends Component {
                             {this.context && this.addButton()}
                             <DisplayData data={this.state.points}
                                          onClick={() => this.setState({openEdit:true})}
+                                         onDelete={this.handleDelete}
                                          site_name={this.state.site_name}/>
                         </Box>
                     </Grid>
                     </Item>
                 <div>
                 {this.state.openAdd && (
-                    // <ProjectileModal openAdd={openAdd} setOpenAdd={setOpenAdd} />
                     <ProjectileModal
                         adding_new={true}
                         site_name={this.state.site_name}
@@ -135,6 +142,7 @@ class ProjectileList extends Component {
                         append_new={(ent) => console.warn(`TODO: Would append ${JSON.stringify(ent)}`)}
                         open={this.state.openEdit}
                         on_close={() => this.setState({openEdit: false})}
+                        on_delete={(id) => console.log("This is so fucked")}
                     />
                 </div>
 

@@ -7,6 +7,7 @@ import {Button} from "@mui/material";
 import http from "../../../http.js"
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from "@mui/material/Box";
+import DeleteConfirmDialog from "./DeleteConfirmDialog.jsx";
 
 
 class EditCreateModal extends Component {
@@ -33,7 +34,8 @@ class EditCreateModal extends Component {
             entity:{
                 _id:""
             },
-            loaded:false
+            loaded:false,
+            delete_open:false,
         }
     }
 
@@ -106,6 +108,22 @@ class EditCreateModal extends Component {
         }
     }
 
+    async delete_entity(){
+      let delete_me = this.state.entity;
+      http.delete(`${this.props.url}/${delete_me._id}`)
+        .then(_resp => {
+          this.props.on_delete(delete_me._id)
+          this.props.on_close();
+          console.log(`Deleted ${this.props.subject} - ${delete_me._id}`)
+        })
+        .catch(err => {
+          console.error(`Failed to delete ${this.props.subject} - ${delete_me._id}: `, err)
+        })
+        .finally(() => {
+          this.setState({delete_open:false})
+        });
+    }
+
     //Basics
     componentDidMount() {
 
@@ -123,6 +141,7 @@ class EditCreateModal extends Component {
             this.setState({title:"Add"},setLoaded);
         } else {
             this.handle_submit = this.edit_entity.bind(this);
+            this.handle_delete = this.delete_entity.bind(this);
             this.setState({title:"Edit",entity:this.props.entity},setLoaded);
         }
     }
@@ -136,11 +155,11 @@ class EditCreateModal extends Component {
                     <DialogContent>
                         {this.render_fields()}
                         <DialogActions>
-                            <Box sx={{flex:1}}>
-                                <Button color='error' onClick={() => console.error("DELETE")}>
+                          {!this.props.adding_new && <Box sx={{flex:1}}>
+                                <Button color='error' onClick={() => this.setState({delete_open:true})}>
                                     Delete
                                 </Button>
-                            </Box>
+                            </Box>}
                             <Button onClick={this.props.on_close} color="primary">
                                 Cancel
                             </Button>
@@ -150,6 +169,13 @@ class EditCreateModal extends Component {
                         </DialogActions>
                     </DialogContent>
                 </Dialog>:<CircularProgress/>}
+              {!this.props.adding_new && <DeleteConfirmDialog
+                  open_condition={this.state.delete_open}
+                  title={`Delete ${this.props.subject}-${this.props.entity?.name ?? this.props.entity._id}`}
+                  text={`Are you sure you want to delete ${this.props.subject} - ${this.props.entity._id}?`}
+                  on_cancel={() => this.setState({delete_open:false})}
+                  on_proceed={this.handle_delete}
+                  />}
             </div>
         )
     }
