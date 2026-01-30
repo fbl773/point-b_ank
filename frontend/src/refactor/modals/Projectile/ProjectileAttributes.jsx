@@ -404,9 +404,7 @@ export class PeriodCultureSelector extends Component {
         this.setState({selected_period:period});
 
         //reset culture if the period changed
-        console.log("prev,passed: OUTER ",prev_id, period_id);
         if(prev_id !== period_id){
-            console.log("prev,passed: ",prev_id, period_id);
             this.setState({selected_culture:""})
         }
     }

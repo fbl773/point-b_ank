@@ -40,7 +40,7 @@ class ProjectileCard extends Component {
             >
                 <CardContent>
                     <Typography variant="h5" component="h3">
-                        {this.props.site_name + "-" + this.props.item.location}
+                        {this.props.site_name + "-" + this.props.item.location ?? "Unknown Location"}
                     </Typography>
                     <Typography variant="body2" component="p">
                         {/* Limit description characters to prevent text overflow */}
