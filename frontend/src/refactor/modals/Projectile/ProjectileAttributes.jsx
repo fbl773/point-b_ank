@@ -22,7 +22,7 @@ export class ArtifactImage extends Component{
     }
 
     componentDidMount() {
-        if(this.props.img_name !== ""){
+        if(this.props.img_name){
             console.log("Image name",this.props.img_name);
             let img_path = `${this.props.hostname}/uploads/sites/${this.props.site_id}/${this.props.artifact_id}/${this.props.img_name}`
             this.setState({img_preview:img_path},() => {

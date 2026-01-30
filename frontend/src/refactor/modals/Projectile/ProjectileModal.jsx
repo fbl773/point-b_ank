@@ -174,7 +174,7 @@ class ProjectileModal extends EditCreateModal{
                 .then(resp => {
                     let new_point = resp.data.new_ent;
                     this.append_new(new_point);
-                    //this.upload_photo(this.props.site_id,new_point._id)
+                    this.upload_photo(this.props.site_id,new_point._id)
                 }).catch(err => {
                     console.error(`Failed to add point:`,err);
                     this.props.send_alert({open:true,type:"error",message:`Failed to add new Poit`})
