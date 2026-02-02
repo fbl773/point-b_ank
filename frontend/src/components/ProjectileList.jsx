@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import http from "../../http.js";
 import log from "../logger.js";
 import {
-	styled,
-	Grid,
-	Card,
-	CardContent,
-	ButtonBase,
-	Typography,
-	Box,
-	Paper,
+  styled,
+  Grid,
+  Card,
+  CardContent,
+  ButtonBase,
+  Typography,
+  Box,
+  Paper, Alert,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useContext } from "react";
@@ -88,6 +88,7 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 	const [openError, setOpenError] = useState(false);
 	const [projectilePointId, setProjectilePointId] = useState("");
 	const [point,setPoint] = useState(undefined)
+  const [alert, setAlert] = useState(undefined);
 	const [data, setData] = useState([]);
 	const { user } = useContext(UserContext);
 	/**
@@ -158,6 +159,14 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 	return (
 		<div>
 			<Item variant="outlined" sx={{ mb: "40px" }}>
+        { alert &&
+          <Alert
+            severity={alert.type}
+            onClose={() => setAlert(undefined)}
+            style={{marginBottom: "20px"}}
+        >
+            {alert.message ?? "Oh no"}
+        </Alert>}
 				<Grid style={{ padding: 30 }}>
 					<Box display="flex">
 						<Grid container spacing={5}>
@@ -202,7 +211,10 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 						site_name={siteName}
 						site_id={siteId}
 						url={"points"}
-						send_alert={(msg) => console.warn(`TODO: ${JSON.stringify(msg)}`)}
+						send_alert={(msg) => {
+              console.log("MESSAGE IS: ",msg);
+              setAlert(msg)
+            }}
 						append_new={(ent) => data.push(ent)}
 						open={openAdd}
 						on_close={() => setOpenAdd(false)}

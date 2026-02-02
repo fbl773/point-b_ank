@@ -109,13 +109,18 @@ class ProjectileModal extends EditCreateModal{
     }
 
     /**
-     * TODO:Gulp
      * Ensures that a projectile point meets the minimum definition of:
-     * *
+     * * Having a description (notes)
+     * * Having valid dimensions.
      * @return {boolean}
      */
     validate() {
-        return true;
+      let minimum = this.state.entity.description !== "";
+      let dimensions = this.state.entity.dimensions
+        .map(d => d >= 0)
+        .reduce((a, b) => a && b ,true);
+
+      return minimum && dimensions;
     }
 
     /**
@@ -177,7 +182,7 @@ class ProjectileModal extends EditCreateModal{
                     this.upload_photo(this.props.site_id,new_point._id)
                 }).catch(err => {
                     console.error(`Failed to add point:`,err);
-                    this.props.send_alert({open:true,type:"error",message:`Failed to add new Poit`})
+                    this.props.send_alert({open:true,type:"error",message:`Failed to add new Point`})
                 })
                 .then(this.props.send_alert({open:true,type:"success",message:`Successfully added new Point!`}))
                 .finally(this.props.on_close)
