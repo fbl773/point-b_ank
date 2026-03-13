@@ -36,6 +36,7 @@ const ArtifactCard = (props) => (
 		<ProjectileCard
 			item={props.item}
 			site_name={props.siteName}
+      onDelete={props.onDelete}
 		/>
 	</Grid>
 )
@@ -60,7 +61,11 @@ const ArtifactList = (props) => {
 	return (
 	<>
 	{filteredData.map((item) => (
-			<ArtifactCard item={item} siteName={props.siteName} key={item._id}/>
+			<ArtifactCard
+        item={item}
+        siteName={props.siteName}
+        onDelete={props.onDelete}
+        key={item._id}/>
 		))
 	}
 	</>
@@ -92,6 +97,12 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 		setOpenAdd(true);
 		log.info("Add card clicked!");
 	};
+
+  const handleDelete = (id) => {
+    let updated = data.filter((item) => item._id !== id);
+    setData(updated);
+  }
+
 
 	/**
 	 * Toggle view projectile modal visibility to true
@@ -172,7 +183,12 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 								</Grid>
 							)}
 							{data?.length &&
-								<ArtifactList query={query} data={data} siteName={siteName} onClick={(p) => setPoint(p)} />
+								<ArtifactList
+                  query={query}
+                  data={data}
+                  siteName={siteName}
+                  onDelete={handleDelete}
+                  onClick={(p) => setPoint(p)} />
 							}
 						</Grid>
 					</Box>
@@ -180,7 +196,6 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 			</Item>
 			<div>
 				{openAdd && (
-					// <ProjectileModal openAdd={openAdd} setOpenAdd={setOpenAdd} />
 					<ProjectileModal
             subject={"Point"}
 						adding_new={true}

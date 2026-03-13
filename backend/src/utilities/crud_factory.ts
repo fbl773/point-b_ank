@@ -31,7 +31,6 @@ function create<T extends IMongo_Entity>(model:Model<T>,
                         new_ent
                     }))
                 .catch(err => res.status(404).send({message:`Failed to create ${entity_name}`,err}))
-                .finally(() => console.log("We didn't throw... right?"))
         }
     );
 }
@@ -112,7 +111,6 @@ function update_one<T>(model:Model<T>,
             })
             let unset = Object.fromEntries(toUnset);
             new_ent.$unset=unset;
-            console.log("Passing in: ",new_ent);
             model.findOneAndUpdate({_id:req.params.id},new_ent,{new:true,runValidators:true})
                 .then((updated) => updated ?
                     res.status(200).send( { message:`Successfully updated ${entity_name} ${req.params.id}`, updated}):

@@ -16,8 +16,6 @@ function upload_one(router: Router,
         authenticate,
         do_upload,
         (req:Request,res:Response)=>{
-            //do_upload(req,res,err => {
-            //})
             console.log("THis should just work no?")
         })
 }
