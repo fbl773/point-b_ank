@@ -25,7 +25,7 @@ const cross_section = ["rhomboid","lenticular","plano-convex","fluted","median-r
 const projectile_pointSchema = new Schema<IProjectilePoint,ProjectilePointModal>({
     //Basics
     image:{type:String, required:false},
-    description:{type:String, required:false},
+    description:{type:String, required:true},
     //Relations
     culture_id:{type:Schema.Types.ObjectId,ref:"Culture",required:false},
     period_id:{type:Schema.Types.ObjectId,ref:"Period",required:false},
