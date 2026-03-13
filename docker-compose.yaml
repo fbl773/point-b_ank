@@ -8,7 +8,7 @@ services:
     image: mongo:latest
     container_name: point_mongo
     volumes:
-      - /Users/blewis/pblank:/data/db
+      - /Users/FrankyB/fGrams/Projects/Databases/pblank:/data/db
     ports:
       - "27017:27017"
     env_file:

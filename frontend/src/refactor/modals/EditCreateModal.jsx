@@ -7,6 +7,7 @@ import {Button} from "@mui/material";
 import http from "../../../http.js"
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
 
 
 class EditCreateModal extends Component {
@@ -20,7 +21,6 @@ class EditCreateModal extends Component {
      * @param props.entity {any} the entity we will be creating/editing
      * @param props.open {boolean} true/false is the dialog open?
      * @param props.append_new {Function} a function to update the UI with newly created entities
-     * @param props.send_alert {Function} a function to alert of operation status
      * @param props.on_close {Function} a function to close the dialog
      *
      */
@@ -29,6 +29,7 @@ class EditCreateModal extends Component {
 
         this.state = {
             title:"...",
+			feedback:undefined,
             selected:{},
             entity:{
                 _id:""
@@ -49,6 +50,10 @@ class EditCreateModal extends Component {
      * @abstract
      */
     render_fields(){ }
+
+	send_alert(details){
+		this.setState({feedback:details});
+	}
 
     //Helpers
     /**
@@ -78,13 +83,12 @@ class EditCreateModal extends Component {
                 })
                 .catch(err => {
                     console.error(`Failed to add ${this.props.subject}: `, err)
-                    this.props.send_alert({open:true,type:"error",message:`Failed to add new ${this.props.subject}`})
+                    this.send_alert({open:true,type:"error",message:`Failed to add new ${this.props.subject}`})
                 })
-                .then(this.props.send_alert({open:true,type:"success",message:`Successfully added new ${this.props.subject}`}))
-                .finally(this.props.on_close)
+                .then(this.send_alert({open:true,type:"success",message:`Successfully added new ${this.props.subject}`}))
         } else {
             console.error(`${this.props.subject} Invalid!`)
-            this.props.send_alert({open: true, type: "error", message: `Failed to add new ${this.props.subject}.`})
+            this.send_alert({open: true, type: "error", message: `Failed to add new ${this.props.subject}.`})
         }
     }
 
@@ -94,15 +98,15 @@ class EditCreateModal extends Component {
             console.log("Shipping: ", edit_me)
             await http.put(`${this.props.url}/${edit_me._id}`, edit_me)
                 .then(edited_ent => this.setState({entity: edited_ent}))
-                .then(this.props.send_alert({open: true, type: "success", message: `${this.props.subject} successfully edited.`}))
+                .then(this.send_alert({open: true, type: "success", message: `${this.props.subject} successfully edited.`}))
                 .catch(err => {
                     console.error(`Failed to edit ${this.props.subject}: `, err)
-                    this.props.send_alert({open: true, type: "error", message: `Failed to edit ${this.props.subject}.`})
+                    this.send_alert({open: true, type: "error", message: `Failed to edit ${this.props.subject}.`})
                 })
                 .finally(this.props.on_close);
         } else {
             console.error(`${this.props.subject} Invalid!`)
-            this.props.send_alert({open: true, type: "error", message: `failed to edit ${this.props.subject}`})
+            this.send_alert({open: true, type: "error", message: `failed to edit ${this.props.subject}`})
         }
     }
 
@@ -135,12 +139,23 @@ class EditCreateModal extends Component {
                     <DialogTitle>{this.state.title} {this.props.subject}: {this.props.entity?.name ?? ""}</DialogTitle>
                     <DialogContent>
                         {this.render_fields()}
+						{this.state.feedback &&
+							<Alert 
+								severity={this.state.feedback.type} 
+								onClose={() => this.setState({feedback:undefined})}>
+								{this.state.feedback.message}
+							</Alert>
+						}
+
+
                         <DialogActions>
+						{this.state.entity._id &&
                             <Box sx={{flex:1}}>
                                 <Button color='error' onClick={() => console.error("DELETE")}>
                                     Delete
                                 </Button>
                             </Box>
+						}
                             <Button onClick={this.props.on_close} color="primary">
                                 Cancel
                             </Button>

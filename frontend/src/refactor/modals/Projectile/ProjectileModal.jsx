@@ -115,6 +115,10 @@ class ProjectileModal extends EditCreateModal{
      * @return {boolean}
      */
     validate() {
+		const messages = []
+		if (this.state.notes === undefined) {
+			messages.push({error:"Must have notes"});
+		}
         return true;
     }
 
@@ -131,8 +135,11 @@ class ProjectileModal extends EditCreateModal{
             let headers = {'Content-Type': "multipart/form-data"}
 
             return http_custom(headers).post(upload_url, payload)
-                .catch(err => console.error("FAILED TO ADD IMAGE", err))
-        } else {
+                .catch((err) => {
+					console.error("FAILED TO ADD IMAGE", err);
+                    this.send_alert({open:true, type:"error", message:`Failed to add image`});
+					})
+        	} else {
             return null;
         }
     }
@@ -152,7 +159,7 @@ class ProjectileModal extends EditCreateModal{
                 .then(() => {
                     if(edit_me.image)
                         this.upload_photo(this.props.site_id,edit_me._id)
-                });
+                })
         })
     }
 
@@ -174,16 +181,14 @@ class ProjectileModal extends EditCreateModal{
                 .then(resp => {
                     let new_point = resp.data.new_ent;
                     this.append_new(new_point);
-                    //this.upload_photo(this.props.site_id,new_point._id)
                 }).catch(err => {
                     console.error(`Failed to add point:`,err);
-                    this.props.send_alert({open:true,type:"error",message:`Failed to add new Poit`})
+                    this.send_alert({open:true,type:"error",message:`Failed to add new Point`})
                 })
-                .then(this.props.send_alert({open:true,type:"success",message:`Successfully added new Point!`}))
-                .finally(this.props.on_close)
+                .then(this.send_alert({open:true,type:"success",message:`Successfully added new Point!`}))
         } else {
             console.error(`${this.props.subject} Invalid!: ${JSON.stringify(add_me)}`)
-            this.props.send_alert({open: true, type: "error", message: `Failed to add new ${this.props.subject}.`})
+            this.send_alert({open: true, type: "error", message: `Failed to add new ${this.props.subject}.`})
         }
 
     }
