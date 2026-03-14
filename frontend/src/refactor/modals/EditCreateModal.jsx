@@ -154,7 +154,7 @@ class EditCreateModal extends Component {
         return(
             <div >
                 {this.state.loaded ?
-                <Dialog open={this.props.open} onClose={this.props.on_close}>
+                <Dialog open={this.props.open} onClose={this.props.on_close} >
                     <DialogTitle>{this.state.title} {this.props.subject}: {this.props.entity?.name ?? ""}</DialogTitle>
                     <DialogContent>
                         {this.state.feedback &&

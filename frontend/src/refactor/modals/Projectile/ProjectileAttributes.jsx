@@ -374,8 +374,8 @@ export class LocationDetails extends Component{
  * Selector for Period/Culture for a point
  */
 export class PeriodCultureSelector extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             cultures:[],

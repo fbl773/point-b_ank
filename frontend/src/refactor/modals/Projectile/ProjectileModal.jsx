@@ -57,17 +57,15 @@ class ProjectileModal extends EditCreateModal{
 
 
     /**
-     * TODO:Gulp
      * Ensures that a projectile point meets the minimum definition of:
      * *
      * @return {boolean}
      */
     validate() {
-        const messages = []
-        if (this.state.notes === undefined) {
-            messages.push({error:"Must have notes"});
-        }
-        return true;
+        const checks = [
+            this.state.notes.length
+        ]
+        return true
     }
 
     /**
@@ -76,16 +74,8 @@ class ProjectileModal extends EditCreateModal{
      */
     render_fields() {
         return(
-            <Stack spacing={2}>
-                <ArtifactImage
-                    update_image={(img) => this.setState({img_payload:img})}
-                    update_entity={(k,v) => this.update_entity(k,v)}
-                    artifact_id={this.state.entity._id}
-                    site_id={this.state.entity.site_id}
-                    hostname={baseURL}
-                    img_name={this.state.entity.image}
-                />
-                <Stack direction='row' width='100%' spacing={2} justifyContent='space-between'>
+            <Stack spacing={2} paddingTop={2}>
+                <Stack direction='row' width='100%' spacing={2} >
                     <PeriodCultureSelector
                         update_entity={(k,v) => this.update_entity(k,v)}
                         culture_id={this.state.entity.culture_id}
@@ -95,16 +85,16 @@ class ProjectileModal extends EditCreateModal{
                         update_entity={(k,v) => this.update_entity(k,v)}
                         value={this.state.entity.description}/>
                 </Stack>
-
+                <LocationDetails
+                    location={this.state.entity.location}
+                    update_entity={(k,v) => this.update_entity(k,v)}
+                />
+                <MaterialSelector
+                    value = {this.state.entity.material_id ?? ""}
+                    update_entity = {(k,v) => this.update_entity(k,v)}
+                />
                 <Stack width='100%' spacing={2}>
-                    <DimensionDetails
-                        update_entity={(k,v) => this.update_entity(k,v)}
-                        value={this.state.entity.dimensions}/>
-                    <MaterialSelector
-                        value = {this.state.entity.material_id ?? ""}
-                        update_entity = {(k,v) => this.update_entity(k,v)}
-                    />
-                    <Stack direction='row' spacing={2}>
+                    <Stack direction='row' spacing={2} >
                         <BladeDetails
                             base_shape={this.state.entity.base_shape}
                             blade_shape={this.state.entity.blade_shape}
@@ -112,11 +102,18 @@ class ProjectileModal extends EditCreateModal{
                             cross_section={this.state.entity.cross_section}
                             update_entity = {(k,v) => this.update_entity(k,v)}
                         />
+                        <ArtifactImage
+                            update_image={(img) => this.setState({img_payload:img})}
+                            update_entity={(k,v) => this.update_entity(k,v)}
+                            artifact_id={this.state.entity._id}
+                            site_id={this.state.entity.site_id}
+                            hostname={baseURL}
+                            img_name={this.state.entity.image}
+                        />
                     </Stack>
-                    <LocationDetails
-                        location={this.state.entity.location}
+                    <DimensionDetails
                         update_entity={(k,v) => this.update_entity(k,v)}
-                    />
+                        value={this.state.entity.dimensions}/>
                 </Stack>
 
             </Stack>
