@@ -63,7 +63,7 @@ class ProjectileModal extends EditCreateModal{
      */
     validate() {
         const checks = [
-            this.state.notes.length
+            this.state.description
         ]
         return true
     }
