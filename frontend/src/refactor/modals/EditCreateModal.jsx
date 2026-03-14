@@ -152,19 +152,19 @@ class EditCreateModal extends Component {
 
     render() {
         return(
-            <div>
+            <div >
                 {this.state.loaded ?
                 <Dialog open={this.props.open} onClose={this.props.on_close}>
                     <DialogTitle>{this.state.title} {this.props.subject}: {this.props.entity?.name ?? ""}</DialogTitle>
                     <DialogContent>
+                        {this.state.feedback &&
+                            <Alert
+                                severity={this.state.feedback.type}
+                                onClose={() => this.setState({feedback:undefined})}>
+                                {this.state.feedback.message}
+                            </Alert>
+                        }
                         {this.render_fields()}
-						{this.state.feedback &&
-							<Alert 
-								severity={this.state.feedback.type} 
-								onClose={() => this.setState({feedback:undefined})}>
-								{this.state.feedback.message}
-							</Alert>
-						}
                         <DialogActions>
                           {!this.props.adding_new && <Box sx={{flex:1}}>
                                 <Button color='error' onClick={() => this.setState({delete_open:true})}>

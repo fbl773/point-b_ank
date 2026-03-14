@@ -55,6 +55,21 @@ class ProjectileModal extends EditCreateModal{
         }
     }
 
+
+    /**
+     * TODO:Gulp
+     * Ensures that a projectile point meets the minimum definition of:
+     * *
+     * @return {boolean}
+     */
+    validate() {
+        const messages = []
+        if (this.state.notes === undefined) {
+            messages.push({error:"Must have notes"});
+        }
+        return true;
+    }
+
     /**
      * Renders the modal with the appropriate sub-components
      * @return {Element}
@@ -106,20 +121,6 @@ class ProjectileModal extends EditCreateModal{
 
             </Stack>
         )
-    }
-
-    /**
-     * TODO:Gulp
-     * Ensures that a projectile point meets the minimum definition of:
-     * *
-     * @return {boolean}
-     */
-    validate() {
-		const messages = []
-		if (this.state.notes === undefined) {
-			messages.push({error:"Must have notes"});
-		}
-        return true;
     }
 
     /**

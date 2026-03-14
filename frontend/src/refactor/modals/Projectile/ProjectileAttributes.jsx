@@ -310,6 +310,7 @@ export class DimensionDetails extends Component{
         return(
             <TextField
                 id={prop_name}
+                type="number"
                 label={label}
                 style={{paddingTop: "8px", paddingBottom: "8px"}}
                 fullWidth
@@ -326,7 +327,7 @@ export class DimensionDetails extends Component{
                 <Stack spacing={2}>
                 {this.edit_dimension('length',0,"Length")}
                 {this.edit_dimension('width',1,"Width")}
-                {this.edit_dimension('height',2,"Height")}
+                {this.edit_dimension('thickness',2,"Thickness")}
                 </Stack>
             </div>
         )
@@ -510,7 +511,10 @@ export class NoteArea extends Component{
 
     constructor(props) {
         super(props);
-        this.state={description:"wat"};
+        this.state={
+            description:"wat",
+            error:false
+        };
     }
 
     componentDidMount() {
@@ -519,7 +523,7 @@ export class NoteArea extends Component{
 
     update_note(e){
         let note = e.target.value;
-        this.setState({description:note},() =>{
+        this.setState({description:note, error:!note.length},() =>{
                 this.props.update_entity("description",note)
         });
     }
@@ -527,6 +531,8 @@ export class NoteArea extends Component{
     render(){
         return(
                 <TextField
+                    error={this.state.error}
+                    helperText={this.state.error ? "Artifact must have notes" : ""}
                     sx={{height:'100%'}}
                     fullWidth
                     minRows={5}
