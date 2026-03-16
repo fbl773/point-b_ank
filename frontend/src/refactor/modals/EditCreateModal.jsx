@@ -55,6 +55,12 @@ class EditCreateModal extends Component {
 
 	send_alert(details){
 		this.setState({feedback:details});
+
+		if(this.props.send_alert)
+			this.props.send_alert(details)
+	
+		if(details.type !== 'error')
+			this.props.on_close()
 	}
 
     //Helpers
@@ -117,11 +123,11 @@ class EditCreateModal extends Component {
       http.delete(`${this.props.url}/${delete_me._id}`)
         .then(_resp => {
           this.props.on_delete(delete_me._id)
-          this.props.on_close();
-          console.log(`Deleted ${this.props.subject} - ${delete_me._id}`)
+          this.send_alert({open: true, type: "success", message: `Successfully deleted ${this.props.subject} - ${delete_me._id}`})
         })
         .catch(err => {
-          console.error(`Failed to delete ${this.props.subject} - ${delete_me._id}: `, err)
+          console.error(``, err)
+          this.send_alert({open: true, type: "error", message: `Failed to delete ${this.props.subject} - ${delete_me._id}: `})
         })
         .finally(() => {
           this.setState({delete_open:false})

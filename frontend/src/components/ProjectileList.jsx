@@ -14,7 +14,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import {useContext} from "react";
 import {UserContext} from "../context/userContext";
-
+import Alert from "@mui/material/Alert";
 import {sortData} from "../sortUtils.js";
 import ProjectileCard from "../refactor/ProjectileCard.jsx";
 import ProjectileModal from "../refactor/modals/Projectile/ProjectileModal.jsx";
@@ -89,6 +89,7 @@ export default function ProjectileList({query, siteId, siteName, sortValue}) {
     const [openView, setOpenView] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [openError, setOpenError] = useState(false);
+	const [feedback, setFeedback] = useState(null);
     const [projectilePointId, setProjectilePointId] = useState("");
     const [point, setPoint] = useState(undefined)
     const [data, setData] = useState([]);
@@ -160,10 +161,21 @@ export default function ProjectileList({query, siteId, siteName, sortValue}) {
 
     return (
         <div>
+			<Box sx={{ flexGrow: 1, p: 3 }}>
+				{feedback && (
+					<Alert
+						severity={feedback.type ?? "error"}
+						onClose={() => setFeedback(null)}
+						style={{ marginBottom: "20px" }}
+					>
+						{feedback.message}
+					</Alert>
+				)}
+			 </Box>
             <Item variant="outlined" sx={{mb: "40px"}}>
                 <Grid style={{padding: 30}}>
                     <Box display="flex">
-                        <Grid container spacing={5}>
+				        	<Grid container spacing={5}>
                             {user && (
                                 <Grid item xs={12} sm={6} md={3}>
                                     <ButtonBase onClick={handleClick1}>
@@ -209,6 +221,7 @@ export default function ProjectileList({query, siteId, siteName, sortValue}) {
                         append_new={(ent) => data.push(ent)}
                         open={openAdd}
                         on_close={() => setOpenAdd(false)}
+						send_alert={(f) => setFeedback(f)}
                     />
                 )}
             </div>
