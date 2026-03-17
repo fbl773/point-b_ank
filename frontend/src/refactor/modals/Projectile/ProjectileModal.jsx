@@ -185,6 +185,7 @@ class ProjectileModal extends EditCreateModal{
                     this.send_alert({open:true,type:"error",message:`Failed to add new Point`})
                 })
                 .then(this.send_alert({open:true,type:"success",message:`Successfully added new Point!`}))
+				.finally(this.props.on_close)
         } else {
             console.error(`${this.props.subject} Invalid!: ${JSON.stringify(add_me)}`)
             this.send_alert({open: true, type: "error", message: `Failed to add new ${this.props.subject}.`})

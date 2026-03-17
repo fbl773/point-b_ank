@@ -7,14 +7,16 @@ import {
     Card,
     CardContent,
     ButtonBase,
+	Button,
     Typography,
     Box,
     Paper,
+	Alert,
+	IconButton
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import {useContext} from "react";
 import {UserContext} from "../context/userContext";
-import Alert from "@mui/material/Alert";
 import {sortData} from "../sortUtils.js";
 import ProjectileCard from "../refactor/ProjectileCard.jsx";
 import ProjectileModal from "../refactor/modals/Projectile/ProjectileModal.jsx";
@@ -84,7 +86,7 @@ const ArtifactList = (props) => {
  * @returns {JSX.Element} ProjectileList React component
  */
 // eslint-disable-next-line react/prop-types
-export default function ProjectileList({query, siteId, siteName, sortValue}) {
+export default function ProjectileList({title,query, siteId, siteName, sortValue}) {
     const [openAdd, setOpenAdd] = useState(false);
     const [openView, setOpenView] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
@@ -94,15 +96,8 @@ export default function ProjectileList({query, siteId, siteName, sortValue}) {
     const [point, setPoint] = useState(undefined)
     const [data, setData] = useState([]);
     const {user} = useContext(UserContext);
-    /**
-     * Toggle add projectile modal visibility to true
-     */
-    const handleClick1 = () => {
-        setOpenAdd(true);
-        log.info("Add card clicked!");
-    };
-
-    const handleDelete = (id) => {
+    
+	const handleDelete = (id) => {
         let updated = data.filter((item) => item._id !== id);
         setData(updated);
     }
@@ -145,22 +140,27 @@ export default function ProjectileList({query, siteId, siteName, sortValue}) {
         if (data.length <= 0) {
             console.log("Getting the data...")
             http.get(`sites/${siteId}/points`).then((res) => {
-                console.log("Got points again :)", res.data);
                 setData(res.data);
             }).catch(err => {
                 console.error(err);
                 setData([])
             });
-        } else {
-            console.log("Did not get the data...", data.length);
-        }
+        } 
         const sortedData = sortData(data, sortValue);
         setData(sortedData);
 
     }, [sortValue]);
 
     return (
-        <div>
+        <Grid item xs={12}>
+			<Grid item>
+			<Typography variant="body1" sx={{ fontWeight: "medium" }}>
+				{title}
+			<IconButton onClick={() => setOpenAdd(true)} color="primary">
+				<AddIcon style={{fontSize: 20}}/>
+			</IconButton>
+			</Typography>
+			</Grid>
 			<Box sx={{ flexGrow: 1, p: 3 }}>
 				{feedback && (
 					<Alert
@@ -176,28 +176,7 @@ export default function ProjectileList({query, siteId, siteName, sortValue}) {
                 <Grid style={{padding: 30}}>
                     <Box display="flex">
 				        	<Grid container spacing={5}>
-                            {user && (
-                                <Grid item xs={12} sm={6} md={3}>
-                                    <ButtonBase onClick={handleClick1}>
-                                        <Card
-                                            sx={{
-                                                minWidth: "12rem",
-                                                minHeight: "12rem",
-                                                alignContent: "center",
-                                            }}
-                                        >
-                                            <CardContent style={{textAlign: "center"}}>
-                                                <AddIcon style={{fontSize: 80, color: "lightgrey"}}/>
-                                                <Typography variant="body2">
-                                                    Add Projectile Point
-                                                </Typography>
-                                                {/*<CreateArtifact style={{ fontSize: 80, color: "lightgrey" }} />*/}
-                                            </CardContent>
-                                        </Card>
-                                    </ButtonBase>
-                                </Grid>
-                            )}
-                            {data.length ?
+                            {user && data.length ?
                                 <ArtifactList
                                     query={query}
                                     data={data}
@@ -225,6 +204,6 @@ export default function ProjectileList({query, siteId, siteName, sortValue}) {
                     />
                 )}
             </div>
-        </div>
+        </Grid>
     );
 }

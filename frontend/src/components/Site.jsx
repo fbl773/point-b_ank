@@ -262,17 +262,13 @@ const Site = () => {
 					send_alert={(props) => console.log(JSON.stringify(props))}
 				/>
 			}
-			<Grid item xs={12}>
-				<Typography variant="body1" sx={{ fontWeight: "medium" }}>
-					Projectile Points
-				</Typography>
-				<ProjectileList
-					query={searchValue}
-					siteId={siteID}
-					siteName={siteName}
-					sortValue={sortValue}
-				/>
-			</Grid>
+			<ProjectileList
+				title={"Projectile Points"}
+				query={searchValue}
+				siteId={siteID}
+				siteName={siteName}
+				sortValue={sortValue}
+			/>
 			<div>
 				<DeleteConfirmDialog
 					open_condition={openAlertDelete}

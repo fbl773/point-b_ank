@@ -59,8 +59,6 @@ class EditCreateModal extends Component {
 		if(this.props.send_alert)
 			this.props.send_alert(details)
 	
-		if(details.type !== 'error')
-			this.props.on_close()
 	}
 
     //Helpers
