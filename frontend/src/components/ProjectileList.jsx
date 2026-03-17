@@ -39,6 +39,7 @@ const ArtifactCard = (props) => (
         {/*This section is for displaying all the found artifacts*/}
         <ProjectileCard
             item={props.item}
+			send_alert={props.send_alert}
             site_name={props.siteName}
             onDelete={props.onDelete}
         />
@@ -68,6 +69,7 @@ const ArtifactList = (props) => {
                 <ArtifactCard
                     item={item}
                     siteName={props.siteName}
+					send_alert={props.send_alert}
                     onDelete={props.onDelete}
                     key={item._id}/>
             ))
@@ -181,6 +183,7 @@ export default function ProjectileList({title,query, siteId, siteName, sortValue
                                     query={query}
                                     data={data}
                                     siteName={siteName}
+									send_alert={(f) => setFeedback(f)}
                                     onDelete={handleDelete}
                                     onClick={(p) => setPoint(p)}/>:
                                 <Typography variant="body2">No Points yet...</Typography>
