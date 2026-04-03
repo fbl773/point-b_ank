@@ -40,7 +40,7 @@ export function get_payload(req:Request):TokenData{
 /**
  * Performs the actual authentication
  * @overview pulls the token from the incoming request and checks its validity
- * @param req:AutorizedRequest - a requestthat has an authorization header field
+ * @param req {AutorizedRequest} - a request that has an authorization header field
  * @param admin_required
  */
 async function do_authenticate(req:AuthorizedRequest,admin_required:boolean = false):Promise<void>{

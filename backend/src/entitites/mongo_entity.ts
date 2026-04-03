@@ -4,13 +4,16 @@ export interface IMongo_Entity{
 }
 
 export interface IHas_Image extends IMongo_Entity{
-    image:string
+    image:string //List of strings for multiple images?
 }
 
 export interface IArtifact extends IHas_Image{
+    //Relations
     site_id:Types.ObjectId,
     material_id:Types.ObjectId,
     culture_id:Types.ObjectId,
-    image_path:string,
-    dimensions:[],
+    period_id:Types.ObjectId,
+    //Attributes
+    dimensions:[number],
+    location:string
 }

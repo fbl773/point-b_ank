@@ -14,4 +14,14 @@ const http = axios.create({
 	withCredentials: true,
 });
 
+export const http_custom = (custom_headers) => {
+	custom_headers["Authorization"] = `Bearer ${localStorage.getItem("token") || "NONE"}`
+
+	return axios.create({
+		headers: custom_headers,
+		baseURL: baseURL,
+		withCredentials: true
+	});
+}
+
 export default http;

@@ -18,11 +18,10 @@ const cultureSchema = new Schema<ICulture,CultureModel>({
     end:{type:Number,required:true,min:0},
 });
 
-/**
- * Cascade delete related cultures
- */
+//Triggers
 
 /**
+ * Cascade delete related cultures
  * On delete, update points to reflect unknown culture
  */
 cultureSchema.pre("findOneAndDelete", async function(next){

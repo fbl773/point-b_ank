@@ -25,6 +25,7 @@ import { UserContext } from "../context/userContext.jsx";
  * @returns {JSX.Element} Catalogue React component
  */
 const Catalogue = () => {
+	const [catalogueId,setCatalogueId] = useState("");
 	const [catalogueName, setCatalogueName] = useState("");
 	const [catalogueDescription, setCatalogueDescription] = useState("");
 
@@ -40,18 +41,33 @@ const Catalogue = () => {
 	 * Fetch default catalogue initialized in database
 	 */
 	useEffect(() => {
-		async function fetchCatalogue() {
-			try {
-				const response = await http.get("/catalogues/1");
-				log.info("Default catalogue: ", response.data);
-				setCatalogueName(response.data.name);
-				setCatalogueDescription(response.data.description);
-			} catch (error) {
-				log.error("Error fetching default catalogue: ", error);
-			}
+		async function bad_design(){
+			let default_cat = {
+				_id: undefined,
+				name: "PLACEHOLDER",
+				description: "PLACEHOLDER_DESC"
+			};
+			//Try to get the catalogues
+			await http.get("/catalogues")
+				.then(cats => {
+					if (cats.status === 200 && cats.data.length === 0) {
+						//If we have no catalogues, then
+						default_cat.name = "Default Catalogue";
+						default_cat.description = "This is the default catalogue";
+						http.post("/catalogues", default_cat)
+							.then(new_cat =>  default_cat = new_cat)
+							.catch(err => console.error("Failed to create default catalogue", err));
+					} else {
+						let fetched_cat = cats.data[0];
+						default_cat = fetched_cat;
+					}
+					setCatalogueId(default_cat._id);
+					setCatalogueName(default_cat.name);
+					setCatalogueDescription(default_cat.description);
+				})
+				.catch(err => console.error("failed to fetch default catalogue: ", err));
 		}
-
-		fetchCatalogue();
+		bad_design();
 	}, [openEdit]);
 
 	/**
@@ -181,7 +197,7 @@ const Catalogue = () => {
 				<CatalogueModal
 					openEdit={openEdit}
 					setOpenEdit={setOpenEdit}
-					catalogueId={1}
+					catalogueId={catalogueId}
 					catalogueName={catalogueName}
 				/>
 			)}
@@ -190,7 +206,7 @@ const Catalogue = () => {
 					Sites
 				</Typography>
 				{/* Note: this shows all the sites attached to the catalogue oldest first(as of March 9th, 2023) */}
-				<SiteList query={searchValue} sortValue={sortValue} />
+				<SiteList query={searchValue} sortValue={sortValue} host_catalogue_id={catalogueId} />
 			</Grid>
 		</BaseLayout>
 	);

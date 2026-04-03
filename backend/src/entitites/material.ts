@@ -16,7 +16,10 @@ const materialSchema = new Schema<IMaterial,MaterialModal>({
     description:{type:String, required:false},
     artifact_type:{type:String,required:true,enum:["lithic","faunal","ceramic","other"]}
 
-},{timestamps:true});
+});
+
+
+//Triggers
 
 /* Cascade update points of this material */
  materialSchema.pre("findOneAndDelete", async function(next){

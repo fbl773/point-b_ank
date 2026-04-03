@@ -38,6 +38,7 @@ const SettingsPage = () => {
 	const [editingCatalogueName, setEditingCatalogueName] = useState(false);
 	const [newCatalogueName, setNewCatalogueName] = useState("");
 	const [userInfo, setUserInfo] = useState({ username: "", role: "", id: "" });
+	const [catalogueId,setCatalogueId] = useState("");
 
 	// define modals
 	const [changeUsernameModalVisible, setChangeUsernameModalVisible] =
@@ -64,10 +65,12 @@ const SettingsPage = () => {
 	// fetch catalogue data from API
 	useEffect(() => {
 		http
-			.get("/catalogues/1") // NOTE: HARDCODED (ONLY 1 CATALOGUE)
+			.get("/catalogues") // NOTE: HARDCODED (ONLY 1 CATALOGUE)
 			.then((response) => {
-				setCatalogueName(response.data.name);
-				setDescriptionName(response.data.description);
+				let default_cat = response.data[0];
+				setCatalogueName(default_cat.name);
+				setDescriptionName(default_cat.description);
+				setCatalogueId(default_cat._id)
 			})
 			.catch((error) => {
 				log.error("Error fetching Catalogue data:", error);
@@ -77,13 +80,13 @@ const SettingsPage = () => {
 	// fetch user data from API
 	useEffect(() => {
 		http
-			.get("/users")
+			.get("/verify")
 			.then((response) => {
 				const userData = response.data;
 				setUserInfo({
 					username: userData.username,
 					role: userData.role,
-					id: userData.id,
+					id: userData._id,
 				});
 			})
 			.catch((error) => {
@@ -131,7 +134,7 @@ const SettingsPage = () => {
 
 	const handleSaveCatalogueName = () => {
 		http
-			.put("/catalogues/1", {
+			.put(`/catalogues/${catalogueId}`, {
 				name: newCatalogueName,
 				description: Cataloguedescription,
 			})
@@ -151,7 +154,7 @@ const SettingsPage = () => {
 
 	const handleSaveCatalogueDescription = () => {
 		http
-			.put("/catalogues/1", {
+			.put(`/catalogues/${catalogueId}`, {
 				name: catalogueName,
 				description: newCatalogueDescription,
 			})
@@ -168,6 +171,13 @@ const SettingsPage = () => {
 	const closeChangeUsernameModal = () => {
 		setChangeUsernameModalVisible(false);
 	};
+
+	// Updates the username on successful uname change
+	const handleUpdateUsername = (uname) =>{
+		let mut_user = userInfo;
+		mut_user.username=uname;
+		setUserInfo(mut_user)
+	}
 
 	const openChangeUsernameModal = () => {
 		setChangeUsernameModalVisible(true);
@@ -332,7 +342,7 @@ const SettingsPage = () => {
 								</ListItem>
 							</List>
 							<Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-								<Button variant="outlined" sx={{ marginTop: "2rem" }}>
+								<Button variant="outlined" sx={{ marginTop: "2rem" }} onClick={() => alert("not implemented")}>
 									Manage Roles
 								</Button>
 							</Box>
@@ -478,6 +488,7 @@ const SettingsPage = () => {
 				{/* Section for Modals -- note positioning is inside <Box> */}
 				<ChangeUsernameModal
 					modalVisible={changeUsernameModalVisible}
+					updateUsername={handleUpdateUsername}
 					closeModal={closeChangeUsernameModal}
 				/>
 				<ChangePasswordModal

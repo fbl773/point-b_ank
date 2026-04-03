@@ -17,14 +17,18 @@ function create<T extends IMongo_Entity>(model:Model<T>,
     router.post("/",
         authenticate,
         (req:Request,res:Response,_next:NextFunction) => {console.log("TODO:Validation RULES"); _next();}, //This seems silly actually their use could be handled on client side
-        (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE",entity_name); _next()},
+        (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE",entity_name,_req.body); _next()},
         (req: Request, res: Response) => {
-            let new_entity: T = req.body;
-            model.create(new_entity)
-                .then((nent:T) => res.status(201).send(
+            let new_ent = req.body;
+            let toUnset = Object.entries(new_ent).filter(([_k,v]) => v === "" || v === null);
+            toUnset.forEach(([k,_v])=>{
+                delete new_ent[k];
+            })
+            model.create(new_ent)
+                .then((new_ent) => res.status(201).send(
                     {
                         message:`Created new ${entity_name}`,
-                        id:nent._id
+                        new_ent
                     }))
                 .catch(err => res.status(404).send({message:`Failed to create ${entity_name}`,err}))
         }
@@ -50,7 +54,7 @@ function read_all<T>(model:Model<T>,
         (_req:Request,_res:Response,_next:Function) => {console.log("TODO: VALIDATE",entity_name); _next()},
         (req: Request, res: Response) => {
             model.find({})
-                .then((entities) => res.status(201).send(entities))
+                .then((entities) => res.status(200).send(entities))
                 .catch(err => res.status(404).send({message:`Failed to find${entity_name}s`,err}))
         }
     );
@@ -101,6 +105,12 @@ function update_one<T>(model:Model<T>,
         (_req:Request,_res:Response,_next:Function) => {console.log(`TODO: VALIDATE ${entity_name}`); _next()},
         (req: Request, res: Response) => {
             let new_ent = req.body;
+            let toUnset = Object.entries(new_ent).filter(([_k,v]) => v === "" || v === null);
+            toUnset.forEach(([k,_v])=>{
+                delete new_ent[k];
+            })
+            let unset = Object.fromEntries(toUnset);
+            new_ent.$unset=unset;
             model.findOneAndUpdate({_id:req.params.id},new_ent,{new:true,runValidators:true})
                 .then((updated) => updated ?
                     res.status(200).send( { message:`Successfully updated ${entity_name} ${req.params.id}`, updated}):

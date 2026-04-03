@@ -1,5 +1,4 @@
 import { useState } from "react";
-import log from "../logger.js";
 import http from "../../http.js";
 
 // MUI
@@ -39,7 +38,7 @@ function LoginModal({ modalVisible, closeModal }) {
 
 			localStorage.setItem("token",response.data.token);
 
-			if (response.status === 200) {
+			if (response.status === 202) {
 				// Login successful
 				alert("Login successful");
 				closeModal(); // Close the modal after successful login

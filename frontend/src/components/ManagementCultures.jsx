@@ -18,10 +18,9 @@ import { DataGrid, GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import log from "../logger.js";
-
-import AddCultureDialog from "./AddCultureDialog";
 import Sidebar from "./Sidebar";
 import RelationsCultureDialog from "./RelationsCultureDialog.jsx";
+import CultureModal from "./CultureModal.jsx";
 
 const apiUrlCultures = "/cultures"; // API endpoint for fetching and deleting cultures
 
@@ -42,6 +41,7 @@ export default function ManagementCultures() {
 		const fetchCultures = async () => {
 			try {
 				const response = await http.get(apiUrlCultures);
+				response.data.map(cult => cult["id"] = cult._id)
 				setRows(response.data); // Set fetched cultures to the grid
 			} catch (error) {
 				log.error("Error fetching cultures:", error);
@@ -58,11 +58,11 @@ export default function ManagementCultures() {
 	// Handler for confirming culture deletion
 	const handleConfirmDelete = async () => {
 		if (deleteConfirmation.culture) {
-			const cultureId = deleteConfirmation.culture.id;
+			const cultureId = deleteConfirmation.culture._id;
 			log.info(`Attempting to delete culture with ID: ${cultureId}`);
 			try {
 				await http.delete(`${apiUrlCultures}/${cultureId}`);
-				setRows(rows.filter((row) => row.id !== cultureId)); // Remove deleted culture from state
+				setRows(rows.filter((row) => row._id !== cultureId)); // Remove deleted culture from state
 				setAlert({
 					open: true,
 					type: "success",
@@ -102,7 +102,9 @@ export default function ManagementCultures() {
 
 		try {
 			const response = await http.post(apiUrlCultures, newCulture);
-			setRows([...rows, response.data]); // Add the new culture to the grid
+			let new_cult = response.data.new_ent;
+			new_cult["id"] = new_cult._id;
+			setRows([...rows, new_cult]); // Add the new culture to the grid
 			setAlert({
 				open: true,
 				type: "success",
@@ -137,7 +139,7 @@ export default function ManagementCultures() {
 			valueGetter: (params) => {
 				return params.row.period
 					? `${params.row.period.name} (${params.row.period.start}-${params.row.period.end})`
-					: "No associated period";
+					: "No associated period"; //TODO: #32
 			},
 		},
 		{
@@ -238,10 +240,25 @@ export default function ManagementCultures() {
 						toolbar: user ? GridToolbar : undefined,
 					}}
 				/>
-				<AddCultureDialog
+				{/*<AddCultureDialog*/}
+				{/*	open={dialogOpen}*/}
+				{/*	onClose={() => setDialogOpen(false)}*/}
+				{/*	onSave={handleSaveNewCulture}*/}
+				{/*/>*/}
+				<CultureModal
 					open={dialogOpen}
-					onClose={() => setDialogOpen(false)}
-					onSave={handleSaveNewCulture}
+					on_close={() => setDialogOpen(false)}
+					adding_new={true}
+					append_culture={(new_ent) => {
+						new_ent["id"] = new_ent._id; //set id field for MUI
+						let old_rows = this.rows
+						this.setRows([...old_rows, new_ent])
+					}}
+					on_success={() => {
+						console.log("Successfully added culture");
+						setDialogOpen(false);
+						handle
+					}}
 				/>
 				<RelationsCultureDialog
 					open={relationsDialogOpen}
