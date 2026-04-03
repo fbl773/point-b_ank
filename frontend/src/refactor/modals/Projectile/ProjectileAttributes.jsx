@@ -293,7 +293,7 @@ export class DimensionDetails extends Component{
      */
     edit_dimensions(idx,dimension){
         let dimensions = this.state.dimensions
-        dimensions[idx]=dimension;
+        dimensions[idx]= parseInt(dimension,10) || 0;
         this.setState({dimensions:dimensions});
         this.props.update_entity("dimensions",dimensions);
     }

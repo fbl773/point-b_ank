@@ -35,7 +35,7 @@ app.use(bodyParser.json());
 
 // CORS
 app.use(cors({
-    origin:"http://localhost:8080",
+    origin:"http://127.0.0.1:8080",
     methods:["POST","GET","DELETE","PATCH","PUT"],
     credentials:true
 }));
