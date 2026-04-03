@@ -92,6 +92,8 @@ class EditCreateModal extends Component {
                     this.send_alert({open:true,type:"error",message:`Failed to add new ${this.props.subject}`})
                 })
                 .then(this.send_alert({open:true,type:"success",message:`Successfully added new ${this.props.subject}`}))
+                .finally(this.props.on_close);
+
         } else {
             console.error(`${this.props.subject} Invalid!`)
             this.send_alert({open: true, type: "error", message: `Failed to add new ${this.props.subject}.`})
@@ -101,7 +103,6 @@ class EditCreateModal extends Component {
     async edit_entity(){
         let edit_me = this.state.entity;
         if (this.validate()) {
-            console.log("Shipping: ", edit_me)
             await http.put(`${this.props.url}/${edit_me._id}`, edit_me)
                 .then(edited_ent => this.setState({entity: edited_ent}))
                 .then(this.send_alert({open: true, type: "success", message: `${this.props.subject} successfully edited.`}))
