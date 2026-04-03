@@ -12,4 +12,5 @@ crud_factory.read_one<IProjectilePoint>(ProjectilePoint,projectile_point_router,
 crud_factory.update_one<IProjectilePoint>(ProjectilePoint,projectile_point_router,authenticate,"projectile_point");
 crud_factory.delete_one<IProjectilePoint>(ProjectilePoint,projectile_point_router,authenticate,"projectile_point");
 
+
 export default projectile_point_router;

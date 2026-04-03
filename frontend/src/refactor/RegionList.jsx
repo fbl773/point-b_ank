@@ -2,8 +2,8 @@ import React, {Component} from "react";
 import http from "../../http.js";
 import {FormControl, Grid, InputLabel, MenuItem, Select} from "@mui/material";
 import RegionListItem from "./RegionListItem.jsx";
-import DeleteConfirmDialog from "./DeleteConfirmDialog.jsx";
-import RegionModal from "./RegionModal.jsx";
+import DeleteConfirmDialog from "./modals/DeleteConfirmDialog.jsx";
+import RegionModal from "./modals/RegionModal.jsx";
 
 /**
  * Generates a dropdown list or Regions that also manages their deletion
@@ -50,7 +50,7 @@ class RegionList extends Component{
 
     /**
      * Facilitates opening the deletion dialogue
-     * @param reg:Region - the region to delete
+     * @param reg {Region} - the region to delete
      */
     confirm_reg_delete = (reg) => {
         this.setState({del_region:reg,show_del:true})
@@ -59,7 +59,7 @@ class RegionList extends Component{
 
     /**
      * Actually deletes the region of the supplied ID
-     * @param reg_id:String the ID of the region to delete
+     * @param reg_id {String} the ID of the region to delete
      */
     delete_region = (reg_id) => {
         http.delete(`/regions/${reg_id}`)
@@ -77,7 +77,7 @@ class RegionList extends Component{
 
     /**
      * Sets a region as selected
-     * @param reg:Region The region to set as selected
+     * @param reg {Region} The region to set as selected
      */
     select_region = (reg) => {
         let reg_name = reg.name ?? "";
@@ -87,7 +87,6 @@ class RegionList extends Component{
     }
 
     append_region = (reg) => {
-        console.log("APpending: ",reg)
         let new_regions = this.state.regions;
         new_regions.push(reg);
         this.setState({regions:new_regions,selected_region:reg.name});
