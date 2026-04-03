@@ -37,6 +37,7 @@ class EditCreateModal extends Component {
             },
             loaded:false,
             delete_open:false,
+			error:false
         }
     }
 
@@ -67,11 +68,11 @@ class EditCreateModal extends Component {
      * @param key {string} the name of the field to update on the entity
      * @param value {any} the value to update it to
      */
-    update_entity(key,_value){
+    update_entity(key,_value,error = false){
         let value = _value ?? "";
         let updated_entity= this.state.entity;
         updated_entity[key] = value;
-        this.setState({entity:updated_entity});
+        this.setState({entity:updated_entity, error:error});
     }
 
 
@@ -176,10 +177,14 @@ class EditCreateModal extends Component {
                                     Delete
                                 </Button>
                             </Box>}
-                            <Button onClick={this.props.on_close} color="primary">
+                            <Button onClick={this.props.on_close} 
+							color="primary">
                                 Cancel
                             </Button>
-                            <Button onClick={this.handle_submit} color="primary">
+                            <Button 
+								onClick={this.handle_submit} 
+								disabled = {this.state.error}
+								color="primary">
                                 Save
                             </Button>
                         </DialogActions>

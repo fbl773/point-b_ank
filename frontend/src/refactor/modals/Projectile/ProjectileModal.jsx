@@ -82,7 +82,7 @@ class ProjectileModal extends EditCreateModal{
                         period_id={this.state.entity.period_id}
                     />
                     <NoteArea
-                        update_entity={(k,v) => this.update_entity(k,v)}
+                        update_entity={(k,v,e) => this.update_entity(k,v,e)}
                         value={this.state.entity.description}/>
                 </Stack>
                 <LocationDetails

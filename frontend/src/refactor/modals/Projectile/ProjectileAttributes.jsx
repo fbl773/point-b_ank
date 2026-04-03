@@ -512,7 +512,7 @@ export class NoteArea extends Component{
     constructor(props) {
         super(props);
         this.state={
-            description:"wat",
+            description:"",
             error:false
         };
     }
@@ -524,7 +524,7 @@ export class NoteArea extends Component{
     update_note(e){
         let note = e.target.value;
         this.setState({description:note, error:!note.length},() =>{
-                this.props.update_entity("description",note)
+                this.props.update_entity("description",note,!note.length)
         });
     }
 
