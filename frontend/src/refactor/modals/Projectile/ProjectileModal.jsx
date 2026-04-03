@@ -1,5 +1,4 @@
 import EditCreateModal from "../EditCreateModal.jsx";
-import { Grid, } from "@mui/material";
 import React from "react";
 import {
     ArtifactImage,
@@ -10,6 +9,7 @@ import {
     PeriodCultureSelector
 } from "./ProjectileAttributes.jsx";
 import http, {http_custom,baseURL} from "../../../../http.js";
+import { Stack } from "@mui/system";
 
 
 /**
@@ -19,27 +19,27 @@ class ProjectileModal extends EditCreateModal{
 
     constructor(props) {
         super(props);
-        this.state.entity = {
-            image:"",
-            description:"",
-            culture_id:"",
-            period_id:"",
-            material_id:"",
-            site_id:"",
-            blade_shape:"",
-            base_shape:"",
-            hafting_shape:"",
-            cross_section:"",
-            location:"",
-            dimensions:[0,0,0]
+        this.state = {
+            ...this.state,
+            entity: {
+                image:"",
+                description:"",
+                culture_id:"",
+                period_id:"",
+                material_id:"",
+                site_id:"",
+                blade_shape:"",
+                base_shape:"",
+                hafting_shape:"",
+                cross_section:"",
+                location:"",
+                dimensions:[0,0,0]
         }
-
-        //Prefilled values
-        //this.state.periods = []; //TODO: investigate switching periods/cultures as a parameter to the relevant components
-        //this.state.cultures = [];
+    }
 
         //Image needs
         this.state.img_payload = {};
+
     }
 
     /**
@@ -49,10 +49,23 @@ class ProjectileModal extends EditCreateModal{
         super.componentDidMount();
         if(this.props.adding_new){
             this.update_entity("site_id",this.props.site_id)
-            this.setState({title:`${this.props.site_name}/**NEW**`});
+            this.setState({title:`${this.props.site_name}/NEW`});
         }else{
             this.setState({title:`${this.props.site_name}/${this.props.entity._id}`,loaded:true});
         }
+    }
+
+
+    /**
+     * Ensures that a projectile point meets the minimum definition of:
+     * *
+     * @return {boolean}
+     */
+    validate() {
+        const checks = [
+            this.state.description
+        ]
+        return true
     }
 
     /**
@@ -61,54 +74,50 @@ class ProjectileModal extends EditCreateModal{
      */
     render_fields() {
         return(
-            <Grid container spacing={2}>
-                <ArtifactImage
-                    update_image={(img) => this.setState({img_payload:img})}
-                    update_entity={(k,v) => this.update_entity(k,v)}
-                    artifact_id={this.state.entity._id}
-                    site_id={this.state.entity.site_id}
-                    hostname={baseURL}
-                    img_name={this.state.entity.image}
-                />
-                {/*{this.title_area()}*/}
-                <PeriodCultureSelector
-                    update_entity={(k,v) => this.update_entity(k,v)}
-                    culture_id={this.state.entity.culture_id}
-                    period_id={this.state.entity.period_id}
-                />
-                <Grid item s={5}>
-                    <DimensionDetails
+            <Stack spacing={2} paddingTop={2}>
+                <Stack direction='row' width='100%' spacing={2} >
+                    <PeriodCultureSelector
                         update_entity={(k,v) => this.update_entity(k,v)}
-                        value={this.state.entity.dimensions}/>
-                    <MaterialSelector
-                        value = {this.state.entity.material_id ?? ""}
-                        update_entity = {(k,v) => this.update_entity(k,v)}
+                        culture_id={this.state.entity.culture_id}
+                        period_id={this.state.entity.period_id}
                     />
-                </Grid>
-                <BladeDetails
-                    base_shape={this.state.entity.base_shape}
-                    blade_shape={this.state.entity.blade_shape}
-                    hafting_shape={this.state.entity.hafting_shape}
-                    cross_section={this.state.entity.cross_section}
-                    update_entity = {(k,v) => this.update_entity(k,v)}
-                />
-                <NoteArea
-                    update_entity={(k,v) => this.update_entity(k,v)}
-                    value={this.state.entity.description}/>
+                    <NoteArea
+                        update_entity={(k,v,e) => this.update_entity(k,v,e)}
+                        value={this.state.entity.description}/>
+                </Stack>
                 <LocationDetails
                     location={this.state.entity.location}
                     update_entity={(k,v) => this.update_entity(k,v)}
                 />
-            </Grid>
-        )
-    }
+                <MaterialSelector
+                    value = {this.state.entity.material_id ?? ""}
+                    update_entity = {(k,v) => this.update_entity(k,v)}
+                />
+                <Stack width='100%' spacing={2}>
+                    <Stack direction='row' spacing={2} >
+                        <BladeDetails
+                            base_shape={this.state.entity.base_shape}
+                            blade_shape={this.state.entity.blade_shape}
+                            hafting_shape={this.state.entity.hafting_shape}
+                            cross_section={this.state.entity.cross_section}
+                            update_entity = {(k,v) => this.update_entity(k,v)}
+                        />
+                        <ArtifactImage
+                            update_image={(img) => this.setState({img_payload:img})}
+                            update_entity={(k,v) => this.update_entity(k,v)}
+                            artifact_id={this.state.entity._id}
+                            site_id={this.state.entity.site_id}
+                            hostname={baseURL}
+                            img_name={this.state.entity.image}
+                        />
+                    </Stack>
+                    <DimensionDetails
+                        update_entity={(k,v) => this.update_entity(k,v)}
+                        value={this.state.entity.dimensions}/>
+                </Stack>
 
-    /**
-     * TODO:Gulp
-     * @return {boolean}
-     */
-    validate() {
-        return true;
+            </Stack>
+        )
     }
 
     /**
@@ -124,11 +133,13 @@ class ProjectileModal extends EditCreateModal{
             let headers = {'Content-Type': "multipart/form-data"}
 
             return http_custom(headers).post(upload_url, payload)
-                .catch(err => console.error("FAILED TO ADD IMAGE", err))
-        } else {
+                .catch((err) => {
+					console.error("FAILED TO ADD IMAGE", err);
+                    this.send_alert({open:true, type:"error", message:`Failed to add image`});
+					})
+        	} else {
             return null;
         }
-
     }
 
     /**
@@ -139,14 +150,14 @@ class ProjectileModal extends EditCreateModal{
      */
     async edit_entity(){
         let edit_me = this.state.entity;
-        if (edit_me.material_id === ""){
-            delete edit_me.material_id;
-        }
+        edit_me.image = this.state.img_payload == null ? "": this.state.entity.image;
+
         this.setState({entity:edit_me}, () => {
             super.edit_entity()
                 .then(() => {
-                    this.upload_photo(this.props.site_id,edit_me._id)
-                });
+                    if(edit_me.image)
+                        this.upload_photo(this.props.site_id,edit_me._id)
+                })
         })
     }
 
@@ -171,13 +182,13 @@ class ProjectileModal extends EditCreateModal{
                     this.upload_photo(this.props.site_id,new_point._id)
                 }).catch(err => {
                     console.error(`Failed to add point:`,err);
-                    this.props.send_alert({open:true,type:"error",message:`Failed to add new Poit`})
+                    this.send_alert({open:true,type:"error",message:`Failed to add new Point`})
                 })
-                .then(this.props.send_alert({open:true,type:"success",message:`Successfully added new Point!`}))
-                .finally(this.props.on_close)
+                .then(this.send_alert({open:true,type:"success",message:`Successfully added new Point!`}))
+				.finally(this.props.on_close)
         } else {
             console.error(`${this.props.subject} Invalid!: ${JSON.stringify(add_me)}`)
-            this.props.send_alert({open: true, type: "error", message: `Failed to add new ${this.props.subject}.`})
+            this.send_alert({open: true, type: "error", message: `Failed to add new ${this.props.subject}.`})
         }
 
     }

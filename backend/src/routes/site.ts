@@ -7,7 +7,7 @@ import file_utils from "../utilities/file_utils";
 import {MulterFactory} from "../utilities/multer_factory";
 
 const site_multer = new MulterFactory("sites", "site_id", "point_id", "file")
-
+const media_deleter = MulterFactory.delete_single('sites','point_id')
 const site_router= Router();
 
 /* Give them the CRUD treatment*/
@@ -21,7 +21,8 @@ crud_factory.delete_one<ISite>(Site,site_router,authenticate,"site");
 crud_factory.find_related<IProjectilePoint>("/:id/points",ProjectilePoint,site_router,
     "site_id",authenticate,"site");
 
-
+//TODO: I don't think the line below will work for multi-photo
+file_utils.delete_one(site_router,authenticate,media_deleter,"/:site_id/upload/:point_id/:file_name");
 file_utils.upload_one(site_router,authenticate,site_multer.create_single(),"/:site_id/upload/:point_id","site-point");
 file_utils.get_img(site_router,authenticate,"/:site_id/:point_id","sites","site_id","point_id")
 

@@ -1,5 +1,5 @@
 import multer from "multer"
-import {Request,RequestHandler} from "express";
+import {NextFunction, Request, Response, RequestHandler} from "express";
 import {upload_root} from "./file_utils"
 import * as fs from "node:fs";
 
@@ -51,4 +51,14 @@ export class MulterFactory {
         return this.multer;
     }
 
+   public static delete_single(dirname:string,target_id:string): (req:Request, res:Response,next:NextFunction) => Promise<any> {
+        return (req,res,next:NextFunction) => new Promise((resolve,reject) => {
+            let file_path = `${upload_root}/${dirname}/${req.params['site_id']}/${req.params[target_id]}/${req.params.file_name}`
+             fs.unlink(file_path, (err) => {
+                 reject(err)
+             })
+            resolve(next())
+        })
+
+   }
 }

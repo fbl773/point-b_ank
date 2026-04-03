@@ -1,9 +1,12 @@
 import React, {Component} from "react";
-import {FormControl, FormLabel, Grid, InputLabel, MenuItem, Select, Typography} from "@mui/material";
+import {FormControl, FormLabel, Grid, IconButton, InputLabel, MenuItem, Select, Typography} from "@mui/material";
 import {base_shapes, blade_shapes, cross_sections, hafting_shapes,Period} from "../../../entities/entities.js";
 import TextField from "@mui/material/TextField";
 import http from "../../../../http.js";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Stack } from "@mui/system";
+import {ChevronLeft, ChevronRight} from "@mui/icons-material";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 
 /**
  * Component responsible for handling the disply of artifact images and formating them as FormData to
@@ -19,13 +22,26 @@ export class ArtifactImage extends Component{
     }
 
     componentDidMount() {
-        if(this.props.img_name !== ""){
+        if(this.props.img_name){
             console.log("Image name",this.props.img_name);
             let img_path = `${this.props.hostname}/uploads/sites/${this.props.site_id}/${this.props.artifact_id}/${this.props.img_name}`
             this.setState({img_preview:img_path},() => {
                 console.log("Looking for img at:",img_path)
             });
         }
+    }
+
+
+    /**
+     * Deletes an image... but probably shouldn't .
+     * What _should_ happen is that when a point is _saved_ any 'images' that are not in the original set (i.e.
+     * before the update) then they should be deleted... THIS IS A TRIGGER RESPONSIBILITY.
+     * @param img_id
+     * @returns {Promise<T | void>}
+     */
+    delete_image(img_id){
+        this.setState({img_preview:""})
+        this.props.update_image(null);
     }
 
     /**
@@ -54,28 +70,48 @@ export class ArtifactImage extends Component{
      */
     preview(){
         return(
+            <Stack>
                 <img
                     id="artifact_img"
                     src={this.state.img_preview ?? ""}
                     style={{maxWidth: "100%"}}
                     alt="Add a photo..."/>
+                {this.state.img_preview &&
+                <Stack direction='row' spacing='2' justifyContent='space-between'>
+                    <IconButton>
+                        <ChevronLeft/>
+                    </IconButton>
+                    <IconButton
+                        disabled={!this.state.img_preview}
+                        color='error'
+                        onClick={() => {
+                            this.delete_image(this.state.img_name);
+                        }}> <DeleteIcon/> </IconButton>
+                    <IconButton>
+                        <ChevronRight/>
+                    </IconButton>
+                </Stack>
+                }
+            </Stack>
+
         )
     }
 
     render() {
-        return(
-            <Grid item xs={7} >
+        return (
+            <Stack width='100%'>
                 {this.preview()}
-                <FormControl sx={{ my: 3.4 }}>
-                    <FormLabel sx={{ mb: 1.5 }}>
+                <FormControl sx={{my: 3.4}}>
+
+                <FormLabel sx={{ mb: 1.5 }}>
                         Upload New Photo
                     </FormLabel>
-                    <input type="file" onChange={(e => this.update_photo(e))} accept="image/*" />
+                    <input type="file" onChange={(e => this.update_photo(e))} accept="image/*"/>
+
                 </FormControl>
-            </Grid>
+            </Stack>
         )
     }
-
 
 }
 
@@ -106,7 +142,7 @@ export class BladeDetails extends Component {
     /**
      * Helper to update _this_ component's state & the parent's as they are changed.
      * @param k - the blade attribute to edit
-     * @param v - the value to set the blade attribute to
+     * @param v - the value to set the blade attribute to>
      */
     update_details(k, v){
         let update_me = this.state;
@@ -124,7 +160,7 @@ export class BladeDetails extends Component {
      */
     attribute_selector(prop_name,label,values){
         return(
-            <FormControl fullWidth>
+                <FormControl>
                 <InputLabel id={`${prop_name}-label`}>{label}</InputLabel>
                 <Select
                     labelId={`${prop_name}-label`}
@@ -142,20 +178,21 @@ export class BladeDetails extends Component {
                         >{opt}</MenuItem>
                     ))}
                 </Select>
-            </FormControl>
+                </FormControl>
         )
     }
 
     render() {
         return(
-            <Grid item s={8}>
+            <Stack width="50%" spacing={2}>
                 <Typography varient="h3">Blade Details:</Typography>
+
                 {/*Point Attributes*/}
                 {this.attribute_selector("blade_shape","Blade Shape",blade_shapes)}
                 {this.attribute_selector("base_shape","Base Shape",base_shapes)}
                 {this.attribute_selector("hafting_shape","Hafting Shape",hafting_shapes)}
                 {this.attribute_selector("cross_section","Cross Section",cross_sections)}
-            </Grid>
+            </Stack>
         )
     }
 }
@@ -236,8 +273,8 @@ export class MaterialSelector extends Component{
  * The Lenght, width, and height configuration for an artifact.
  */
 export class DimensionDetails extends Component{
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         //TODO: Do we _need_ a height?
         this.state = {
             dimensions:[0,0,0]
@@ -256,7 +293,7 @@ export class DimensionDetails extends Component{
      */
     edit_dimensions(idx,dimension){
         let dimensions = this.state.dimensions
-        dimensions[idx]=dimension;
+        dimensions[idx]= parseInt(dimension,10) || 0;
         this.setState({dimensions:dimensions});
         this.props.update_entity("dimensions",dimensions);
     }
@@ -273,6 +310,7 @@ export class DimensionDetails extends Component{
         return(
             <TextField
                 id={prop_name}
+                type="number"
                 label={label}
                 style={{paddingTop: "8px", paddingBottom: "8px"}}
                 fullWidth
@@ -286,9 +324,11 @@ export class DimensionDetails extends Component{
         return (
             <div>
                 <Typography varient="h3" style={{paddingBottom: "8px"}}>Dimensions (mm): </Typography>
+                <Stack spacing={2}>
                 {this.edit_dimension('length',0,"Length")}
                 {this.edit_dimension('width',1,"Width")}
-                {this.edit_dimension('height',2,"Height")}
+                {this.edit_dimension('thickness',2,"Thickness")}
+                </Stack>
             </div>
         )
     }
@@ -298,15 +338,22 @@ export class DimensionDetails extends Component{
  * Pretty basic for right now, simply a text field to denote location
  */
 export class LocationDetails extends Component{
-    constructor() {
-        super();
+
+    constructor(props) {
+        super(props);
         this.state = {
             location:""
         }
     }
 
+
     componentDidMount() {
         this.setState({location:this.props.location})
+    }
+
+    handleChangeLocation(e) {
+        this.setState({location:e.target.value});
+        this.props.update_entity("location",e.target.value)
     }
 
     //TODO: This could also be a general textfield updater
@@ -315,10 +362,9 @@ export class LocationDetails extends Component{
         <TextField
             id={"location"}
             label="Location"
-            style={{paddingTop:"8px",paddingBottom:"8px"}}
             fullWidth
             value={this.state.location}
-            onChange={e => this.props.update_entity("location",e.target.value)}
+            onChange={(e) => this.handleChangeLocation(e)}
         />
         )
     }
@@ -328,8 +374,8 @@ export class LocationDetails extends Component{
  * Selector for Period/Culture for a point
  */
 export class PeriodCultureSelector extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             cultures:[],
@@ -349,7 +395,7 @@ export class PeriodCultureSelector extends Component {
 
         //UPDATE AVAIL CULTURES
         let period= this.state.periods.filter(p=> p._id === period_id)[0] ?? {};
-        let prev_id = this.state.period_id;
+        let prev_id = this.props.period_id;
 
         let filtered_cultures = this.state.cultures.filter(culture => culture.period_id === period_id);
         this.setState({display_cultures:filtered_cultures});
@@ -360,7 +406,7 @@ export class PeriodCultureSelector extends Component {
 
         //reset culture if the period changed
         if(prev_id !== period_id){
-            this.select_culture("");
+            this.setState({selected_culture:""})
         }
     }
 
@@ -385,6 +431,7 @@ export class PeriodCultureSelector extends Component {
     }
 
     componentDidMount() {
+
         // Go Get the periods/cultures
         http.get("/periods")
             .then(periods=> {
@@ -400,7 +447,7 @@ export class PeriodCultureSelector extends Component {
                     this.select_period(this.props.period_id);
                 });
             })
-            .catch(err => console.error("Failed to fetch periods",err));
+            .catch(err => console.error("Failed to fetch culture",err));
     }
 
     /**
@@ -409,15 +456,15 @@ export class PeriodCultureSelector extends Component {
      */
     render() {
        return(
-           <Grid item xs={4}>
+           <Stack>
                {/*PERIOD SELECTOR*/}
-               <InputLabel id="period-label">Period</InputLabel>
+               <InputLabel shrink id="period-label" variant={'filled'}>Period</InputLabel>
                <FormControl fullWidth>
                    <Select
                        labelId="period-label"
                        id="period_select"
                        label="Period"
-                       value={this.state.selected_period.name?? "Indeterminate"}
+                       value={this.state.selected_period.name ?? "Indeterminate"}
                        renderValue={(selected) =>selected}
                        onChange={(e) => this.select_period(e.target.value._id)}
                    >
@@ -432,9 +479,8 @@ export class PeriodCultureSelector extends Component {
                        <MenuItem key="none" value="Indeterminate">Indeterminate</MenuItem>
                    </Select>
                </FormControl>
-
                {/*CULTURE SELECTOR*/}
-               <InputLabel id="culture-label">Culture</InputLabel>
+               <InputLabel shrink variant='filled' id="culture-label">Culture</InputLabel>
                <FormControl fullWidth>
                    <Select
                        labelId="culture-label"
@@ -454,7 +500,7 @@ export class PeriodCultureSelector extends Component {
                        <MenuItem key="none" value="Indeterminate">Indeterminate</MenuItem>
                    </Select>
                </FormControl>
-           </Grid>
+           </Stack>
        )
     }
 
@@ -463,9 +509,12 @@ export class PeriodCultureSelector extends Component {
 
 export class NoteArea extends Component{
 
-    constructor() {
-        super();
-        this.state={description:"wat"};
+    constructor(props) {
+        super(props);
+        this.state={
+            description:"",
+            error:false
+        };
     }
 
     componentDidMount() {
@@ -474,27 +523,26 @@ export class NoteArea extends Component{
 
     update_note(e){
         let note = e.target.value;
-        this.setState({description:note});
-        this.props.update_entity("description",note)
+        this.setState({description:note, error:!note.length},() =>{
+                this.props.update_entity("description",note,!note.length)
+        });
     }
 
     render(){
         return(
-            <Grid item s={5}>
                 <TextField
+                    error={this.state.error}
+                    helperText={this.state.error ? "Artifact must have notes" : ""}
+                    sx={{height:'100%'}}
+                    fullWidth
                     minRows={5}
                     maxRows={5}
                     multiline={true}
                     id="notes"
                     label="Notes"
-                    fullWidth
                     value={this.state.description}
                     onChange={(e) => this.update_note(e)}
                 />
-
-                <Typography sx={{mt:2}} varient="h6">Notes:</Typography>
-                <Typography varient="body1">{this.state.description}</Typography>
-            </Grid>
         )
     }
 }

@@ -121,12 +121,6 @@ export class PeriodModal extends EditCreateModal{
 
 export class CultureModal extends EditCreateModal{
 
-    //Specialty
-
-    constructor(props) {
-        super(props);
-    }
-
     /**
      * Wraps the call to append_new such that it can modify the object before sending
      * it back to the host element
@@ -144,7 +138,6 @@ export class CultureModal extends EditCreateModal{
      */
     set_selected_period(period_id) {
         let period = this.state.periods.find(period => period._id === period_id);
-        console.log(`Setting selected to :${JSON.stringify(period)}`)
         this.setState({selected_period:period});
         this.update_entity('period_id',period_id)
         this.update_entity('period_name',period.name)
@@ -157,7 +150,12 @@ export class CultureModal extends EditCreateModal{
         http.get('/periods')
             .then(resp => {
                 let periods = resp.data;
-                this.setState({periods:periods})
+                this.setState({periods:periods},() => {
+                  if(!this.props.adding_new) {
+                    let period = periods.find(period => period._id === this.props.entity.period_id);
+                    this.setState({selected_period: period});
+                  }
+                })
             })
             .catch(err => console.log(`Failed to fetch periods`,err));
     }
@@ -175,7 +173,6 @@ export class CultureModal extends EditCreateModal{
 
         //add additional state items
         this.setState({periods:[],selected_period:{}})
-        this.update_entity("period_id","");
 
         //setup special append
         this.append_new = this.modify_and_append.bind(this);
@@ -186,7 +183,6 @@ export class CultureModal extends EditCreateModal{
 
     }
 
-
     render_fields() {
         return(
             <DialogContent>
@@ -195,7 +191,7 @@ export class CultureModal extends EditCreateModal{
                     label="Name"
                     variant="outlined"
                     fullWidth
-                    value={this.state.entity.name}
+                    value={this.state.entity.name ?? this.props.entity.name}
                     onChange={(e) => this.update_entity("name",e.target.value)}
                     margin="normal"
                 />
@@ -205,7 +201,7 @@ export class CultureModal extends EditCreateModal{
                     variant="outlined"
                     type="number"
                     fullWidth
-                    value={this.state.entity.start}
+                    value={this.state.entity.start ?? this.props.entity.start}
                     onChange={(e) => this.update_entity("start",e.target.value)}
                     margin="normal"
                 />
@@ -215,13 +211,13 @@ export class CultureModal extends EditCreateModal{
                     variant="outlined"
                     type="number"
                     fullWidth
-                    value={this.state.entity.end}
+                    value={this.state.entity.end ?? this.props.entity.end}
                     onChange={(e) => this.update_entity("end",e.target.value)}
                 />
                 <TextField
                     select
                     label="Associated Period"
-                    value={this.state.entity.period_id}
+                    value={this.state.entity.period_id ?? this.props.entity.period_id}
                     onChange={(e) => this.set_selected_period(e.target.value)}
                     fullWidth
                     margin="dense"
