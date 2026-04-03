@@ -2,8 +2,9 @@ import {Schema,Model,model} from "mongoose"
 import {IArtifact} from "./mongo_entity";
 
 export interface IProjectilePoint extends IArtifact{
-    name: string,
+    ///Basics
     description: string,
+    //Shape Attributes
     blade_shape:string,
     hafting_shape:string,
     base_shape:string,
@@ -21,19 +22,24 @@ const cross_section = ["rhomboid","lenticular","plano-convex","fluted","median-r
 
 
 const projectile_pointSchema = new Schema<IProjectilePoint,ProjectilePointModal>({
-    name:{type:String, required:true},
+    //Basics
     image:{type:String, required:false},
     description:{type:String, required:false},
+    //Relations
     culture_id:{type:Schema.Types.ObjectId,ref:"Culture",required:false},
+    period_id:{type:Schema.Types.ObjectId,ref:"Period",required:false},
     material_id:{type:Schema.Types.ObjectId,ref:"Material",required:false},
     site_id:{type:Schema.Types.ObjectId,ref:"Site",required:true},
-    //These could be set by "culture" templates OR hard-coded... maybe a good use of sub document here?
+    //Attributes
     blade_shape:{type:String,required:false,enum:blade_shapes,default:"indeterminate"},
     base_shape:{type:String,required:false,enum:base_shapes,default:"indeterminate"},//TODO: Design decision about indeterminate handling. Backend or front? Tables?
     hafting_shape:{type:String,required:false,enum:hafting_shapes,default:"indeterminate"},
-    cross_section:{type:String,required:false,enum:cross_section,default:"indeterminate"}
+    cross_section:{type:String,required:false,enum:cross_section,default:"indeterminate"},
+    location:{type:String,required:false},
+    dimensions:{type:[Number],required:false},
 
-},{timestamps:true});
+
+});
 
 const ProjectilePoint:ProjectilePointModal = model<IProjectilePoint,ProjectilePointModal>('ProjectilePoint',projectile_pointSchema);
 

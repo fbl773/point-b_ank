@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import http from "../../http.js";
-import ProjectileModal from "./ProjectileModal";
-import Projectile from "./Projectile";
 import log from "../logger.js";
 import {
 	styled,
@@ -18,6 +16,8 @@ import { useContext } from "react";
 import { UserContext } from "../context/userContext";
 
 import { sortData } from "../sortUtils.js";
+import ProjectileCard from "../refactor/ProjectileCard.jsx";
+import ProjectileModal from "../refactor/modals/Projectile/ProjectileModal.jsx";
 /**
  * Create styled Item component, based on Paper MUI component
  */
@@ -43,7 +43,8 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 	const [openAdd, setOpenAdd] = useState(false);
 	const [openView, setOpenView] = useState(false);
 	const [openEdit, setOpenEdit] = useState(false);
-	const [projectilePointId, setProjectilePointId] = useState(0);
+	const [projectilePointId, setProjectilePointId] = useState("");
+	const [point,setPoint] = useState(undefined)
 	const [data, setData] = useState([]);
 	const { user } = useContext(UserContext);
 	/**
@@ -58,9 +59,10 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 	 * Toggle view projectile modal visibility to true
 	 */
 	const handleClick2 = (item) => () => {
-		setProjectilePointId(item.id);
-		setOpenView(true);
-		log.info("Card clicked! ID:", item.id);
+		console.log(`ITEM IS ${JSON.stringify(item)}`);
+		setPoint(item)
+		setOpenEdit(true);
+		log.info("Card clicked! ID:", item._id);
 	};
 
 	/**
@@ -70,7 +72,7 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 	useEffect(() => {
 		async function fetchprojectilePoints() {
 			try {
-				const response = await http.get("/projectilePoints");
+				const response = await http.get(`sites/${siteId}/points`);
 				log.info("Projectile points: ", response.data);
 
 				// Sort JSON
@@ -84,13 +86,10 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 		fetchprojectilePoints();
 	}, [openAdd, openView, sortValue]);
 
-	// Filter projectile points to current selected site
-	const siteData = data?.filter((item) => item.site.id == siteId);
-
 	// Filter data based on search query (mock)
-	const filteredData = siteData?.filter((item) =>
+	const filteredData = data?.filter((item) =>
 		// eslint-disable-next-line react/prop-types
-		item.name.toLowerCase().includes(query.toLowerCase()),
+		item._id.toLowerCase().includes(query.toLowerCase()),
 	);
 
 	return (
@@ -122,28 +121,13 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 							)}
 							{filteredData &&
 								filteredData.map((item) => (
-									<Grid item xl={2} key={item.id}>
+									<Grid item xl={2} key={item._id}>
 										{/*This section is for displaying all the found artifacts*/}
 										<ButtonBase onClick={handleClick2(item)}>
-											<Card
-												sx={{
-													minWidth: "12rem",
-													minHeight: "12rem",
-													alignContent: "center",
-												}}
-											>
-												<CardContent>
-													<Typography variant="h5" component="h3">
-														{siteName + "-" + item.id}
-													</Typography>
-													<Typography variant="body2" component="p">
-														{/* Limit description characters to prevent text overflow */}
-														{item.description.length <= 15
-															? item.description
-															: item.description.substr(0, 15) + "..."}
-													</Typography>
-												</CardContent>
-											</Card>
+											<ProjectileCard
+												item={item}
+												site_name={siteName}
+											/>
 										</ButtonBase>
 									</Grid>
 								))}
@@ -153,26 +137,30 @@ export default function ProjectileList({ query, siteId, siteName, sortValue }) {
 			</Item>
 			<div>
 				{openAdd && (
-					<ProjectileModal openAdd={openAdd} setOpenAdd={setOpenAdd} />
-				)}
-			</div>
-			<div>
-				{openView && (
-					<Projectile
-						setOpenView={setOpenView}
-						setOpenEdit={setOpenEdit}
-						projectilePointId={projectilePointId}
-						siteName={siteName}
+					// <ProjectileModal openAdd={openAdd} setOpenAdd={setOpenAdd} />
+					<ProjectileModal
+						adding_new={true}
+						site_name={siteName}
+						site_id={siteId}
+						url={"points"}
+						send_alert={(msg) => console.warn(`TODO: ${JSON.stringify(msg)}`)}
+						append_new={(ent) => console.warn(`TODO: Would append ${JSON.stringify(ent)}`)}
+						open={openAdd}
+						on_close={() => setOpenAdd(false)}
 					/>
 				)}
 			</div>
 			<div>
 				{openEdit && (
 					<ProjectileModal
-						setOpenView={setOpenView}
-						openEdit={openEdit}
-						setOpenEdit={setOpenEdit}
-						projectilePointId={projectilePointId}
+						adding_new={false}
+						entity={point}
+						site_name={siteName}
+						site_id={siteId}
+						url={"points"}
+						send_alert={(msg) => console.warn(`TODO: ${JSON.stringify(msg)}`)}
+						open={openEdit}
+						on_close={() => setOpenEdit(false)}
 					/>
 				)}
 			</div>

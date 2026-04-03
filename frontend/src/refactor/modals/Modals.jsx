@@ -4,6 +4,7 @@ import {DialogContent, Grid, MenuItem, TextField, Typography} from "@mui/materia
 import http from "../../../http.js";
 import RegionList from "../RegionList.jsx";
 
+//Validation Lists
 const artifact_types = ["lithic","faunal","ceramic","other"];
 
 /**
@@ -328,7 +329,6 @@ export class SiteModal extends EditCreateModal{
     componentDidMount() {
         this.update_entity("catalogue_id",this.props.catalogue_id)
         super.componentDidMount();
-        console.log(this.state.entity);
 
         //Get region data if it exists
         if(this.props.adding_new === false){

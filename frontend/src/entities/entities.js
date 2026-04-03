@@ -26,10 +26,38 @@ export const Material= {
  * @type {{catalogue_id: string, name: string, region_id: string, description: string, location: string, _id: string}}
  */
 export const SiteEntity = {
-    "_id":"",
+    _id:"",
     name:"",
     description:"",
     location:"",
     catalogue_id:"",
     region_id:"",
 }
+
+export const Projectile_Point = {
+    _id:"",
+    image:"",
+    description:"",
+    culture_id:"",
+    period_id:"",
+    material_id:"",
+    site_id:"",
+    blade_shape:"",
+    base_shape:"",
+    hafting_shape:"",
+    cross_section:"",
+    location:"",
+    dimensions:[]
+}
+
+export const Period = {
+    name:"",
+    start:0,
+    end:0
+}
+
+export const blade_shapes = ["triangular","excurvate","incurvate","ovate","indeterminate"];
+export const base_shapes = ["straight","concave","convex","indeterminate"];
+export const hafting_shapes =["lanceolate","stemmed","basally concave","expanding","contracting",
+    "corner-notched","side-notched","basal-notched","triangular un-notched","indeterminate"] ;
+export const cross_sections = ["rhomboid","lenticular","plano-convex","fluted","median-ridged","flat","indeterminate"];
