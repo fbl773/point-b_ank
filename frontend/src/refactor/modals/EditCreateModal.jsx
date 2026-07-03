@@ -7,6 +7,7 @@ import {Button} from "@mui/material";
 import http from "../../../http.js"
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
 import DeleteConfirmDialog from "./DeleteConfirmDialog.jsx";
 
 
@@ -21,7 +22,6 @@ class EditCreateModal extends Component {
      * @param props.entity {any} the entity we will be creating/editing
      * @param props.open {boolean} true/false is the dialog open?
      * @param props.append_new {Function} a function to update the UI with newly created entities
-     * @param props.send_alert {Function} a function to alert of operation status
      * @param props.on_close {Function} a function to close the dialog
      *
      */
@@ -30,12 +30,14 @@ class EditCreateModal extends Component {
 
         this.state = {
             title:"...",
+			feedback:undefined,
             selected:{},
             entity:{
                 _id:""
             },
             loaded:false,
             delete_open:false,
+			error:false
         }
     }
 
@@ -52,17 +54,25 @@ class EditCreateModal extends Component {
      */
     render_fields(){ }
 
+	send_alert(details){
+		this.setState({feedback:details});
+
+		if(this.props.send_alert)
+			this.props.send_alert(details)
+	
+	}
+
     //Helpers
     /**
      * Updates the entity sub-object
      * @param key {string} the name of the field to update on the entity
      * @param value {any} the value to update it to
      */
-    update_entity(key,_value){
+    update_entity(key,_value,error = false){
         let value = _value ?? "";
         let updated_entity= this.state.entity;
         updated_entity[key] = value;
-        this.setState({entity:updated_entity});
+        this.setState({entity:updated_entity, error:error});
     }
 
 
@@ -80,31 +90,31 @@ class EditCreateModal extends Component {
                 })
                 .catch(err => {
                     console.error(`Failed to add ${this.props.subject}: `, err)
-                    this.props.send_alert({open:true,type:"error",message:`Failed to add new ${this.props.subject}`})
+                    this.send_alert({open:true,type:"error",message:`Failed to add new ${this.props.subject}`})
                 })
-                .then(this.props.send_alert({open:true,type:"success",message:`Successfully added new ${this.props.subject}`}))
-                .finally(this.props.on_close)
+                .then(this.send_alert({open:true,type:"success",message:`Successfully added new ${this.props.subject}`}))
+                .finally(this.props.on_close);
+
         } else {
             console.error(`${this.props.subject} Invalid!`)
-            this.props.send_alert({open: true, type: "error", message: `Failed to add new ${this.props.subject}.`})
+            this.send_alert({open: true, type: "error", message: `Failed to add new ${this.props.subject}.`})
         }
     }
 
     async edit_entity(){
         let edit_me = this.state.entity;
         if (this.validate()) {
-            console.log("Shipping: ", edit_me)
             await http.put(`${this.props.url}/${edit_me._id}`, edit_me)
                 .then(edited_ent => this.setState({entity: edited_ent}))
-                .then(this.props.send_alert({open: true, type: "success", message: `${this.props.subject} successfully edited.`}))
+                .then(this.send_alert({open: true, type: "success", message: `${this.props.subject} successfully edited.`}))
                 .catch(err => {
                     console.error(`Failed to edit ${this.props.subject}: `, err)
-                    this.props.send_alert({open: true, type: "error", message: `Failed to edit ${this.props.subject}.`})
+                    this.send_alert({open: true, type: "error", message: `Failed to edit ${this.props.subject}.`})
                 })
                 .finally(this.props.on_close);
         } else {
             console.error(`${this.props.subject} Invalid!`)
-            this.props.send_alert({open: true, type: "error", message: `failed to edit ${this.props.subject}`})
+            this.send_alert({open: true, type: "error", message: `failed to edit ${this.props.subject}`})
         }
     }
 
@@ -113,13 +123,11 @@ class EditCreateModal extends Component {
       http.delete(`${this.props.url}/${delete_me._id}`)
         .then(_resp => {
           this.props.on_delete(delete_me._id)
-          this.props.on_close();
-          console.log(`Deleted quack ${this.props.subject} - ${delete_me._id}`)
-          this.props.send_alert({open:true,type:"success",message:`Deleted ${this.props.subject} - ${delete_me._id}`})
+          this.send_alert({open: true, type: "success", message: `Successfully deleted ${this.props.subject} - ${delete_me._id}`})
         })
         .catch(err => {
-          console.error(`Failed to delete ${this.props.subject} - ${delete_me._id}: `, err)
-          this.props.send_alert({open:true,type:"error",message:`Failed to delete ${this.props.subject} - ${delete_me._id}`})
+          console.error(``, err)
+          this.send_alert({open: true, type: "error", message: `Failed to delete ${this.props.subject} - ${delete_me._id}: `})
         })
         .finally(() => {
           this.setState({delete_open:false})
@@ -150,11 +158,18 @@ class EditCreateModal extends Component {
 
     render() {
         return(
-            <div>
+            <div >
                 {this.state.loaded ?
-                <Dialog open={this.props.open} onClose={this.props.on_close}>
+                <Dialog open={this.props.open} onClose={this.props.on_close} >
                     <DialogTitle>{this.state.title} {this.props.subject}: {this.props.entity?.name ?? ""}</DialogTitle>
                     <DialogContent>
+                        {this.state.feedback &&
+                            <Alert
+                                severity={this.state.feedback.type}
+                                onClose={() => this.setState({feedback:undefined})}>
+                                {this.state.feedback.message}
+                            </Alert>
+                        }
                         {this.render_fields()}
                         <DialogActions>
                           {!this.props.adding_new && <Box sx={{flex:1}}>
@@ -162,10 +177,14 @@ class EditCreateModal extends Component {
                                     Delete
                                 </Button>
                             </Box>}
-                            <Button onClick={this.props.on_close} color="primary">
+                            <Button onClick={this.props.on_close} 
+							color="primary">
                                 Cancel
                             </Button>
-                            <Button onClick={this.handle_submit} color="primary">
+                            <Button 
+								onClick={this.handle_submit} 
+								disabled = {this.state.error}
+								color="primary">
                                 Save
                             </Button>
                         </DialogActions>

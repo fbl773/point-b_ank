@@ -33,7 +33,8 @@ import {SiteModal} from "../refactor/modals/Modals.jsx";
 const Site = () => {
 	const [siteName, setSiteName] = useState("");
 	const [siteDescription, setSiteDescription] = useState("");
-	const [regionId, setRegionId] = useState("...loading");
+	const [regionId, setRegionId] = useState("");
+	const [regionName,setRegionName] = useState("...loading");
 	const [catalogueId,setCatalogueId] = useState("");
 	const [location,setLocation] = useState("");
 
@@ -65,6 +66,12 @@ const Site = () => {
 				setRegionId(response.data.region_id);
 				setCatalogueId(response.data.catalogue_id);
 				setLocation(response.data.location);
+				//Get Region
+				http.get(`/regions/${response.data.region_id}`)
+					.then(reg => {
+						setRegionName(reg.data.name)
+					})
+
 			} catch (error) {
 				log.error("Error fetching site:", error);
 			}
@@ -174,7 +181,7 @@ const Site = () => {
 						{siteDescription}
 					</Typography>
 					<Typography>
-						{location}, {"REGION WOULD GO HERE (todo in refactor)"}
+						{location}, {regionName}
 					</Typography>
 					{user && (
 						<Button
@@ -255,17 +262,13 @@ const Site = () => {
 					send_alert={(props) => console.log(JSON.stringify(props))}
 				/>
 			}
-			<Grid item xs={12}>
-				<Typography variant="body1" sx={{ fontWeight: "medium" }}>
-					Projectile Points
-				</Typography>
-				<ProjectileList
-					query={searchValue}
-					siteId={siteID}
-					siteName={siteName}
-					sortValue={sortValue}
-				/>
-			</Grid>
+			<ProjectileList
+				title={"Projectile Points"}
+				query={searchValue}
+				siteId={siteID}
+				siteName={siteName}
+				sortValue={sortValue}
+			/>
 			<div>
 				<DeleteConfirmDialog
 					open_condition={openAlertDelete}

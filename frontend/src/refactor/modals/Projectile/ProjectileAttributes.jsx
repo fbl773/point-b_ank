@@ -293,7 +293,7 @@ export class DimensionDetails extends Component{
      */
     edit_dimensions(idx,dimension){
         let dimensions = this.state.dimensions
-        dimensions[idx]=dimension;
+        dimensions[idx]= parseInt(dimension,10) || 0;
         this.setState({dimensions:dimensions});
         this.props.update_entity("dimensions",dimensions);
     }
@@ -310,6 +310,7 @@ export class DimensionDetails extends Component{
         return(
             <TextField
                 id={prop_name}
+                type="number"
                 label={label}
                 style={{paddingTop: "8px", paddingBottom: "8px"}}
                 fullWidth
@@ -326,7 +327,7 @@ export class DimensionDetails extends Component{
                 <Stack spacing={2}>
                 {this.edit_dimension('length',0,"Length")}
                 {this.edit_dimension('width',1,"Width")}
-                {this.edit_dimension('height',2,"Height")}
+                {this.edit_dimension('thickness',2,"Thickness")}
                 </Stack>
             </div>
         )
@@ -373,8 +374,8 @@ export class LocationDetails extends Component{
  * Selector for Period/Culture for a point
  */
 export class PeriodCultureSelector extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             cultures:[],
@@ -510,7 +511,10 @@ export class NoteArea extends Component{
 
     constructor(props) {
         super(props);
-        this.state={description:"wat"};
+        this.state={
+            description:"",
+            error:false
+        };
     }
 
     componentDidMount() {
@@ -519,14 +523,16 @@ export class NoteArea extends Component{
 
     update_note(e){
         let note = e.target.value;
-        this.setState({description:note},() =>{
-                this.props.update_entity("description",note)
+        this.setState({description:note, error:!note.length},() =>{
+                this.props.update_entity("description",note,!note.length)
         });
     }
 
     render(){
         return(
                 <TextField
+                    error={this.state.error}
+                    helperText={this.state.error ? "Artifact must have notes" : ""}
                     sx={{height:'100%'}}
                     fullWidth
                     minRows={5}

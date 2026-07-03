@@ -40,7 +40,7 @@ class ProjectileCard extends Component {
             >
                 <CardContent>
                     <Typography variant="h5" component="h3">
-                        {this.props.site_name + "-" + this.props.item.location ?? "Unknown Location"}
+                        {this.props.site_name + "-" + (this.props.item.location ?? "Unknown Location")}
                     </Typography>
                     <Typography variant="body2" component="p">
                         {/* Limit description characters to prevent text overflow */}
@@ -59,7 +59,7 @@ class ProjectileCard extends Component {
                         site_name={this.props.site_name}
                         site_id={this.state.entity.site_id}
                         url={"points"}
-                        send_alert={(msg) => console.warn(`TODO: ${JSON.stringify(msg)}`)}
+                        send_alert={this.props.send_alert}
                         open={this.state.showPoint}
                         on_close={() => this.setState({showPoint: false})}
                         on_delete={this.props.onDelete}
