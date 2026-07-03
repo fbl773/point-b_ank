@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:20-alpine
 
 # expose frontend port
 EXPOSE 8080
@@ -9,13 +9,15 @@ WORKDIR /frontend
 
 # copy local files to container
 COPY package.json /frontend/package.json
-COPY package-lock.json /frontend/package-lock.json
+COPY yarn.lock /frontend/yarn.lock
+COPY http.js /frontend/http.js
+COPY vite.* /frontend
 
 
 # install packages
-RUN npm install 
+RUN yarn install
 
 # Download chromium for Puppeteer browser tests
 # RUN npm install playwright
 # RUN npx playwright install chrome
-CMD ["npm", "run", "dev"]
+CMD ["yarn", "run", "dev"]
