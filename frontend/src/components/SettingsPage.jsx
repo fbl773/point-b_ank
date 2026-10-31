@@ -331,15 +331,6 @@ const SettingsPage = () => {
 										secondary="Permissions: View, Add, Remove, Edit, Import, Export"
 									/>
 								</ListItem>
-								<ListItem>
-									<ListItemText
-										primary="Tester"
-										secondary="Permissions: View, Add, Remove, Edit, Import, Export"
-									/>
-								</ListItem>
-								<ListItem>
-									<ListItemText primary="User" secondary="Permissions: View" />
-								</ListItem>
 							</List>
 							<Box sx={{ display: "flex", justifyContent: "flex-end" }}>
 								<Button variant="outlined" sx={{ marginTop: "2rem" }} onClick={() => alert("not implemented")}>
