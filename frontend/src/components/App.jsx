@@ -2,10 +2,9 @@ import { UserContextProvider } from "../context/userContext";
 import { Route, Routes } from "react-router-dom";
 import Catalogue from "./Catalogue";
 import Site from "./Site";
+import Login from'../refactor/user_management/Login.jsx';
 //import StatisticsPage from "./StatisticsPage";
 import SettingsPage from "./SettingsPage";
-import ManageCultures from "./ManagementCultures";
-import ManageMaterials from "./ManagementMaterials";
 import {
 	ManageCultureWrapper,
 	ManageMaterialsWrapper,
@@ -22,7 +21,8 @@ function App() {
 	return (
 		<UserContextProvider>
 			<Routes>
-				<Route path="/" element={<Catalogue />} />
+				<Route path="/" element={<Login />} />
+				<Route path="/catalogue" element={<Catalogue />} />
 				<Route path="/site/:id" element={<Site />} />
 				{/*<Route path="/stats" element={<StatisticsPage />} /> // TODO: this is not quite what we had in mind*/}
 				<Route path="/settings" element={<SettingsPage />} />
