@@ -14,7 +14,6 @@ dist-ssr
 *.local
 .env
 *.docker.env
-*.lock
 */package-lock.json
 uploads/
 

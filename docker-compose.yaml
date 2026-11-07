@@ -8,7 +8,7 @@ services:
     image: mongo:latest
     container_name: point_mongo
     volumes:
-      - /Users/FrankyB/fGrams/Projects/databases/pblank:/data/db
+      - /Users/blewis/Projects/databases/pblank:/data/db
     ports:
       - "27017:27017"
     env_file:
@@ -20,7 +20,7 @@ services:
       context: ./backend
       dockerfile: dev.dockerfile
     volumes:
-      - /Users/FrankyB/fgrams/Projects/databases/pblank_uploads:/backend/uploads
+      - /backend/uploads
     ports:
       - "3000:3000"
     env_file:
@@ -30,6 +30,8 @@ services:
 
   # set up frontend
   frontend:
+    depends_on:
+      - backend
     build:
       context: ./frontend
       dockerfile: dockerfile
