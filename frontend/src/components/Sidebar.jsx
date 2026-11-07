@@ -64,26 +64,8 @@ const SidebarIcon = styled(ListItemIcon)(() => ({
  */
 function Sidebar() {
 	const [modalVisible, setModalShow] = useState(false);
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const { user } = useContext(UserContext);
-	useEffect(() => {
-		/**
-		 * Checks the user's login status with the backend and updates state accordingly.
-		 *
-		 * @pre http must be configured correctly.
-		 * @post Updates isLoggedIn state based on response from backend.
-		 */
-		const checkLoginStatus = async () => {
-			try {
-				const response = await http.get("/verify");
-				setIsLoggedIn(!!response.data);
-			} catch (error) {
-				console.error("Error checking login status:", error);
-			}
-		};
-
-		checkLoginStatus();
-	}, []);
+	const [isLoggedIn, setIsLoggedIn] = useState(true);
+	const { user,setUser } = useContext(UserContext);
 
 	/**
 	 * Logs the sidebar item clicked by the user.
@@ -132,11 +114,10 @@ function Sidebar() {
 	 * @pre http must be configured correctly.
 	 * @post Sends a logout request to the backend, logs out the user, and reloads the page.
 	 */
-	const handleLogout = async () => {
+	const handleLogout = () => {
 		localStorage.removeItem("token");
-		setIsLoggedIn(false);
+		setUser({});
 		navigate("/");
-		window.location.reload();
 	};
 
 	return (
@@ -170,7 +151,7 @@ function Sidebar() {
 					</Typography>
 				</Toolbar>
 				<SidebarList>
-					<Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+					<Link to="/catalogue" style={{ textDecoration: "none", color: "inherit" }}>
 						<ListItem key="Catalogue" disablePadding onClick={handleClick}>
 							<ListItemButton>
 								<SidebarIcon>

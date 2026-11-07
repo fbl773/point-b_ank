@@ -1,7 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
 import http from "../../http.js";
-// import Grid from "@mui/material/Grid";
 import ChangeUsernameModal from "./ChangeUsernameModal.jsx";
 import ChangePasswordModal from "./ChangePasswordModal.jsx";
 import log from "../logger.js";
@@ -331,56 +330,12 @@ const SettingsPage = () => {
 										secondary="Permissions: View, Add, Remove, Edit, Import, Export"
 									/>
 								</ListItem>
-								<ListItem>
-									<ListItemText
-										primary="Tester"
-										secondary="Permissions: View, Add, Remove, Edit, Import, Export"
-									/>
-								</ListItem>
-								<ListItem>
-									<ListItemText primary="User" secondary="Permissions: View" />
-								</ListItem>
 							</List>
 							<Box sx={{ display: "flex", justifyContent: "flex-end" }}>
 								<Button variant="outlined" sx={{ marginTop: "2rem" }} onClick={() => alert("not implemented")}>
 									Manage Roles
 								</Button>
 							</Box>
-						</Box>
-
-						{/* Reset to Default Settings Section */}
-						<Box
-							sx={{
-								border: 1,
-								borderColor: "grey.300",
-								borderRadius: "16px",
-								padding: 4,
-								bgcolor: "background.paper",
-								marginTop: "4rem",
-								display: "flex",
-								flexDirection: { xs: "column", sm: "row" },
-								justifyContent: "space-between",
-								alignItems: "center",
-								gap: 2,
-							}}
-						>
-							<Typography
-								variant="body1"
-								sx={{
-									flexGrow: 1,
-									textAlign: "center",
-									order: { xs: 2, sm: 1 },
-								}}
-							>
-								Reset to Default Credentials
-							</Typography>
-							<Button
-								variant="contained"
-								sx={{ order: { xs: 1, sm: 2 } }}
-								onClick={resetDefaultCredentials}
-							>
-								Reset to Default
-							</Button>
 						</Box>
 					</Grid>
 

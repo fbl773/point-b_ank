@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import http from "../../http.js";
-import {FormControl, Grid, InputLabel, MenuItem, Select} from "@mui/material";
+import {FormControl, Stack,Grid, InputLabel, MenuItem, Select, Box} from "@mui/material";
 import RegionListItem from "./RegionListItem.jsx";
 import DeleteConfirmDialog from "./modals/DeleteConfirmDialog.jsx";
 import RegionModal from "./modals/RegionModal.jsx";
@@ -95,8 +95,8 @@ class RegionList extends Component{
 
     render() {
         return(
-            <Grid item xs={6}>
-                <FormControl sx={{ mt: 1, width: "100%" }}>
+            <Stack sx={{flex:1, mt:1}}>
+                <FormControl>
                     <InputLabel id="region-label">Region</InputLabel>
                     <Select
                         id="region"
@@ -136,7 +136,7 @@ class RegionList extends Component{
                         on_cancel={() => this.setState({del_region:{},show_del:false})}
                         on_proceed={() => this.delete_region(this.state.del_region._id ?? "")}/>
                 </div>
-            </Grid>
+            </Stack>
         )
     }
 }
