@@ -50,7 +50,6 @@ const Catalogue = () => {
 			await http.get("/catalogues")
 				.then(cats => {
 					if (cats.status === 200 && cats.data.length === 0) {
-						console.log("We r in the ifk")
 						//If we have no catalogues, then
 						default_cat.name = "Default Catalogue";
 						default_cat.description = "This is the default catalogue";
@@ -58,7 +57,6 @@ const Catalogue = () => {
 							.then(new_cat =>  default_cat = new_cat)
 							.catch(err => console.error("Failed to create default catalogue", err));
 					} else {
-						console.log("We r in the else")
 						let fetched_cat = cats.data[0];
 						default_cat = fetched_cat;
 					}
