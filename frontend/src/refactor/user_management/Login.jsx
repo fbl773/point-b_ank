@@ -1,11 +1,8 @@
 import * as React from 'react';
 import { SignInPage } from '@toolpad/core/SignInPage';
 import {UserContext} from '../../context/userContext.jsx';
-import {useTheme} from "@mui/material/styles"
 import {useNavigate} from "react-router-dom";
-
 import {useContext, useEffect} from "react";
-import {Link} from "@mui/material";
 import http from "../../../http.js";
 
 const providers = [{ id: 'credentials', name: undefined }];

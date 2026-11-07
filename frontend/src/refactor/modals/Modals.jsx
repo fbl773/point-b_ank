@@ -1,6 +1,6 @@
 import React from 'react';
 import EditCreateModal from './EditCreateModal';
-import {DialogContent, Grid, MenuItem, TextField, Typography} from "@mui/material";
+import {DialogContent, Grid, Stack, MenuItem, TextField, Typography} from "@mui/material";
 import http from "../../../http.js";
 import RegionList from "../RegionList.jsx";
 
@@ -151,10 +151,10 @@ export class CultureModal extends EditCreateModal{
             .then(resp => {
                 let periods = resp.data;
                 this.setState({periods:periods},() => {
-                  if(!this.props.adding_new) {
-                    let period = periods.find(period => period._id === this.props.entity.period_id);
-                    this.setState({selected_period: period});
-                  }
+                    if(!this.props.adding_new) {
+                        let period = periods.find(period => period._id === this.props.entity.period_id);
+                        this.setState({selected_period: period});
+                    }
                 })
             })
             .catch(err => console.log(`Failed to fetch periods`,err));
@@ -272,43 +272,45 @@ export class SiteModal extends EditCreateModal{
 
     render_fields() {
         return(
-            <DialogContent style={{ minHeight: "300px" }}>
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="siteName"
-                    label="Site Name"
-                    fullWidth
-                    required
-                    value={this.state.entity.name}
-                    onChange={(e) => this.update_entity("name",e.target.value)}
-                />
-                <TextField
-                    margin="dense"
-                    id="description"
-                    label="Site Description"
-                    fullWidth
-                    multiline
-                    rows={10}
-                    value={this.state.entity.description}
-                    onChange={(e) => this.update_entity("description",e.target.value)}
-                />
-                <Grid container spacing={2}>
-                    <Grid item xs={6}>
+            <DialogContent style={{ minHeight: "300px"}}>
+                <Stack spacing={2} sx={{width:'100%'}}>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="siteName"
+                        label="Site Name"
+                        fullWidth
+                        required
+                        value={this.state.entity.name}
+                        onChange={(e) => this.update_entity("name",e.target.value)}
+                    />
+                    <TextField
+                        margin="dense"
+                        id="description"
+                        label="Site Description"
+                        fullWidth
+                        multiline
+                        rows={10}
+                        value={this.state.entity.description}
+                        onChange={(e) => this.update_entity("description",e.target.value)}
+                    />
+                    <Stack direction={{xs:'column',sm:'row'}}
+                           spacing={2}
+                           sx={{width:'100%'}}
+                    >
                         <TextField
-                            margin="dense"
+                            sx={{flex:1}}
                             id="location"
                             label="Location"
-                            fullWidth
                             value={this.state.entity.location}
                             onChange={(e) => this.update_entity("location",e.target.value)}
                         />
-                    </Grid>
-                    <RegionList
-                        selected_region_id={this.state.entity.region_id}
-                        select_region = {(reg_id) => this.update_entity("region_id",reg_id)}
-                    />
-                </Grid>
+                        <RegionList
+                            selected_region_id={this.state.entity.region_id}
+                            select_region = {(reg_id) => this.update_entity("region_id",reg_id)}
+                        />
+                    </Stack>
+                </Stack>
             </DialogContent>
         )
     }

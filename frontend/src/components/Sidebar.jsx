@@ -151,7 +151,7 @@ function Sidebar() {
 					</Typography>
 				</Toolbar>
 				<SidebarList>
-					<Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+					<Link to="/catalogue" style={{ textDecoration: "none", color: "inherit" }}>
 						<ListItem key="Catalogue" disablePadding onClick={handleClick}>
 							<ListItemButton>
 								<SidebarIcon>

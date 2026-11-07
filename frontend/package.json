@@ -24,6 +24,7 @@
 		"@mui/system": "^7.3.9",
 		"@mui/x-charts": "^8.28.2",
 		"@mui/x-data-grid": "^8.28.2",
+		"@toolpad/core": "^0.16.0",
 		"axios": "^1.14.0",
 		"loglevel": "^1.9.1",
 		"prop-types": "^15.8.1",
