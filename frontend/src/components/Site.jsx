@@ -34,7 +34,7 @@ const Site = () => {
 	const [siteName, setSiteName] = useState("");
 	const [siteDescription, setSiteDescription] = useState("");
 	const [regionId, setRegionId] = useState("");
-	const [regionName,setRegionName] = useState("...loading");
+	const [regionName,setRegionName] = useState("Unknown Region");
 	const [catalogueId,setCatalogueId] = useState("");
 	const [location,setLocation] = useState("");
 
