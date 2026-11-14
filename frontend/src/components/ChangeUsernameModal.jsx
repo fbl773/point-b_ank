@@ -66,12 +66,10 @@ function ChangeUsernameModal({ modalVisible, closeModal, updateUsername }) {
 				username: userName,
 				password: password,
 			});
-
-			log.info("Username change request made with new username: " + userName);
-
 			if (response.status === 200) {
 				alert("Username Changed successfully");
 				updateUsername(userName);
+                localStorage.setItem("token",response.data.token);
 				closeModal();
 			} else {
 				alert("An unexpected status was received. Please try again later.");
