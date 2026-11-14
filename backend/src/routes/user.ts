@@ -1,6 +1,6 @@
 import {Request, Response, Router} from "express";
 import User, {IUser} from "../entitites/user";
-import {authenticate_admin, get_payload, TokenData} from "../utilities/jwt_utils";
+import {authenticate_admin, get_payload, TokenData,sign_token} from "../utilities/jwt_utils";
 import crud_factory from "../utilities/crud_factory";
 import bcrypt from "bcrypt";
 
@@ -39,13 +39,13 @@ user_router.patch(
                             found_user.username = updated_user.username
                             found_user.save()
                                 .then(_ => {
-                                    console.log('hit');
-                                    return res.status(200).send({message:`succesfully updated user ${payload._id}`,user:found_user})
+									let new_token = sign_token(payload._id,updated_user.username,found_user.role);
+                                    return res.status(200).send({ message:`succesfully updated user ${payload._id}`, token:new_token});
                                 }).catch(err => {console.log("Failed to update uname",err)})
-                        }
+                        } 
 
                     })
-                    .catch(err => res.status(500).send({message:`failed to update user ${payload._id}`,err}))
+                    .catch(err => res.status(500).send({message:`Failed to update user ${payload._id}`,err}))
 
             })
 
